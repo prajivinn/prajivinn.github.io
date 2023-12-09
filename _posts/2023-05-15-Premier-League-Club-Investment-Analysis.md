@@ -57,13 +57,7 @@ Finally with the help of Bar Chart, we plotted the clubs with their respective "
 
 ### Results <a name="overview-results"></a>
 
-After analyzing the Bar chart, it is found that **Blackburn Rovers has the highest score of our analysis and next best is Leicester City**
-
-**To ensure a thorough evaluation of football club performance we must consider clubs current form**
-
-We filted clubs that have played in **2023**, as well as those that last played in **2022** and **2021**. By plotting the Bar chart again, it is found that **Blackburn Rovers is not included**.
-
-So the club which has highest score is **Leicester City**. Given this information, we recommend that stakeholders consider investing in Leicester City instead. We believe that Leicester City’s recent form and performance make them a better choice for investment.
+The club which has highest score is **Leicester City**. Given this information, we recommend that stakeholders consider investing in Leicester City instead. We believe that Leicester City’s recent form and performance make them a better choice for investment.
 
 **To support our claim, we conducted further secondary research to provide additional evidence of Leicester City’s current form and potential for success**
 <br>
