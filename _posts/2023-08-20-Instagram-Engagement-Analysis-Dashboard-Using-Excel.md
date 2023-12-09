@@ -20,9 +20,10 @@ In this project we create a dashboard using Excel to gain insights into performa
 - [03. Applying Data Cleaning & EDA](#DC-EDA-application)
     - [Data Cleaning](#DC-context)
     - [Exploratory Data Analysis](#EDA-context)
-- [04. Creation of Dashboard](#DB-Creation)
-- [05. Analysing The Results](#DB-results)
-- [06. Growth & Next Steps](#growth-next-steps)
+- [04. Creation Of Dashboard](#DB-Creation)
+- [05. Extracting Observations](#DB-results)
+- [06. Recommendations Based On Analysis](#recommendations)
+- [07. Growth & Next Steps](#growth-next-steps)
 
 ___
 
@@ -60,17 +61,12 @@ We re-arranged and adjusted the font size and color of all the text boxes, pivot
 <br>
 <iframe src="https://onedrive.live.com/embed?resid=2B20015F12AE5A8E%21153&authkey=!AOzyr0K7b07UXoA&em=2" width="1090" height="900" frameborder="0" scrolling="no"></iframe>
 
-From the above dashboard,few of the key impactful insights is written below:
+Based on the observations from the dashboard, below are the recommendations suggested to the duo.
 
-* It appears that ‘IG video’ posts are performing better in terms of engagement compared to ‘IG image’ and ‘IG carousel’ posts for 
-  the Duo.
-* **IG Carousel** has second highest average values for metrics such as **likes,comments and saves** compared to the **IG Image**.
+* Focus on Strengthening the hook i.e making it attractive or engaging the **IG-Video** reels at the start and also give weightage on the topics/content for the reels such as "Python", "Data Analytics", "SQl", "Statistics", "Interview preparation & questions for SQL/Python/Analyst roles" because as per the observations of the data, it is found that **58%** of the people skip the content within 3 seconds.
+* Post **IG-Videos** consistently because it is found that it is performing well interms of engagement and also wider reach can be attained compared to IG Images & IG Carousel. With respect to **Reach and Impressions**, New followers can be gained if they put IG Videos but inorder to **engage the existing audience of the page, the duo should post IG carousel because of high number of Comments and Saves**. So go with IG Videos followed by IG Carousel by posting consistently.
 
-With respect to **Reach and Impressions**, New followers can be gained if they put IG Videos but inorder to **engage the existing audience of the page, the duo should post IG carousel because of high number of Likes, Comments and Saves**.
-
-**I would suggest the duo to go with IG Videos followed by IG Carousel by posting consistently**.
-
-You can find the full report of the results in this section [Analysing The Results](#DB-results).
+You can find the full report of the observations in this section [Analysing The Results](#DB-results).
 <br>
 <br>
 ### Growth/Next Steps <a name="overview-growth"></a>
@@ -1363,7 +1359,7 @@ Majority of the people are from **India**.
 
 <br>
 
-# Creation of Dashboard <a name="DB-Creation"></a>
+# Creation Of Dashboard <a name="DB-Creation"></a>
 
 Let's create a separate sheet named **Dashboard**.
 
@@ -1936,9 +1932,9 @@ Our ***Final Dashboard*** is ready!!!
 
 ___
 
-# Analysing The Results  <a name="DB-results"></a>
+# Extracting Observations  <a name="DB-results"></a>
 
-We will generate insights from the below dashboard and provide recommendations to the duo.
+We will generate observations from the below dashboard.
 <br>
 <br>
 <iframe src="https://onedrive.live.com/embed?resid=2B20015F12AE5A8E%21153&authkey=!AOzyr0K7b07UXoA&em=2" width="1090" height="900" frameborder="0" scrolling="no"></iframe>
@@ -1992,7 +1988,7 @@ We will generate insights from the below dashboard and provide recommendations t
 * probably the audience is not relevant. For example, when you scroll through instagram and you tend to follow that person because 
   you liked a reel or a post from that person and then you forget about it. you don’t care about it anymore.
 
-**I would suggest the duo to focus on strengthening the hook i.e. make it more attractive/engagaing the reel at that start to attract wider audience**.
+**I would suggest the duo to focus on strengthening the hook i.e. make it more attractive/engaging the reel at the start to attract wider audience**.
 
 <br>
 #### Average Engagement metrics vs post types
@@ -2046,6 +2042,18 @@ With respect to **Reach and Impressions**, New followers can be gained if they p
 * We can see the maximum followers are from **India** and second highest is **United States**
 * Maximum number of followers is from **Banglore** city and second highest is from **Chennai**. The duo can plan a meet-up in 
   Banglore.
+
+<br>
+<br>
+
+___
+
+# Recommendations Based On Analysis  <a name="recommendations"></a>
+
+Based on the observations from the dashboard, below are the recommendations suggested to the duo.
+
+* Focus on Strengthening the hook i.e making it attractive or engaging the **IG-Video** reels at the start and also give weightage on the topics/content for the reels such as "Python", "Data Analytics", "SQl", "Statistics", "Interview preparation & questions for SQL/Python/Analyst roles" because as per the observations of the data, it is found that **58%** of the people skip the content within 3 seconds.
+* Post **IG-Videos** consistently because it is found that it is performing well interms of engagement and also wider reach can be attained compared to IG Images & IG Carousel. With respect to **Reach and Impressions**, New followers can be gained if they put IG Videos but inorder to **engage the existing audience of the page, the duo should post IG carousel because of high number of Comments and Saves**. So go with IG Videos followed by IG Carousel by posting consistently.
 
 ___
 <br>
