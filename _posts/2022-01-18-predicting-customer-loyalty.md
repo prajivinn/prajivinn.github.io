@@ -1123,6 +1123,7 @@ In the following code, we will
 * Make the predictions using .predict()
 
 <br>
+
 ```python
 
 # import required packages
