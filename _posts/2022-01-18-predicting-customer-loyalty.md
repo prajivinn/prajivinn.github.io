@@ -1130,11 +1130,11 @@ import pandas as pd
 import pickle
 
 # import customers for scoring
-to_be_scored = ...
+to_be_scored = pickle.load(open('/Users/praju/Desktop/DSI/Untitled Folder/Predicting_Customer_Loyalty_Using_ML/dupe/abc_regression_scoring.p,"rb"))
 
 # import model and model objects
-regressor = ...
-one_hot_encoder = ...
+regressor = pickle.load(open('/Users/praju/Desktop/DSI/Untitled Folder/Predicting_Customer_Loyalty_Using_ML/dupe/random_forest_regression_model.p', "rb"))
+one_hot_encoder = pickle.load(open('/Users/praju/Desktop/DSI/Untitled Folder/Predicting_Customer_Loyalty_Using_ML/dupe/random_forest_regression_ohe.p', "rb"))
 
 # drop unused columns
 to_be_scored.drop(["customer_id"], axis = 1, inplace = True)
@@ -1154,6 +1154,9 @@ to_be_scored.drop(categorical_vars, axis = 1, inplace = True)
 loyalty_predictions = regressor.predict(to_be_scored)
 
 ```
+<br>
+The loyalty scores for the missing **463** customers were found to be [0.42696, 0.33022, 0.34719, 0.93087, 0.38542...........0.89533, 0.95938, 0.71815, 0.36844, 0.93004, 0.68015, 0.37042,0.61175]
+
 <br>
 Just like that, we have made our *loyalty_score* predictions for these missing customers.  Due to the impressive metrics on the test set, we can be reasonably confident with these scores.  This extra customer information will ensure our client can undertake more accurate and relevant customer tracking, targeting, and comms.
 
