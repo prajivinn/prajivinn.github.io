@@ -15,7 +15,7 @@ In this project we apply Independent Two Sample T-Test and Chi-Square Test to as
     - [Results & Discussion](#overview-results)
 - [01. Concept Overview](#concept-overview)
 - [02. Data Overview & Preparation](#data-overview)
-- [03. Exploratory Data Analysis](#data-EDA)
+- [03. Applying Data Cleaning & EDA](#data-EDA)
 - [04. Applying Two Sample Independent T-Test](#Independent-2Sample-application)
 - [05. Applying Chi-Square Test For Independence](#chi-square-application)
 - [05. Analysing The Results](#chi-square-results)
@@ -219,3 +219,349 @@ ___
 
 <br>
 # Applying Data Cleaning & EDA <a name="data-EDA"></a>
+
+We dive into the dataset, conducting a thorough examination to ensure its quality and coherence, while also gaining a deeper understanding of the data.
+
+#### Checking Shape and Duplicate rows 
+
+```python
+
+# checking shape of the dataset
+startup_df.shape
+>> (1536, 14)
+
+# Check for duplicate rows
+startup_df.drop_duplicates().shape
+>> (1536, 14)
+
+```
+<br>
+There are no duplicates in the data.
+
+<br>
+#### Checking null values of variables 
+
+```python
+
+# Assuming startup_df is your DataFrame
+columns_to_check = ['status', 'funding_total_usd', 'funding_rounds']
+
+# Check for null values in the specified columns
+null_counts = startup_df[columns_to_check].isnull().sum()
+
+# Display the null value counts for each column
+print(null_counts)
+
+```
+<br>
+Output:
+<br>
+<br>
+
+| status | 0 |
+| funding_total_usd | 0 |
+| funding_rounds | 0 |
+
+<br>
+There is no null value in the variables of our interest.
+
+<br>
+#### Checking Information of the Dataset.
+
+```python
+
+startup_df.info()
+
+```
+<br>
+Output:
+<br>
+<br>
+
+| **Column** | **Non-Null Count** | **Dtype** |  
+|---|---|---|
+| permalink | 1536 non-null | object |        
+| name | 1536 non-null | object |        
+| homepage_url | 1510 non-null | object |        
+| category_list | 1493 non-null | object |        
+| funding_total_usd | 1536 non-null | object |        
+| status | 1536 non-null | object |        
+| country_code | 1536 non-null | object |        
+| state_code | 1520 non-null | float64 |       
+| region | 1516 non-null | object |        
+| city | 1516 non-null | object |        
+| funding_rounds | 1536 non-null | int64 |         
+| founded_at | 1255 non-null | datetime64[ns] |
+| first_funding_at | 1536 non-null | datetime64[ns] |
+| last_funding_at | 1536 non-null | datetime64[ns] |
+
+<br>
+There are **no null or duplicate values** in the dataset but we could see that the **total_funding_usd** column should be cleaned and the datatype should be formatted.
+
+<br>
+#### Dropping Incorrect data in 'funding_total_usd' column
+
+```python
+
+#Dropping "-" in funding_total_usd column and resetting the index values
+
+startup_df = startup_df[startup_df['funding_total_usd']!='-']
+startup_df.reset_index(drop = True)
+
+startup_df.shape
+>> (1134, 14)
+
+```
+
+<br>
+#### Formatting the column 'funding_total_usd' & Checking Info of the dataset
+
+```python
+
+#Dropping "-" in funding_total_usd column and resetting the index values
+
+startup_df = startup_df[startup_df['funding_total_usd']!='-']
+startup_df.reset_index(drop = True)
+
+startup_df.shape
+>> (1134, 14)
+
+startup_df.info()
+
+```
+<br>
+Output:
+<br>
+<br>
+
+| **Column** | **Non-Null Count** | **Dtype** |  
+|---|---|---|
+| permalink | 1134 non-null | object |        
+| name | 1134 non-null | object |        
+| homepage_url | 1113 non-null | object |        
+| category_list | 1115 non-null | object |        
+| funding_total_usd | 1134 non-null | float64 |        
+| status | 1134 non-null | object |        
+| country_code | 1134 non-null | object |        
+| state_code | 1125 non-null | float64 |       
+| region | 1122 non-null | object |        
+| city | 1122 non-null | object |        
+| funding_rounds | 1134 non-null | int64 |         
+| founded_at | 940 non-null | datetime64[ns] |
+| first_funding_at | 1134 non-null | datetime64[ns] |
+| last_funding_at | 1134 non-null | datetime64[ns] |
+
+<br>
+#### Checking value counts of column 'status'
+
+```python
+
+status_counts = startup_df['status'].value_counts()
+status_counts
+
+```
+<br>
+Output:
+<br>
+<br>
+
+| operating | 1085 |
+| closed | 49 |
+
+<br>
+#### Visualising 'status' column
+
+```python
+
+# Visualize 'Status' column
+
+status_counts = startup_df['status'].value_counts()
+
+# Plotting
+plt.figure(figsize=(8, 6))
+plt.bar(status_counts.index, status_counts.values, color='blue')
+plt.xlabel('Startup Status')
+plt.ylabel('Count')
+plt.title('Distribution of Startup Status')
+
+# Adding data labels (count values) to the bars
+for i, v in enumerate(status_counts):
+    plt.text(i, v + 10, v, ha='center')
+    # i: This is the x-coordinate where the data label will be placed.
+    # v + 10: This is the y-coordinate where the data label will be placed
+    # ha='center': This parameter specifies the horizontal alignment of the text, ensuring that it's centered above each bar.
+
+   
+# Display the plot
+plt.show()
+
+```
+<br>
+Above code gives us the below plot - which visualises our results!
+
+<br>
+![alt text](/img/posts/IFFS_Status.jpg "IFFS Status")
+
+<br>
+The dataset is **imbalanced** aka there are **1085** companies operating and **49** companies closed.
+
+<br>
+#### Inspecting 'Funding' column
+
+```python
+# Let us understand more about funding column
+
+# Set the display format for float numbers to display complete numbers
+pd.options.display.float_format = '{:.0f}'.format
+
+# By setting pd.options.display.float_format to ' {:.0f}'.format, you instruct pandas to format floating-point numbers with 
+# zero decimal places, effectively displaying complete numbers.
+
+# Assuming startup_df is your DataFrame
+description = startup_df['funding_total_usd'].describe()
+
+# Display the description with complete numbers
+print(description)
+
+```
+<br>
+Output:
+<br>
+<br>
+
+| count | 1134 |
+| mean | 23391193 |
+| std | 153640842 |
+| min | 569 |
+| 25% | 200000 |
+| 50% | 1275000 |
+| 75% | 10000000 |
+| max | 3151140000 |
+
+<br>
+Overall average funding raised is **23 million dollars**. Minimum funding is just **569** dollars and maximum is **3** billion dollars.
+
+Let's find out the startups with the **highest** and **least** fundings.
+
+<br> Finding maximum funded company
+
+```python
+
+# Maximum funding
+startup_df[startup_df['funding_total_usd']==3151140000][['permalink', 'name', 'homepage_url', 'category_list', 'funding_total_usd', 'status', 'country_code', 'state_code', 'region']]
+
+```
+<br>
+Output:
+<br>
+<br>
+
+| **permalink** | **name** |	**homepage_url** |	**category_list** | **funding_total_usd** | **Status** | **Country_Code** | **State_Code** | **Region** |
+|---|---|---|---|---|---|---|---|---|
+| /organization/flipkart | Flipkart | http://www.flipkart.com |	E-Commerce & Online Shopping | 3151140000 | operating | IND | 19 | Bangalore |
+
+<br>
+The highest funding amount is attributed to Flipkart, a notable leader in the industry, aligning with its substantial financial requirements and prominence.
+
+<br>
+#### Finding least funded company
+
+```python
+
+# Maximum funding
+startup_df[startup_df['funding_total_usd']==569][['permalink', 'name', 'homepage_url', 'category_list', 'funding_total_usd', 'status', 'country_code', 'state_code', 'region']]
+
+```
+<br>
+Output:
+<br>
+<br>
+
+| **permalink** | **name** |	**homepage_url** |	**category_list** | **funding_total_usd** | **Status** | **Country_Code** | **State_Code** | **Region** |
+|---|---|---|---|---|---|---|---|---|
+| /organization/ruralserver | RuralServer | http://www.ruralserver.com | Cloud Computing & Cloud Data Services & Domains & In... | 569 |	| operating | IND | 36 | New Delhi |
+
+<br>
+Rural Server despite being one of the least funded startups, intriguingly continues to operate successfully.
+
+<br>
+#### Visualising distribution of number of funding rounds
+
+```python
+# Visualising the distribution of number of Funding Rounds
+
+plt.figure(figsize=(12, 6))
+bars= plt.bar(funding_round_counts.index, funding_round_counts.values, color='skyblue', edgecolor='black')
+plt.xlabel('Number of Funding Rounds')
+plt.ylabel('Count')
+plt.title('Distribution of Number of Funding Rounds')
+plt.grid(axis='y', linestyle='--', alpha=0.7)
+
+# Set the x-axis ticks explicitly to ensure all values are visible
+plt.xticks(funding_round_counts.index)
+
+# Adding data labels (count values) to the bars
+for bar, count in zip(bars, funding_round_counts):
+    plt.text(bar.get_x() + bar.get_width() / 2, bar.get_height() + 10, count, ha='center')
+# bar.get_x() + bar.get_width() / 2: This part determines the x-coordinate where the data label will be placed. 
+# It calculates the center of the current bar by adding half of the bar's width to its starting x-coordinate.
+# bar.get_height() + 10: This part determines the y-coordinate where the data label will be placed. 
+# It positions the label slightly above the top of the bar by adding 10 units to the bar's height.
+
+# Display the plot
+plt.show()
+
+```
+<br>
+Above code gives us the below plot - which visualises our results!
+
+<br>
+![alt text](/img/posts/IFFS_Number_Funding_Rounds.jpg "IFFS NFR")
+
+<br>
+Remarkably, the majority of startups in our dataset, precisely 795 of them, have undergone just one round of funding. In stark contrast, only two startups have secured more than eight rounds of funding. Now, let's delve into identifying these exceptional outliers within the dataset.
+
+While running the hypothesis test we can create **3 categories for no. of funding rounds ~ 1, 2, 3+**.
+
+<br>
+#### Checking company with 11 rounds of funding
+
+```python
+
+startup_df[startup_df['funding_rounds']==11][['permalink', 'name', 'homepage_url', 'category_list', 'funding_total_usd', 'status', 'country_code', 'state_code', 'region']]
+
+```
+<br>
+Output:
+<br>
+<br>
+
+| **permalink** | **name** |	**homepage_url** |	**category_list** | **funding_total_usd** | **Status** | **Country_Code** | **State_Code** | **Region** |
+|---|---|---|---|---|---|---|---|---|
+| /organization/snapdeal | Snapdeal | http://www.snapdeal.com | E-Commerce | 1897699998 | operating | IND | 7 | New Delhi |
+
+<br>
+#### Checking company with 12 rounds of funding
+
+```python
+
+startup_df[startup_df['funding_rounds']==12][['permalink', 'name', 'homepage_url', 'category_list', 'funding_total_usd', 'status', 'country_code', 'state_code', 'region']]
+
+```
+<br>
+Output:
+<br>
+<br>
+
+| **permalink** | **name** |	**homepage_url** |	**category_list** | **funding_total_usd** | **Status** | **Country_Code** | **State_Code** | **Region** |
+|---|---|---|---|---|---|---|---|---|
+| /organization/flipkart | Flipkart | http://www.flipkart.com | E-Commerce & Online Shopping | 3151140000 | operating | IND | 19 | Bangalore |
+
+<br>
+These represent some of the foremost e-commerce platforms, notably Snapdeal and Flipkart.
+
+Now that we've gained a comprehensive understanding of the dataset, let's proceed to test our hypothesis.
+
+___
+
+# Applying Two Sample Independent T-Test  <a name="Independent-2Sample-application"></a>
