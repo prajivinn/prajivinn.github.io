@@ -15,7 +15,7 @@ In this project we apply Independent Two Sample T-Test and Chi-Square Test to as
     - [Results & Discussion](#overview-results)
 - [01. Concept Overview](#concept-overview)
 - [02. Data Overview & Preparation](#data-overview)
-- [03. Applying Data Clearning & EDA](#data-EDA)
+- [03. Exploratory Data Analysis](#data-EDA)
 - [04. Applying Two Sample Independent T-Test](#Independent-2Sample-application)
 - [05. Applying Chi-Square Test For Independence](#chi-square-application)
 - [05. Analysing The Results](#chi-square-results)
@@ -180,13 +180,22 @@ A sample of this data (the first 5 rows) can be seen below:
 <br>
 <br>
 
-| **permalink** | **name** |	**homepage_url** |	**category_list** | **funding_total_usd** | **Status** | **Country_Code** | **State_Code** | **Region** | **City** | **Funding_Rounds** |
-|---|---|---|---|---|---|---|---|---|---|---|
-| /organization/-fame |	#fame |	http://livfame.com | Media | 10000000.0 | operating | IND | 16.0 | Mumbai | Mumbai | 1 |
-| /organization/21diamonds-india | 21Diamonds | http://www.21diamonds.de | E-Commerce | 6369507.0 | operating | IND | 10.0 | New Delhi | Gurgaon | 1 |
-| /organization/247-learning-private | 24x7 Learning | http://www.24x7learning.com | EdTech Education Systems | 4000000.0 | operating | IND | 19.0 | Bangalore | Bangalore | 1 |
-| /organization/33coupons | 33Coupons | http://33coupons.in | Internet | 20000.0 | operating | IND | 36.0 | Kanpur | Kanpur | 1 |
-| /organization/3dsoc | 3DSoC | http://www.3dsoc.com | 3D Mobile | 2065000.0 | operating | IND | 19.0 | Bangalore |	Bangalore | 2 |
+| **permalink** | **name** |	**homepage_url** |	**category_list** | **funding_total_usd** | **Status** | **Country_Code** | 
+|---|---|---|---|---|---|---|
+| /organization/-fame |	#fame |	http://livfame.com | Media | 10000000.0 | operating | IND |
+| /organization/21diamonds-india | 21Diamonds | http://www.21diamonds.de | E-Commerce | 6369507.0 | operating | IND |
+| /organization/247-learning-private | 24x7 Learning | http://www.24x7learning.com | EdTech Education Systems | 4000000.0 | operating | IND 
+| /organization/33coupons | 33Coupons | http://33coupons.in | Internet | 20000.0 | operating | IND |
+| /organization/3dsoc | 3DSoC | http://www.3dsoc.com | 3D Mobile | 2065000.0 | operating | IND |
+
+| **State_Code** | **Region** | **City** | **Funding_Rounds** | **Founded_At** | **First_Funding_At** | **Last_Funding_At** |
+|---|---|---|---|---|---|---|
+| 16.0 | Mumbai | Mumbai | 1 | NaT | 2015-01-05 | 2015-01-05 |
+| 10.0 | New Delhi | Gurgaon | 1 | 2012-06-01 | 2012-11-15 | 2012-11-15 |
+| 19.0 | Bangalore | Bangalore | 1 | 2001-01-01 | 2007-11-06 | 2007-11-06 |
+| 36.0 | Kanpur | Kanpur | 1 | 2015-05-01 |	2015-07-06 | 2015-07-06 |
+| 19.0 | Bangalore | Bangalore | 2 | 2006-06-01 | 2007-12-01 | 2010-08-01 |
+
 
 <br>
 Data Dictionary:
