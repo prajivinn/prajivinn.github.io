@@ -41,9 +41,9 @@ For the problem **mean funds raised by startups**, we applied the Independent Tw
 
 We set out our hypotheses and Acceptance Criteria for the test, as follows:
 
-**Null Hypothesis**: There is no statistically significant difference in the mean funds raised by currently operating startups and startups that have closed. They are independent.
-**Alternate Hypothesis**: There is a statistically significant difference in the mean funds raised by currently operating startups and startups that have closed. They are not independent.
-**Acceptance Criteria**: 0.05
+* **Null Hypothesis**: There is no statistically significant difference in the mean funds raised by currently operating startups and startups that have closed. They are independent.
+* **Alternate Hypothesis**: There is a statistically significant difference in the mean funds raised by currently operating startups and startups that have closed. They are not independent.
+* **Acceptance Criteria**: 0.05
 
 We fed this into the algorithm (using the *scipy* library) to calculate the  T-Statistic, p-value.
 
@@ -59,9 +59,9 @@ We isolated startups data that are "Operating" and "Closed".
 
 We set out our hypotheses and Acceptance Criteria for the test, as follows:
 
-**Null Hypothesis:** There is no statistically significant difference in the number of funding rounds between currently operating startups and startups that have closed. They are independent.
-**Alternate Hypothesis:** There is a statistically significant difference in the number of funding rounds between currently operating startups and startups that have closed. They are not independent.
-**Acceptance Criteria:** 0.05
+* **Null Hypothesis:** There is no statistically significant difference in the number of funding rounds between currently operating startups and startups that have closed. They are independent.
+* **Alternate Hypothesis:** There is a statistically significant difference in the number of funding rounds between currently operating startups and startups that have closed. They are not independent.
+* **Acceptance Criteria:** 0.05
 
 As a requirement of the Chi-Square Test For Independence, we aggregated this data down to a 2x2 matrix for *rounds of funding category* by *status* and fed this into the algorithm (using the *scipy* library) to calculate the Chi-Square Statistic, p-value, Degrees of Freedom, and expected values.
 
@@ -86,7 +86,8 @@ The p-value for our specified acceptance criteria or alpha of 0.05 is **0.29**.
 
 Based upon the above statistics, we retain the null hypothesis, and conclude that: **There is no relationship in the number of funding rounds between currently operating startups and startups that have closed**. They are independent.
 
-Our results here also do not say that there *definitely isn't a difference in the mean funds/number of funding rounds between the two *status* groups aka 'operating' & 'closed - we are only advising that we should not make any rigid conclusions *at this point*.  
+
+Due to *probabilistic nature of the hypothesis testing*, Our results here also do not say that there *definitely isn't a difference in the mean funds/number of funding rounds between the two *status* groups aka 'operating' & 'closed - we are only advising that we should not make any rigid conclusions *at this point*.  
 
 Running more tests like this, gathering more data, and then re-running this test may provide us, and the client more insight!
 
@@ -661,6 +662,7 @@ print(f"Levene's Test Statistic: {stat}")
 print(f"P-value: {p_value}")
 >> P-value: 0.5482127964683872
 
+
 # print the results (based upon p-value)
 if p_value <= acceptance_criteria:
     print(f"As our p-value of {p_value} is lower than our acceptance_criteria of {acceptance_criteria} - we reject the null hypothesis, and conclude that: {alternate_hypothesis}")
@@ -964,7 +966,7 @@ ___
 <br>
 # Discussion <a name="discussion"></a>
 
-Our results here also do not say that there *definitely isn't a difference in the mean funds/number of funding rounds between the two *status* groups aka 'operating' & 'closed - we are only advising that we should not make any rigid conclusions *at this point*.  
+Due to *probabilistic nature of the hypothesis testing*, Our results here also do not say that there *definitely isn't a difference in the mean funds/number of funding rounds between the two *status* groups aka 'operating' & 'closed - we are only advising that we should not make any rigid conclusions *at this point*.  
 
 Running more tests like this, gathering more data, and then re-running this test may provide us, and the client more insight!
 
