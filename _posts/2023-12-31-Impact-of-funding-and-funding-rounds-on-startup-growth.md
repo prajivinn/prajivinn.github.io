@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Impact of Funding and Funding Rounds on Startups Growth
-image: "/posts/startup-title.png"
+image: "/posts/startup-title.jpg"
 tags: [Hypothesis Testing, EDA, Chi-Square, Independent Two Sample T-test, Python]
 ---
 
@@ -461,7 +461,7 @@ Output:
 | /organization/flipkart | Flipkart | http://www.flipkart.com |	E-Commerce & Online Shopping | 3151140000 | operating | IND | 19 | Bangalore |
 
 <br>
-The highest funding amount is attributed to Flipkart, a notable leader in the industry, aligning with its substantial financial requirements and prominence.
+The highest funding amount is attributed to Flipkart, a well known e-commerce platform in the industry, aligning with its substantial financial requirements and prominence.
 
 <br>
 #### Finding least funded company
@@ -559,6 +559,8 @@ Output:
 
 <br>
 These represent some of the foremost e-commerce platforms, notably Snapdeal and Flipkart.
+
+
 
 Now that we've gained a comprehensive understanding of the dataset, let's proceed to test our hypothesis.
 
