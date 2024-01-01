@@ -12,14 +12,15 @@ In this project we apply Independent Two Sample T-Test and Chi-Square Test to as
 - [00. Project Overview](#overview-main)
     - [Context](#overview-context)
     - [Actions](#overview-actions)
-    - [Results & Discussion](#overview-results)
+    - [Results](#overview-results)
+    - [Growth/Next Steps](#overview-growth)
 - [01. Concept Overview](#concept-overview)
 - [02. Data Overview & Preparation](#data-overview)
 - [03. Applying Data Cleaning & EDA](#data-EDA)
 - [04. Applying Two Sample Independent T-Test](#Independent-2Sample-application)
 - [05. Applying Chi-Square Test For Independence](#chi-square-application)
 - [05. Conclusion](#conclusion)
-- [06. Discussion](#discussion)
+- [06. Growth & Next Steps](#growth)
 
 ___
 
@@ -86,6 +87,10 @@ The p-value for our specified acceptance criteria or alpha of 0.05 is **0.29**.
 
 Based upon the above statistics, we retain the null hypothesis, and conclude that: **There is no relationship in the number of funding rounds between currently operating startups and startups that have closed**. They are independent.
 
+<br>
+<br>
+
+### Growth/Next Steps <a name="overview-growth"></a>
 
 Due to **probabilistic nature of the hypothesis testing**, Our results here also do not say that there *definitely isn't a difference in the mean funds/number of funding rounds between the two status groups aka 'operating' & 'closed* - we are only advising that we should not make any rigid conclusions *at this point*.  
 
@@ -964,7 +969,7 @@ Based on the statistical analyses conducted, it can be concluded that:
 ___
 
 <br>
-# Discussion <a name="discussion"></a>
+# Growth & Next Steps <a name="growth"></a>
 
 Due to **probabilistic nature of the hypothesis testing**, Our results here also do not say that there *definitely isn't a difference in the mean funds/number of funding rounds between the two status groups aka 'operating' & 'closed'* - we are only advising that we should not make any rigid conclusions *at this point*.  
 
