@@ -477,9 +477,9 @@ Output:
 <br>
 <br>
 
-| **permalink** | **name** |	**homepage_url** |	**category_list** | **funding_total_usd** | **Status** | **Country_Code** | **State_Code** | **Region** |
+| **permalink** | **name** | **homepage_url** |	**category_list** | **funding_total_usd** | **Status** | **Country_Code** | **State_Code** | **Region** |
 |---|---|---|---|---|---|---|---|---|
-| /organization/ruralserver | RuralServer | http://www.ruralserver.com | Cloud Computing & Cloud Data Services & Domains & In... | 569 |	| operating | IND | 36 | New Delhi |
+| /organization/ruralserver | RuralServer | http://www.ruralserver.com | Cloud Computing & Cloud Data Services & Domains & In | 569 | operating | IND | 36 | New Delhi |
 
 <br>
 Rural Server despite being one of the least funded startups, intriguingly continues to operate successfully.
@@ -598,24 +598,25 @@ group1 = startup_df[startup_df['status'] == 'operating']['funding_total_usd']
 group2 = startup_df[startup_df['status'] == 'closed']['funding_total_usd']
 
 stat, p_value = stats.levene(group1, group2)
-print(f"Levene's Test Statistic: {stat}")
-print(f"P-value: {p_value}")
 
-if p_value < 0.05:
-    print("Reject the null hypothesis: Variances are not equal.")
+print(f"Levene's Test Statistic: {stat}")
+>> Levene's Test Statistic: 0.36074537025282777
+
+print(f"P-value: {p_value}")
+>> P-value: 0.5482127964683872
+
+# print the results (based upon p-value)
+if p_value <= acceptance_criteria:
+    print(f"As our p-value of {p_value} is lower than our acceptance_criteria of {acceptance_criteria} - we reject the null hypothesis, and conclude that: {alternate_hypothesis}")
 else:
-    print("Fail to reject the null hypothesis: Variances are equal.")
+    print(f"As our p-value of {p_value} is higher than our acceptance_criteria of {acceptance_criteria} - we retain the null hypothesis, and conclude that: {null_hypothesis}")
+
+>> As our p-value of 0.5482127964683872 is higher than our acceptance_criteria of 0.05 - we retain the null hypothesis, and conclude that: There is no significant differences in the variances of the groups being compared. They are independent. Variances are equal.
 
 ```
 <br>
-Output:
-<br>
-<br>
-**Levene's Test Statistic**: 0.36074537025282777
-**P-value**: 0.5482127964683872
-Fail to reject the null hypothesis: Variances are equal.
 
-We have determined that the variances are equal, thus meeting the assumption for the independent sample t-test. We can now proceed with the independent sample t-test confidently.
+We have determined that the **variances are equal**, thus meeting the assumption for the independent sample t-test. We can now proceed with the independent sample t-test confidently.
 
 <br>
 #### Undertaking Independent Two Sample T-Test - Mean Funds Raised
