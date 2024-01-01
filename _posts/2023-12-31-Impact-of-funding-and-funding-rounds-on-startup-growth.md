@@ -87,7 +87,7 @@ The p-value for our specified acceptance criteria or alpha of 0.05 is **0.29**.
 Based upon the above statistics, we retain the null hypothesis, and conclude that: **There is no relationship in the number of funding rounds between currently operating startups and startups that have closed**. They are independent.
 
 
-Due to **probabilistic nature of the hypothesis testing**, Our results here also do not say that there *definitely isn't a difference in the mean funds/number of funding rounds between the two *status* groups aka 'operating' & 'closed - we are only advising that we should not make any rigid conclusions *at this point*.  
+Due to **probabilistic nature of the hypothesis testing**, Our results here also do not say that there *definitely isn't a difference in the mean funds/number of funding rounds between the two status groups aka 'operating' & 'closed* - we are only advising that we should not make any rigid conclusions *at this point*.  
 
 Running more tests like this, gathering more data, and then re-running this test may provide us, and the client more insight!
 
