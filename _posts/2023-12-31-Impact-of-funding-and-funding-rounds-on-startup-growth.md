@@ -69,7 +69,7 @@ As a requirement of the Chi-Square Test For Independence, we aggregated this dat
 <br>
 <br>
 
-### Results & Discussion <a name="overview-results"></a>
+### Results <a name="overview-results"></a>
 
 **Independent Two Sample T-Test** gives us the following statistics:
 
