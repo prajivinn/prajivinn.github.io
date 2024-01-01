@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Impact of Funding and Funding Rounds on Startups Growth
-image: "/posts/ab-testing-title-img.png"
+image: "/posts/startup-title.png"
 tags: [Hypothesis Testing, EDA, Chi-Square, Independent Two Sample T-test, Python]
 ---
 
