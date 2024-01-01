@@ -667,7 +667,7 @@ if p_value <= acceptance_criteria:
 else:
     print(f"As our p-value of {p_value} is higher than our acceptance_criteria of {acceptance_criteria} - we retain the null hypothesis, and conclude that: {null_hypothesis}")
 
->> As our p-value of 0.5482127964683872 is higher than our acceptance_criteria of 0.05 - we retain the null hypothesis, and conclude that: There is no significant differences in the variances of the groups being compared. They are independent. Variances are equal.
+>> As our p-value of 0.5482127964683872 is higher than our acceptance_criteria of 0.05 - we retain the null hypothesis, and conclude that: There is no significant differences in the variances of the groups being compared. They are equal.
 
 ```
 <br>
