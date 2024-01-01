@@ -18,7 +18,7 @@ In this project we apply Independent Two Sample T-Test and Chi-Square Test to as
 - [03. Applying Data Cleaning & EDA](#data-EDA)
 - [04. Applying Two Sample Independent T-Test](#Independent-2Sample-application)
 - [05. Applying Chi-Square Test For Independence](#chi-square-application)
-- [05. Analysing The Results](#chi-square-results)
+- [05. Conclusion](#conclusion)
 - [06. Discussion](#discussion)
 
 ___
@@ -560,10 +560,344 @@ Output:
 <br>
 These represent some of the foremost e-commerce platforms, notably Snapdeal and Flipkart.
 
-
-
 Now that we've gained a comprehensive understanding of the dataset, let's proceed to test our hypothesis.
 
 ___
 
 # Applying Two Sample Independent T-Test  <a name="Independent-2Sample-application"></a>
+
+Using an *Independent Sample T-Test* in this context is justified for the following reasons:
+
+* **Comparing Two Independent Groups**: The independent sample t-test is suitable when we are comparing two separate and independent groups, which aligns perfectly with our scenario of comparing currently operating startups with startups that have closed. These two groups are distinct and unrelated in terms of their current status.
+
+* **Continuous Numeric Data**: The t-test is designed for comparing means of continuous numerical data, which is precisely what we have in our hypothesis testing. We are interested in comparing the mean funds raised, a continuous variable, between the two groups.
+
+* **Normal Distribution Assumption**: The t-test assumes that the data within each group follows a normal distribution. While this assumption should be checked, it often holds reasonably well for financial data, especially when the sample size is sufficiently large ~ we know basis EDA that both have >30 sample size
+
+* **Homogeneity of Variance**: We must check that using Levene Test.
+
+The *Levene's Test* is a statistical test used to assess whether the variances of two or more groups are equal or homogenous. It is particularly valuable when comparing multiple groups with the same independent variable to ensure that the assumption of homogeneity of variances, a key assumption in many statistical tests, is met.
+
+In practical terms, Levene's Test helps you determine whether it's appropriate to use statistical tests that assume equal variances across groups, such as the independent sample t-test or analysis of variance (ANOVA). If the test indicates unequal variances, you may need to consider alternative statistical methods that are more robust to heteroscedasticity (unequal variances).
+
+Overall, Levene's Test is a valuable tool in the field of statistics for assessing the homogeneity of variances and ensuring the validity of subsequent statistical analyses.
+
+#### Using Levene's Test
+
+```python
+
+null_hypothesis = "The null hypothesis in Levene's Test is that there are no significant differences in the variances of the groups being compared. In other words, it assumes that the variances are equal across all groups."
+
+alternate_hypothesis = "The alternative hypothesis in Levene's Test is that there are significant differences in the variances of the groups being compared. If the p-value is sufficiently small, you would reject the null hypothesis in favor of the alternative, indicating that at least one group has a significantly different variance compared to the others."
+
+alpha = 0.05
+
+from scipy import stats
+
+group1 = startup_df[startup_df['status'] == 'operating']['funding_total_usd']
+group2 = startup_df[startup_df['status'] == 'closed']['funding_total_usd']
+
+stat, p_value = stats.levene(group1, group2)
+print(f"Levene's Test Statistic: {stat}")
+print(f"P-value: {p_value}")
+
+if p_value < 0.05:
+    print("Reject the null hypothesis: Variances are not equal.")
+else:
+    print("Fail to reject the null hypothesis: Variances are equal.")
+
+```
+<br>
+Output:
+<br>
+<br>
+**Levene's Test Statistic**: 0.36074537025282777
+**P-value**: 0.5482127964683872
+Fail to reject the null hypothesis: Variances are equal.
+
+We have determined that the variances are equal, thus meeting the assumption for the independent sample t-test. We can now proceed with the independent sample t-test confidently.
+
+<br>
+#### Undertaking Independent Two Sample T-Test - Mean Funds Raised
+
+```python
+
+# No. of startups which are operating
+startup_df[startup_df['status']=='operating']['funding_total_usd'].count()
+>> 1085
+
+startup_df[startup_df['status']=='closed']['funding_total_usd'].count()
+>> 49
+
+# Create a new data frame of only those companies which are still operating and their respective funds
+
+df1 = startup_df.loc[startup_df['status'] == 'operating', ['funding_total_usd']].reset_index(drop=True)
+df1 = df1.rename(columns={'funding_total_usd':'Funds_operating'}).reset_index(drop=True)
+df1.head()
+
+```
+<br>
+Output:
+<br>
+<br>
+
+| **Funds_operating** | 
+|---|
+| 10000000 |
+| 6369507 |
+| 4000000 |
+| 20000 |
+| 2065000 |
+
+<br>
+
+```python
+
+df2 = startup_df.loc[startup_df['status']=='closed',['funding_total_usd']].reset_index(drop=True)
+df2 = df2.rename(columns={'funding_total_usd':'Funds_closed'})
+df2.head()
+
+```
+<br>
+Output:
+<br>
+<br>
+
+| **Funds_closed** | 
+|---|
+| 25000 |
+| 10000 |
+| 10000000 |
+| 40000 |
+| 25000000 |
+
+<br>
+
+```python
+
+df2 = startup_df.loc[startup_df['status']=='closed',['funding_total_usd']].reset_index(drop=True)
+df2 = df2.rename(columns={'funding_total_usd':'Funds_closed'})
+df2.head()
+
+```
+<br>
+Output:
+<br>
+<br>
+
+| **Funds_operating** | **Funds_closed** | 
+|---|---|
+| 10000000 | 25000 |
+| 6369507 | 10000 |
+| 4000000 | 10000000 |
+| 20000 | 40000 |
+| 2065000 | 25000000 |
+
+<br>
+
+```python
+
+# Funds_Sample1 represents funds for operating startup
+
+# Mean funds (in million) for startup which are operating
+mean_1=df3['Funds_operating'].mean()
+
+print('Mean funds (in million) for startup which are operating is:',mean_1)
+>> Mean funds (in million) for startup which are operating is: 23981373.343251728
+
+# Funds_Sample2 represents funds for closed startup
+
+# Mean funds (in million) for startup which are closed
+mean_2=df3['Funds_closed'].mean()
+
+print('Mean funds (in million) for startup which are closed is:',mean_2)
+>> Mean funds (in million) for startup which are closed is: 10322911.346938776
+
+```
+
+<br>
+
+```python
+
+null_hypothesis = "There is no statistically significant difference in the mean funds raised by currently operating startups and startups that have closed."
+
+alternate_hypothesis = "There is a statistically significant difference in the mean funds raised by currently operating startups and startups that have closed."
+
+alpha = 0.05
+
+# Hypothesis Testing
+
+t, pvalue = ttest_ind(df3['Funds_operating'], df3['Funds_closed'], nan_policy = 'omit')
+
+# Print results
+
+print('T-statistic:', t)
+>> T-statistic: 0.6085283061630911
+
+print('P-value:', pvalue)
+>> P-value: 0.5429592211146083
+
+
+# print the results (based upon p-value)
+if p_value <= acceptance_criteria:
+    print(f"As our p-value of {p_value} is lower than our acceptance_criteria of {acceptance_criteria} - we reject the null hypothesis, and conclude that: {alternate_hypothesis}")
+else:
+    print(f"As our p-value of {p_value} is higher than our acceptance_criteria of {acceptance_criteria} - we retain the null hypothesis, and conclude that: {null_hypothesis}")
+
+>> As our p-value of 0.5429592211146083 is higher than our acceptance_criteria of 0.05 - we retain the null hypothesis, and conclude that: There is no relationship between the mean funds raised by the two groups i.e. startups which are operating & startups. They are independent
+    
+```
+<br>
+
+The **p-value, which is greater than the chosen alpha level (i.e., 0.54 > 0.05)**, leads us to fail to reject the null hypothesis with **95% confidence**.
+
+As we can see from the output of these print statements, we do indeed retain the null hypothesis.  We could not find enough evidence that 
+funds raised between currently operating startups and closed startups were different - and thus conclude that there is **no statistically significant difference in the funds raised between currently operating startups and closed startups**.
+
+___
+
+<br>
+# Applying Chi-Square Test For Independence  <a name="chi-square-application"></a>
+
+The Chi-Square Test of Independence is typically used when you have categorical data and you want to investigate whether there is a statistically significant association or relationship between two categorical variables.
+
+In our case, you are interested in the number of funding rounds (which is likely a discrete, count variable) and the status of startups (which is categorical - either "currently operating" or "closed").
+
+Here's why the Chi-Square Test of Independence is suitable for our hypothesis.
+
+We know that observations are independent, Cells in the contingency table are mutually exclusive, The only thing we need to check is if ~ Expected value of cells should be **5** or **greater in at least 80% of cells**.
+
+#### Number of Funding Rounds
+
+```python
+
+# Define a function to categorize funding rounds
+def categorize_rounds(round):
+    if round == 1:
+        return '1'
+    elif round == 2:
+        return '2'
+    else:
+        return '3+'
+
+# Apply the categorize_rounds function to create a new 'category' column
+startup_df['rounds of funding category'] = startup_df['funding_rounds'].apply(categorize_rounds)
+
+# Print the DataFrame with the new category column
+startup_df[['permalink', 'name', 'homepage_url', 'category_list', 'funding_total_used', 'Status', 'Country_Code', 'rounds of funding category']]
+
+```
+<br>
+Output:
+<br>
+<br>
+
+| **permalink** | **name** |	**homepage_url** |	**category_list** | **funding_total_usd** | **Status** | **Country_Code** | **rounds of funding category** | 
+|---|---|---|---|---|---|---|---|
+| /organization/-fame |	#fame |	http://livfame.com | Media | 10000000.0 | operating | IND | 1 |
+| /organization/21diamonds-india | 21Diamonds | http://www.21diamonds.de | E-Commerce | 6369507.0 | operating | IND | 1 |
+| /organization/247-learning-private | 24x7 Learning | http://www.24x7learning.com | EdTech Education Systems | 4000000.0 | operating | IND | 1 | 
+| /organization/33coupons | 33Coupons | http://33coupons.in | Internet | 20000.0 | operating | IND | 1 |
+| /organization/3dsoc | 3DSoC | http://www.3dsoc.com | 3D Mobile | 2065000.0 | operating | IND | 2 |
+
+<br>
+
+#### Observed Frequencies
+
+```python
+
+# Create cross tab
+pd.crosstab(startup_df['rounds of funding category'], startup_df['status'])
+
+```
+<br>
+Output:
+<br>
+<br>
+
+| **rounds of funding category** | **closed** | **operating** |
+|---|---|---|
+| 1 | 39 | 756 |
+| 2 | 7 | 198 |
+| 3+ | 3 | 131 |
+
+<br>
+
+#### Expected Frequencies
+
+```python
+
+contingency_table = pd.crosstab(startup_df['rounds of funding category'], startup_df['status'])
+
+# Calculate expected frequencies
+expected_frequencies = stats.contingency.expected_freq(contingency_table)
+
+# Create a DataFrame to display the expected frequencies
+expected_df = pd.DataFrame(expected_frequencies, columns=contingency_table.columns, index=contingency_table.index)
+
+# Display the expected frequencies
+print("Expected Frequencies:")
+print(expected_df)
+
+```
+<br>
+Output:
+<br>
+<br>
+
+| **rounds of funding category** | **closed** | **operating** |
+|---|---|---|
+| 1 | 34 | 761 |
+| 2 | 9 | 196 |
+| 3+ | 6 | 128 |
+
+<br>
+All the values in the expected frequencies exceed the threshold of **5**, indicating that our dataset meets **the assumption of expected cell frequencies for the Chi-Square Test of Independence**. Consequently, we are well-equipped to advance with our hypothesis testing.
+
+<br>
+
+```python
+
+null_hypothesis = "There is no statistically significant difference in the number of funding rounds between currently operating startups and startups that have closed."
+
+alternate_hypothesis = "There is a statistically significant difference in the number of funding rounds between currently operating startups and startups that have closed"
+
+alpha = 0.05
+
+# Import library
+from scipy.stats import chi2_contingency
+
+# Run the Chi Square Test
+
+chi2, pval, dof, exp_freq = chi2_contingency(contingency_table, correction = False)
+
+print('The p-value is',pval)
+>> p-value is 0.2908506204110049
+
+# print the results (based upon p-value)
+if p_value <= acceptance_criteria:
+    print(f"As our p-value of {p_value} is lower than our acceptance_criteria of {acceptance_criteria} - we reject the null hypothesis, and conclude that: {alternate_hypothesis}")
+else:
+    print(f"As our p-value of {p_value} is higher than our acceptance_criteria of {acceptance_criteria} - we retain the null hypothesis, and conclude that: {null_hypothesis}")
+
+>> As our p-value of 0.2908506204110049 is higher than our acceptance_criteria of 0.05 - we retain the null hypothesis, and conclude that: There is no relationship in the number of funding rounds between currently operating startups and startups that have closed. They are independent
+
+```
+<br>
+
+The p-value, which is greater than the chosen alpha level (i.e., 0.29 > 0.05), leads us to fail to reject the null hypothesis with 95% confidence.
+
+As we can see from the output of these print statements, we do indeed retain the null hypothesis.  We could not find enough evidence that 
+number of funding rounds between currently operating startups and startups that have closed were different - and thus conclude that there is **no statistically significant difference in the number of funding rounds between currently operating startups and startups that have closed** based on our dataset and chosen level of significance.
+
+___
+
+<br>
+# Conclusion  <a name="chi-square-application"></a>
+
+Based on the statistical analyses conducted, it can be concluded that:
+
+* There is no statistically significant difference in the funds raised by currently operating startups and startups that have closed, as per the independent sample t-test. 
+
+* There is no statistically significant association between the number of funding rounds and the status of startups, as indicated by the Chi-Square Test of Independence.
+
