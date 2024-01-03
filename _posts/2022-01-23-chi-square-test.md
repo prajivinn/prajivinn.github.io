@@ -240,6 +240,68 @@ The below code:
 
 ```python
 
+# Calculating Observed_Values
+
+observed_values = pd.crosstab(campaign_data['mailer_type'],campaign_data['signup_flag'])
+observed_values
+
+```
+<br>
+output:
+<br>
+<br>
+
+| **mailer_type** | **Not_Signed** | **Signed** |
+|---|---|---|
+| Mailer1 | 252 | 123 |
+| Mailer2 | 209 | 127 |
+
+<br>
+
+```python
+
+# Calculating Expected_Values
+
+contingency_table = pd.crosstab(campaign_data['mailer_type'],campaign_data['signup_flag'])
+
+# Calculate expected frequencies
+expected_frequencies = stats.contingency.expected_freq(contingency_table)
+
+# Create a DataFrame to display the expected frequencies
+expected_df = pd.DataFrame(expected_frequencies, columns=contingency_table.columns, index=contingency_table.index)
+
+# Display the expected frequencies
+print(expected_df)
+
+```
+<br>
+output:
+<br>
+<br>
+
+| **mailer_type** | **Not_Signed** | **Signed** |
+|---|---|---|
+| Mailer1 | 243.14346 | 131.85654 |
+| Mailer2 | 217.85654 | 118.14346 |
+
+<br>
+
+```python
+# Calculating Signup_rate for mailer1 and mailer2
+mailer1_signup_rate = 123/(252+123)
+mailer2_signup_rate = 127/(209+127)
+
+print(mailer1_signup_rate)
+>> 0.328
+print(mailer2_signup_rate)
+>> 0.37797619047619047
+
+```
+
+<br>
+
+```python
+
 # aggregate our data to get observed values
 observed_values = pd.crosstab(campaign_data["mailer_type"], campaign_data["signup_flag"]).values
 
