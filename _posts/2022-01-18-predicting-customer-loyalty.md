@@ -202,6 +202,31 @@ from sklearn.feature_selection import RFECV
 # import modelling data
 data_for_model = pickle.load(open("data/customer_loyalty_modelling.p", "rb"))
 
+data_for_model.info()
+
+```
+<br>
+<br>
+output:
+<br>
+
+| **Column** | **Non-Null Count** | **Dtype** |  
+|---|---|---|
+| customer_id | 400 non-null | int64 |  
+| distance_from_store | 398 non-null | float64 |
+| gender | 397 non-null | object | 
+| credit_score | 398 non-null | float64 |
+| customer_loyalty_score | 400 non-null | float64 |
+| total_sales | 400 non-null | float64 |
+| total_items | 400 non-null | int64 |  
+| transaction_count | 400 non-null | int64 |  
+| product_area_count | 400 non-null | int64 |  
+| average_basket_value | 400 non-null | float64 |
+
+<br>
+
+```python
+
 # drop uneccessary columns
 data_for_model.drop("customer_id", axis = 1, inplace = True)
 
@@ -1132,6 +1157,30 @@ import pickle
 
 # import customers for scoring
 to_be_scored = pickle.load(open('/Users/praju/Desktop/DSI/Untitled Folder/Predicting_Customer_Loyalty_Using_ML/dupe/abc_regression_scoring.p,"rb"))
+
+to_be_scored.info()
+
+```
+<br>
+output:
+<br>
+<br>
+
+| **Column** | **Non-Null Count** | **Dtype** |  
+|---|---|---|
+| customer_id | 470 non-null | int64 |  
+| distance_from_store | 467 non-null | float64 |
+| gender | 468 non-null | object | 
+| credit_score | 464 non-null | float64 |
+| total_sales | 470 non-null | float64 |
+| total_items | 470 non-null | int64 |  
+| transaction_count | 470 non-null | int64 |  
+| product_area_count | 470 non-null | int64 |  
+| average_basket_value | 470 non-null | float64 |
+
+<br>
+
+```python
 
 # import model and model objects
 regressor = pickle.load(open('/Users/praju/Desktop/DSI/Untitled Folder/Predicting_Customer_Loyalty_Using_ML/dupe/random_forest_regression_model.p', "rb"))
