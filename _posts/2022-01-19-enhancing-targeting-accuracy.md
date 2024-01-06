@@ -123,7 +123,7 @@ data_for_model.head()
 <br>
 <br>
 
-| **customer_id**  | **signup_flag** | **distance_from_store** | **gender** | **credit_score** | **total_sales** | **total_items** | **trans_count** | **prod_area_count** | **avg_basket_value** |
+| **cus_id**  | **signup_flag** | **dist_from_store** | **gender** | **credit_score** | **total_sales** | **total_items** | **trans_count** | **prod_area_count** | **avg_basket_value** |
 |---|---|---|---|---|---|---|---|---|---|
 | 74 | 1 | 3.38 | F | 0.59 | 1586.89 | 195 | 26 | 5 | 61.034231 |
 | 524 |	1 | 4.76 | F | 0.52 | 2397.26 | 258 | 27 | 5 | 88.787407 |
@@ -279,15 +279,16 @@ output:
 <br>
 <br>
 
-| **metric** | **distance_from_store** | **credit_score** | **total_sales** | **total_items** | **transaction_count** | **product_area_count** | **average_basket_value** |
+| **metric** | **distance_from_store** | **credit_score** | **total_sales** | **total_items** | **trans_count** | **product_area_count** | **avg_basket_value** |
 |---|---|---|---|---|---|---|---|
-| mean | 2.61 | 0.60 | 968.17 | 143.88 | 22.21 | 4.18 | 38.03  |
-| std | 14.40 | 0.10 | 1073.65 | 125.34 | 11.72 | 0.92 | 24.24  |
-| min | 0.00 | 0.26 | 2.09 | 1.00 | 1.00 | 1.00 | 2.09  |
-| 25% | 0.73 | 0.53 | 383.94 | 77.00 | 16.00 | 4.00 | 21.73  |
-| 50% | 1.64 | 0.59 | 691.64 | 123.00 | 23.00 | 4.00 | 31.07  |
-| 75% | 2.92 | 0.67 | 1121.53 | 170.50 | 28.00 | 5.00 | 46.43  |
-| max | 400.97 | 0.88 | 7372.06 | 910.00 | 75.00 | 5.00 | 141.05  |
+| count | 847.00 | 847.00 | 847.00 | 847.00 | 847.00 | 847.00 | 847.00 |
+| mean | 2.61 | 0.60 | 968.17 | 143.88 | 22.21 | 4.18 | 38.03 |
+| std | 14.40 | 0.10 | 1073.65 | 125.34 | 11.72 | 0.92 | 24.24 |
+| min | 0.00 | 0.26 | 2.09 | 1.00 | 1.00 | 1.00 | 2.09 |
+| 25% | 0.73 | 0.53 | 383.94 | 77.00 | 16.00 | 4.00 | 21.73 |
+| 50% | 1.64 | 0.59 | 691.64 | 123.00 | 23.00 | 4.00 | 31.07 |
+| 75% | 2.92 | 0.67 | 1121.53 | 170.50 | 28.00 | 5.00 | 46.43 |
+| max | 400.97 | 0.88 | 7372.06 | 910.00 | 75.00 | 5.00 | 141.05 |
 
 <br>
 Based on this investigation, we see some *max* column values for several variables to be much higher than the *median* value.
