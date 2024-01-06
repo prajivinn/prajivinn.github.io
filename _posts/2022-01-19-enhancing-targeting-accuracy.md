@@ -123,7 +123,7 @@ data_for_model.head()
 <br>
 <br>
 
-| **customer_id**  | **signup_flag** | **distance_from_store** | **gender** | **credit_score** | **total_sales** | **total_items** | **transaction_count** |	| **product_area_count** | **average_basket_value** |
+| **customer_id**  | **signup_flag** | **distance_from_store** | **gender** | **credit_score** | **total_sales** | **total_items** | **transaction_count** | **product_area_count** | **average_basket_value** |
 |---|---|---|---|---|---|---|---|---|---|
 | 74 | 1 | 3.38 | F | 0.59 | 1586.89 | 195 | 26 | 5 | 61.034231 |
 | 524 |	1 | 4.76 | F | 0.52 | 2397.26 | 258 | 27 | 5 | 88.787407 |
