@@ -198,7 +198,7 @@ from sklearn.preprocessing import OneHotEncoder
 from sklearn.feature_selection import RFECV
 
 # import modelling data
-data_for_model = pickle.load(open("data/delivery_club_modelling.p", "rb"))
+data_for_model = pickle.load(open('/Users/praju/Desktop/DSI/Untitled Folder/ETA/abc_classification_modelling.p', "rb"))
 
 # drop uneccessary columns
 data_for_model.drop("customer_id", axis = 1, inplace = True)
@@ -673,7 +673,7 @@ from sklearn.metrics import confusion_matrix, accuracy_score, precision_score, r
 from sklearn.preprocessing import OneHotEncoder
 
 # import modelling data
-data_for_model = pickle.load(open("data/delivery_club_modelling.p", "rb"))
+data_for_model = pickle.load(open('/Users/praju/Desktop/DSI/Untitled Folder/ETA/abc_classification_modelling.p', "rb"))
 
 # drop uneccessary columns
 data_for_model.drop("customer_id", axis = 1, inplace = True)
@@ -974,7 +974,7 @@ from sklearn.preprocessing import OneHotEncoder
 from sklearn.inspection import permutation_importance
 
 # import modelling data
-data_for_model = pickle.load(open("data/delivery_club_modelling.p", "rb"))
+data_for_model = pickle.load(open('/Users/praju/Desktop/DSI/Untitled Folder/ETA/abc_classification_modelling.p', "rb"))
 
 # drop uneccessary columns
 data_for_model.drop("customer_id", axis = 1, inplace = True)
@@ -1274,7 +1274,7 @@ from sklearn.preprocessing import OneHotEncoder, MinMaxScaler
 from sklearn.feature_selection import RFECV
 
 # import modelling data
-data_for_model = pickle.load(open("data/delivery_club_modelling.p", "rb"))
+data_for_model = pickle.load(open('/Users/praju/Desktop/DSI/Untitled Folder/ETA/abc_classification_modelling.p', "rb"))
 
 # drop uneccessary columns
 data_for_model.drop("customer_id", axis = 1, inplace = True)
