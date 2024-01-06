@@ -158,11 +158,12 @@ We will build a model that looks to accurately predict *signup_flag*, based upon
 
 If that can be achieved, we can use this model to predict signup & signup probability for future campaigns.  This information can be used to target those more likely to sign-up, reducing marketing costs and thus increasing ROI.
 
-As we are predicting a binary output, we tested three classification modelling approaches, namely:
+As we are predicting a binary output, we tested four classification modelling approaches, namely:
 
 * Logistic Regression
 * Decision Tree
 * Random Forest
+* K Nearest Neighbours (KNN)
 
 <br>
 # Logistic Regression <a name="logreg-title"></a>
