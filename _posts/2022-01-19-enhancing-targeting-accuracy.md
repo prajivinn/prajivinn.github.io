@@ -93,8 +93,10 @@ Based upon these, the chosen the model is the Random Forest as it was a) the mos
 * Decision Tree = 0.885
 * KNN = 0.865
 * Logistic Regression = 0.734
+  
 <br>
 <br>
+
 ### Growth/Next Steps <a name="overview-growth"></a>
 
 While predictive accuracy was relatively high - other modelling approaches could be tested, especially those somewhat similar to Random Forest, for example XGBoost, LightGBM to see if even more accuracy could be gained.
