@@ -101,8 +101,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 # import tables from database
-transactions = pd.read_excel(r'/Users/praju/Desktop/DSI/Untitled Folder/grocery_database.xlsx',sheet_name='transactions')
-product_areas = pd.read_excel(r'/Users/praju/Desktop/DSI/Untitled Folder/grocery_database.xlsx',sheet_name='product_areas')
+transactions = pd.read_excel(r'/Users/praju/Desktop/DSI/Untitled Folder/K_Means/grocery_database.xlsx',sheet_name='transactions')
+product_areas = pd.read_excel(r'/Users/praju/Desktop/DSI/Untitled Folder/K_Means/grocery_database.xlsx',sheet_name='product_areas')
 
 # merge product_area_name on
 transactions = pd.merge(transactions, product_areas, how = "inner", on = "product_area_id")
@@ -128,6 +128,8 @@ transaction_summary_pivot = transaction_summary_pivot.div(transaction_summary_pi
 # drop the "total" column as we don't need that for clustering
 data_for_clustering = transaction_summary_pivot.drop(["Total"], axis = 1)
 
+data_for_clustering.head()
+
 ```
 <br>
 
@@ -137,15 +139,33 @@ After the data pre-processing using Pandas, we have a dataset for clustering tha
 
 | **customer_id** | **dairy** | **fruit** | **meat** | **vegetables** |
 |---|---|---|---|---|
-| 2 | 0.246 | 0.198 | 0.394 | 0.162  |
-| 3 | 0.142 | 0.233 | 0.528 | 0.097  |
-| 4 | 0.341 | 0.245 | 0.272 | 0.142  |
-| 5 | 0.213 | 0.250 | 0.430 | 0.107  |
-| 6 | 0.180 | 0.178 | 0.546 | 0.095  |
-| 7 | 0.000 | 0.517 | 0.000 | 0.483  |
+| 1 | 0.271547 | 0.203804 |	0.401244 | 0.123405 |
+| 2 | 0.246200 | 0.197656 | 0.394250 | 0.161894 |
+| 3 | 0.142496 | 0.232527 | 0.527821 | 0.097156 |
+| 4 | 0.341088 | 0.244770 | 0.272134 | 0.142008 |
+| 5 | 0.212754 | 0.249691 | 0.430338 | 0.107218 |
+
 
 <br>
 The data is at customer level, and we have a column for each of the highest level food product areas.  Within each of those we have the *percentage* of sales that each customer allocated to that product area over the past six months.
+
+<br>
+
+```python
+
+data_for_clustering.info()
+
+```
+<br>
+<br>
+
+| **Column** | **Non-Null Count** | **Dtype** |  
+|---|---|---|
+| Dairy | 871 non-null | float64 |
+| Fruit | 871 non-null | float64 |
+| Meat | 871 non-null | float64 |
+| Vegetables | 871 non-null | float64 |
+
 
 ___
 <br>
