@@ -113,11 +113,32 @@ The key variables hypothesised to predict this will come from the client databas
 We aggregated up customer data from the 3 months prior to the last campaign.
 
 After this data pre-processing in Python, we have a dataset for modelling that contains the following fields...
+
+```python
+
+data_for_model = pickle.load(open('/Users/praju/Desktop/DSI/Untitled Folder/ETA/abc_classification_modelling.p', "rb"))
+data_for_model.head()
+
+```
 <br>
 <br>
 
+| **customer_id**  | **signup_flag** | **distance_from_store** | **gender** | **credit_score** | **total_sales** | **total_items** | **transaction_count** |	| **product_area_count** | **average_basket_value** |
+|---|---|---|---|---|---|---|---|---|---|
+| 74 | 1 | 3.38 | F | 0.59 | 1586.89 | 195 | 26 | 5 | 61.034231 |
+| 524 |	1 | 4.76 | F | 0.52 | 2397.26 | 258 | 27 | 5 | 88.787407 |
+| 607 |	1 | 4.45 | F | 0.49 | 1279.91 | 183 | 22 | 5 | 58.177727 |
+| 343 |	0 | 0.91 | M | 0.54 | 967.14 | 102 | 17 | 5 | 56.890588 |
+| 322 |	1 | 3.02 | F | 0.63 | 1566.35 | 182 | 30 | 5 | 52.211667 |
+
+<br>
+<br>
+
+**Data Description**:
+
 | **Variable Name** | **Variable Type** | **Description** |
 |---|---|---|
+| customer_id | Independent | Refers to the customer ID for each customer |
 | signup_flag | Dependent | A binary variable showing if the customer signed up for the delivery club in the last campaign |
 | distance_from_store | Independent | The distance in miles from the customers home address, and the store |
 | gender | Independent | The gender provided by the customer |
@@ -206,9 +227,38 @@ The number of missing values in the data was extremely low, so instead of applyi
 
 ```python
 
+# checking shape
+data_for_model.shape
+>> (860,9)
+
 # remove rows where values are missing
 data_for_model.isna().sum()
+
+
+```
+<br>
+output:
+<br>
+<br>
+
+| signup_flag | 0 |
+| distance_from_store | 5 |
+| gender | 5 |
+| credit_score | 8 |
+| total_sales | 0 |
+| total_items | 0 |
+| transaction_count | 0 |
+| product_area_count | 0 |
+| average_basket_value | 0 |
+
+<br>
+
+```python
+
 data_for_model.dropna(how = "any", inplace = True)
+
+data_for_model.shape
+>> (847, 9)
 
 ```
 
@@ -217,8 +267,16 @@ data_for_model.dropna(how = "any", inplace = True)
 
 The ability for a Logistic Regression model to generalise well across *all* data can be hampered if there are outliers present.  There is no right or wrong way to deal with outliers, but it is always something worth very careful consideration - just because a value is high or low, does not necessarily mean it should not be there!
 
-In this code section, we use **.describe()** from Pandas to investigate the spread of values for each of our predictors.  The results of this can be seen in the table below.
+```python
 
+# we use **.describe()** from Pandas to investigate the spread of values for each of our predictors
+
+data_for_model.describe()
+
+```
+<br>
+output:
+<br>
 <br>
 
 | **metric** | **distance_from_store** | **credit_score** | **total_sales** | **total_items** | **transaction_count** | **product_area_count** | **average_basket_value** |
