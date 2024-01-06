@@ -97,10 +97,12 @@ from apyori import apriori
 # import the sample data
 alcohol_transactions = pd.read_csv(r"/Users/praju/Desktop/DSI/Machine Learning/Model Building/Data/sample_data_apriori.csv")
 
+alcohol_transactions.head()
+
 ```
 <br>
 
-A sample of this data (the first 10 transactions) can be seen below:
+A sample of this data (the first 5 transactions) can be seen below:
 <br>
 <br>
 
@@ -111,12 +113,6 @@ A sample of this data (the first 10 transactions) can be seen below:
 | 3 | Small Sizes White | Small Sizes Red | Sherry Spanish | No/Low Alc Cider | Cooking Wine | … |
 | 4 | White Uk | Sherry Spanish | Port | Italian White | Italian Red | … |
 | 5 | Premium Lager | Over-Ice Cider | French White South | French Rose | Cocktails/Liqueurs | … |
-| 6 | Kosher Red | … |  |  |  | ... |
-| 7 | Own Label | Italy White | Australian Red | … |  | ... |
-| 8 | Brandy/Cognac | … |  |  |  | ... |
-| 9 | Small Sizes White | Bottled Ale | … |  |  | ... |
-| 10 | White Uk | Spirits Mixers | Sparkling | German | Australian Red | … |
-| … | … | … | … | … | … | … |
 
 <br>
 To explain this data, *Transaction 1* (the first row) contained two products, Premium Lager, and Iberia.  As there were only two products in this transaction, the remaining columns are blank.
@@ -125,6 +121,68 @@ Transaction 2 (the second row) contained nine products (not all shown in the sni
 
 For our sample data, the maximum number of unique products was 45, meaning the table of data had a total of 46 columns (45 for products + transaction_id).
 
+<br>
+
+```python
+
+alcohol_transactions.shape
+> (3567, 46)
+
+alcohol_transactions.info()
+
+```
+<br>
+
+| **Column** | **Non-Null Count** | **Dtype** | 
+|---|---|---|
+| transaction_id| 3567 non-null | int64 | 
+| product1 | 3567 non-null | object |
+| product2 | 2988 non-null | object |
+| product3 | 2550 non-null | object |
+| product4 | 2189 non-null | object |
+| product5 | 1875 non-null | object |
+| product6 | 1642 non-null | object |
+| product7 | 1425 non-null | object |
+| product8 | 1229 non-null | object |
+| product9 | 1078 non-null | object |
+| product10 | 939 non-null | object |
+| product11 | 810 non-null | object |
+| product12 | 702 non-null | object |
+| product13 | 610 non-null | object |
+| product14 | 528 non-null | object |
+| product15 | 446 non-null | object |
+| product16 | 374 non-null | object |
+| product17 | 330 non-null | object |
+| product18 | 281 non-null | object | 
+| product19 | 238 non-null | object |
+| product20 | 197 non-null | object |
+| product21 | 167 non-null | object |
+| product22 | 139 non-null | object |
+| product23 | 119 non-null | object |
+| product24 | 102 non-null | object |
+| product25 | 87 non-null | object |
+| product26 | 70 non-null | object |
+| product27 | 54 non-null | object |
+| product28 | 47 non-null | object |
+| product29 | 37 non-null | object |
+| product30 | 34 non-null | object |
+| product31 | 25 non-null | object |
+| product32 | 21 non-null | object |
+| product33 | 19 non-null | object |
+| product34 | 17 non-null | object |
+| product35 | 13 non-null | object |
+| product36 | 8 non-null | object |
+| product37 | 7 non-null | object |
+| product38 | 7 non-null | object |
+| product39 | 7 non-null | object |
+| product40 | 4 non-null | object |
+| product41 | 3 non-null | object |
+| product42 | 3 non-null | object |
+| product43 | 3 non-null | object |
+| product44 | 2 non-null | object |
+| product45 | 2 non-null | object |
+
+<br>
 The *apyori* library that we are using does not want the data in this format, it instead wants it passed in as a *list of lists* so we will need to modify it.  The code and logic for this can be found in the Data Preparation section below.
 
 ___
@@ -219,6 +277,9 @@ transactions_list = []
 for index, row in alcohol_transactions.iterrows():
     transaction = list(row.dropna())
     transactions_list.append(transaction)
+
+len(transactions_list)
+>> 3567
     
 # print out first 10 lists from master list
 print(transactions_list[:10])
