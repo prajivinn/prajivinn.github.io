@@ -172,6 +172,8 @@ campaign_data = pd.read_excel('/Users/praju/Desktop/DSI/AB_Testing/grocery_datab
 # remove customers who were in the control group
 campaign_data = campaign_data.loc[campaign_data["mailer_type"] != "Control"]
 
+campaign_data.head(10)
+
 ```
 <br>
 A sample of this data (the first 10 rows) can be seen below:
