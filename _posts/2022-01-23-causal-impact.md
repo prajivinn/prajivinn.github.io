@@ -140,6 +140,7 @@ In the code below, we:
 * Give our groups some meaningful names, to help with interpretation
 
 <br>
+
 ```python
 
 # install the required python libraries
@@ -147,14 +148,28 @@ from causalimpact import CausalImpact
 import pandas as pd
 
 # import data tables
-transactions = pd.read_excel(r'/Users/praju/Desktop/DSI/Untitled Folder/grocery_database.xlsx',sheet_name='transactions')
-campaign_data = pd.read_excel(r'/Users/praju/Desktop/DSI/Untitled Folder/grocery_database.xlsx',sheet_name='campaign_data')
+transactions = pd.read_excel(r'/Users/praju/Desktop/DSI/Untitled Folder/CIA/grocery_database.xlsx',sheet_name='transactions')
+campaign_data = pd.read_excel(r'/Users/praju/Desktop/DSI/Untitled Folder/CIA/grocery_database.xlsx',sheet_name='campaign_data')
 
 # aggregate transaction data to customer, date level
 customer_daily_sales = transactions.groupby(["customer_id", "transaction_date"])["sales_cost"].sum().reset_index()
 
 # merge on the signup flag
 customer_daily_sales = pd.merge(customer_daily_sales, campaign_data, how = "inner", on = "customer_id")
+
+customer_daily_sales.head()
+
+```
+<br>
+
+| **customer_id** | **transaction_date** | **sales_cost** | **campaign_name** | **campaign_date** | **mailer_type** | **signup_flag** |
+| 1 | 2020-04-10 | 26.87 | delivery_club | 2020-07-01 |	Mailer2 | 1 |
+| 1 | 2020-06-02 | 65.49 | delivery_club | 2020-07-01 |	Mailer2 | 1 |
+| 1 | 2020-06-10 | 71.71 | delivery_club | 2020-07-01 |	Mailer2 | 1 |
+| 1 | 2020-06-19 | 61.91 | delivery_club | 2020-07-01 |	Mailer2 | 1 |
+| 1 | 2020-07-02 | 471.71 | delivery_club | 2020-07-01 | Mailer2 | 1 |
+
+```python
 
 # pivot the data to aggregate daily sales by signup group
 causal_impact_df = customer_daily_sales.pivot_table(index = "transaction_date",
@@ -171,6 +186,8 @@ causal_impact_df = causal_impact_df[[1,0]]
 # rename columns to something lear & meaningful
 causal_impact_df.columns = ["member", "non_member"]
 
+causal_impact_df.head()
+
 ```
 <br>
 A sample of this data (the first 5 days of data) can be seen below:
@@ -179,13 +196,26 @@ A sample of this data (the first 5 days of data) can be seen below:
 
 | **transaction_date** | **member** | **non_member** |
 |---|---|---|
-| 01/04/2020 | 194.49 | 74.46 |
-| 02/04/2020 | 185.16 | 75.56 |
-| 03/04/2020 | 118.12 | 74.39 |
-| 04/04/2020 | 198.53 | 63.00 |
-| 05/04/2020 | 145.46 | 72.44 |
+| 2020-04-01 | 194.488065 | 74.463333 |
+| 2020-04-02 | 185.161667 | 75.558254 |
+| 2020-04-03 | 118.121333 | 74.387353 |
+| 2020-04-04 | 198.525357 | 63.003797 |
+| 2020-04-05 | 145.456000 | 72.440441 |
 
 <br>
+
+```python
+
+causal_impact_df.info()
+
+```
+<br>
+
+| **Column** | **Non-Null Count** | **Dtype** |  
+|---|---|---|  
+| Member | 183 non-null | float64 |
+| Non-Member| 183 non-null | float64 |
+
 In the DataFrame we have the transaction data, and then a column showing the average daily sales for those who signed up (member) and those who did not (non_member).  This is the required format for applying the algorithm.
 
 ___
