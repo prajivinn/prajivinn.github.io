@@ -218,6 +218,9 @@ _________________________________________________________________
 
 ```
 <br>
+
+We used square brackets with - 1 and .output to denote that our output the one that we want is the final layer of our vgg object.
+
 If we hadn't added that last parameter of "pooling = avg" then the final layer would have been that MaxPoolingLayer of shape 7 by 7 by 512. Instead however, the Global Average Pooling logic was added, and this means we get that single array that is of size 512.  In other words, all of the feature maps from that final Max Pooling layer are summarised down into one vector of 512 numbers, and for each image these numbers will represent it's features. This feature vector is what we will be using to compare our base set of images, to any given search image to assess the similarity!
 
 ___
