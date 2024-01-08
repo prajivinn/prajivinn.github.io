@@ -479,6 +479,7 @@ for counter, result_file in enumerate(search_results_file):
 plt.show()
 
 ```
+The search image, and search results are below:
 
 **Search Image**
 <br>
