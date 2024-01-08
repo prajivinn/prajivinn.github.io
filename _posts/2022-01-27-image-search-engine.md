@@ -269,6 +269,7 @@ The *featurise_image* function does the following:
 * Returns the feature vector
 
 <br>
+
 #### Setup
 
 In the code below, we:
@@ -289,6 +290,7 @@ feature_vector_store = np.empty((0,512))
 ```
 
 <br>
+
 #### Preprocess & Featurise Base-Set Images
 
 We now want to preprocess & feature all 300 images in our base-set.  To do this we execute a loop and apply the two functions we created earlier.  For each image, we append the filename, and the feature vector to stores.  We then save these stores, for future use when a search is executed.
@@ -325,6 +327,7 @@ ___
 With the base-set featurised, we can now run a search on a new image from a customer!
 
 <br>
+
 #### Setup
 
 In the code below, we:
