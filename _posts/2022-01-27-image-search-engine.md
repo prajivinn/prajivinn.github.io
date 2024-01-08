@@ -277,7 +277,7 @@ In the code below, we:
 ```python
 
 # source directory for base images
-source_dir = 'data/'
+source_dir = '/Users/praju/Desktop/DSI/Deep_Learning/Image Search Engine/data/'
 
 # empty objects to append to
 filename_store = []
@@ -334,13 +334,13 @@ In the code below, we:
 ```python
 
 # load in required objects
-model = load_model('models/vgg16_search_engine.h5', compile = False)
-filename_store = pickle.load(open('models/filename_store.p', 'rb'))
-feature_vector_store = pickle.load(open('models/feature_vector_store.p', 'rb'))
+model = load_model('/Users/praju/Desktop/DSI/Deep_Learning/Image Search Engine/models/vgg16_search_engine.h5', compile = False)
+filename_store = pickle.load(open('/Users/praju/Desktop/DSI/Deep_Learning/Image Search Engine/models/filename_store.p', 'rb'))
+feature_vector_store = pickle.load(open('/Users/praju/Desktop/DSI/Deep_Learning/Image Search Engine/models/feature_vector_store.p'', 'rb'))
 
 # search parameters
 search_results_n = 8
-search_image = 'search_image_02.jpg'
+search_image = 'search_image_01.jpg'
 
 ```
 <br>
@@ -440,6 +440,39 @@ Very impressive results!  From the 300 base-set images, these are the eight that
 
 <br>
 Let's take a look at a second search image...
+
+```python
+
+search_image = 'search_image_02.jpg'
+search_results_n = 8
+
+preprocessed_image = preprocess_image(search_image)
+search_feature_vector = featurise_image(preprocessed_image)
+
+image_distances, image_indices = image_neighbours.kneighbors(search_feature_vector)
+
+image_indices = list(image_indices[0])
+image_distances = list(image_distances[0])
+
+search_results_file = [filename_store[i] for i in image_indices]
+
+```
+<br>
+
+```python
+# plot results
+
+plt.figure(figsize=(20,15))
+for counter, result_file in enumerate(search_results_file):    
+    image = load_img(result_file)
+    ax = plt.subplot(3, 3, counter+1)
+    plt.imshow(image)
+    plt.text(0, -5, round(image_distances[counter],3), fontsize=28)
+    ax.get_xaxis().set_visible(False)
+    ax.get_yaxis().set_visible(False)
+plt.show()
+
+```
 
 **Search Image**
 <br>
