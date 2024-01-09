@@ -644,6 +644,7 @@ In practical terms, Levene's Test helps you determine whether it's appropriate t
 
 Overall, Levene's Test is a valuable tool in the field of statistics for assessing the homogeneity of variances and ensuring the validity of subsequent statistical analyses.
 
+<br>
 #### Using Levene's Test
 
 ```python
