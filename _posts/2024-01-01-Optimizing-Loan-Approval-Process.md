@@ -312,8 +312,12 @@ FROM loan_applications;
 We have created a *new table* called **loan_application_details** which contains no blank values in columns and performed feature engineering on some columns.
 
 * We removed the *leading blank spaces* using **TRIM** command of all the categorical variables such as *gender*, *education*, *self_employed* and *loan_status*.
-* We have put *cibil_score* under categories because there are different categories defined by government of India like for example cibil score above 690 or 700 is *Excellent* and there are also specified ranges for *Good*, *Fair* and *Low*.
-* We created bins/categories for columns such as *income_annum**, *loan_amount*, *residential_assests_value*, *commercial_assets_value*, *luxury_asset_value* and *bank_asset_value* because it will be helpful to view the distributions by categories when creating a dashboard.
+* We have put *cibil_score* under categories use **CASE** statements because there are different categories defined by government of India like for example cibil score above 690 or 700 is *Excellent* and there are also specified ranges for *Good*, *Fair* and *Low*.
+* We created bins/categories for columns such as income_annum, loan_amount, residential_assests_value, commercial_assets_value, luxury_asset_value and bank_asset_value because it will be helpful to view the distributions by categories when creating a dashboard.
+
+**Note**:
+
+* For the column **residential_assets_value**, there are negative numbers and zero present in it. **Zero** means no residential assets available and **negative number** means there is a **home loan*** going on.
 
 <br>
 
@@ -347,7 +351,7 @@ output: A sample of first 5 rows of **21** columns is displayed below
 
 <br>
 
-| **commercial_assets_value** | **commercial_assets_value_group** | **luxury_assets_value** | **luxury_assets_value_group** | **bank_asset_value** | **bank_asset_group** | **loan_status** |
+| **commercial_assets_value** | **commercial_assets_group** | **luxury_assets_value** | **luxury_assets_group** | **bank_asset_value** | **bank_asset_group** | **loan_status** |
 |---|---|---|---|---|---|---|
 | 17600000 | 1.5-2 | 22700000 | 2-2.5 | 8000000 | 0.5-1 | Approved |
 | 2200000 | 0-0.5 | 8800000 | 0.5-1 | 3300000 | 0-0.5 | Rejected |
