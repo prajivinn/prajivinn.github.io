@@ -52,7 +52,7 @@ A sample of this data (the first 5 rows) can be seen below:
 <br>
 <br>
 
-<iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vR3Lzm7928nwOHrDGGJyVLm-PFfxzDPCptPaqmLUQrFGS6oHVPU1dtH7m7mDbpiVC3f6dDICFlbFkHP/pubhtml?gid=0&amp;single=true&amp;widget=true&amp;headers=false" width = '1090' height = '215'></iframe>
+<iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vR3Lzm7928nwOHrDGGJyVLm-PFfxzDPCptPaqmLUQrFGS6oHVPU1dtH7m7mDbpiVC3f6dDICFlbFkHP/pubhtml?gid=0&amp;single=true&amp;widget=true&amp;headers=false"></iframe>
 
 
 **Data Dictionary**
