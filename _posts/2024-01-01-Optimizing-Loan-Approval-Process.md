@@ -315,10 +315,6 @@ We have created a *new table* called **loan_application_details** which contains
 * We have put *cibil_score* under categories use **CASE** statements because there are different categories defined by government of India like for example cibil score above 690 or 700 is *Excellent* and there are also specified ranges for *Good*, *Fair* and *Low*.
 * We created bins/categories for columns such as income_annum, loan_amount, residential_assests_value, commercial_assets_value, luxury_asset_value and bank_asset_value because it will be helpful to view the distributions by categories when creating a dashboard.
 
-**Note**:
-
-* For the column **residential_assets_value**, there are negative numbers and zero present in it. **Zero** means no residential assets available and **negative number** means there is a **home loan*** going on.
-
 <br>
 
 ```sql
@@ -327,7 +323,7 @@ SELECT * FROM loan_application_details;
 
 ```
 <br>
-output: A sample of first 5 rows of **21** columns is displayed below
+Output: A sample of first 5 rows of **21** columns is displayed below
 <br>
 <br>
 
@@ -359,8 +355,146 @@ output: A sample of first 5 rows of **21** columns is displayed below
 | 3300000 | 0-0.5 | 23300000 | 2-2.5 | 7900000 | 0.5-1 | Rejected |
 | 8200000 | 0.5-1 | 29400000 | 2.5-3 | 5000000 | 0.5-1 | Rejected |
 
+<br>
 
+This cleaned dataset can be used for further analysis.
 
+**Note**:
+
+* For the column **residential_assets_value**, there are negative numbers and zero present in it. **Zero** means no residential assets available and **negative number** means there is already a **home loan** going on.
+
+#### Finding Approval & Rejection applications and rates
+
+```sql
+
+SELECT *, ROUND((approved_applications/total_applications)*100,2) AS approval_rate
+FROM
+(SELECT 
+	COUNT(*) AS total_applications,
+    SUM(CASE WHEN loan_status = 'Approved' THEN 1 ELSE 0 END) AS approved_applications,
+    SUM(CASE WHEN loan_status = 'Rejected' THEN 1 ELSE 0 END) AS rejected_applications
+FROM loan_application_details) a;
+
+```
+<br>
+Output:
+<br>
+
+| **total_applications** | **approved_applications** | **rejected_applications** | **approval_rate** | **rejection_rate** |
+|---|---|---|---|---|
+| 4269 | 2656 | 1613 | 62.22 | 37.78 |
+
+<br>
+
+```sql
+
+SELECT
+    'Approved' AS "loan_status/gender",
+    SUM(CASE WHEN gender = 'Female' AND loan_status = 'Approved' THEN 1 ELSE 0 END) AS "Female",
+    SUM(CASE WHEN gender = 'Male' AND loan_status = 'Approved' THEN 1 ELSE 0 END) AS "Male"
+FROM loan_application_details
+UNION ALL
+SELECT
+    'Rejected' AS "loan_status/gender",
+    SUM(CASE WHEN gender = 'Female' AND loan_status = 'Rejected' THEN 1 ELSE 0 END) AS "Female",
+    SUM(CASE WHEN gender = 'Male' AND loan_status = 'Rejected' THEN 1 ELSE 0 END) AS "Male"
+FROM loan_application_details;
+
+```
+<br>
+Output:
+<br>
+
+| **loan_status/gender** | **Female** | **Male** |
+|---|---|---|
+| Approved | 1374 | 1282 |
+| Rejected | 833 | 780 |
+
+<br>
+
+```sql
+
+SELECT
+    'Approved' AS "loan_status/education",
+    SUM(CASE WHEN education = 'Graduate' AND loan_status = 'Approved' THEN 1 ELSE 0 END) AS "Graduate",
+    SUM(CASE WHEN education = 'Not Graduate' AND loan_status = 'Approved' THEN 1 ELSE 0 END) AS "Not Graduate",
+    SUM(CASE WHEN education = 'Post Graduate' AND loan_status = 'Approved' THEN 1 ELSE 0 END) AS "Post Graduate"
+FROM loan_application_details
+UNION ALL
+SELECT
+    'Rejected' AS "loan_status/education",
+    SUM(CASE WHEN education = 'Graduate' AND loan_status = 'Rejected' THEN 1 ELSE 0 END) AS "Graduate",
+    SUM(CASE WHEN education = 'Not Graduate' AND loan_status = 'Rejected' THEN 1 ELSE 0 END) AS "Not Graduate",
+    SUM(CASE WHEN education = 'Post Graduate' AND loan_status = 'Rejected' THEN 1 ELSE 0 END) AS "Post Graduate"
+FROM loan_application_details;
+
+```
+<br>
+Output:
+<br>
+
+| **loan_status/education** | **Graduate** | **Not Graduate** | **Post Graduate** |
+|---|---|---|
+| Approved | 1288 | 1251 | 117 |
+| Rejected | 771 | 621 | 221 |
+
+<br>
+
+```sql
+
+SELECT
+    'Approved' AS "loan_status/self-employed",
+    SUM(CASE WHEN self_employed = 'No' AND loan_status = 'Approved' THEN 1 ELSE 0 END) AS "No",
+    SUM(CASE WHEN self_employed = 'Yes' AND loan_status = 'Approved' THEN 1 ELSE 0 END) AS "Yes"
+FROM loan_application_details
+UNION ALL
+SELECT
+    'Rejected' AS "loan_status/self-employed",
+    SUM(CASE WHEN self_employed = 'No' AND loan_status = 'Rejected' THEN 1 ELSE 0 END) AS "No",
+    SUM(CASE WHEN self_employed = 'Yes' AND loan_status = 'Rejected' THEN 1 ELSE 0 END) AS "Yes"
+FROM loan_application_details;
+
+```
+<br>
+Output:
+<br>
+
+| **loan-status/self-employed** | **No** | **Yes** |
+|---|---|---|
+| Approved | 1318 | 1338 |
+| Rejected | 801 | 812 |
+
+<br>
+
+```sql
+
+SELECT
+    'Approved' AS "loan_status/cibil_score",
+    SUM(CASE WHEN cibil_score_category = 'Excellent' AND loan_status = 'Approved' THEN 1 ELSE 0 END) AS "Excellent",
+    SUM(CASE WHEN cibil_score_category = 'Good' AND loan_status = 'Approved' THEN 1 ELSE 0 END) AS "Good",
+    SUM(CASE WHEN cibil_score_category = 'Fair' AND loan_status = 'Approved' THEN 1 ELSE 0 END) AS "Fair",
+	SUM(CASE WHEN cibil_score_category = 'Low' AND loan_status = 'Approved' THEN 1 ELSE 0 END) AS "Low"
+FROM loan_application_details
+UNION ALL
+SELECT
+    'Rejected' AS "loan_status/cibil_score",
+    SUM(CASE WHEN cibil_score_category = 'Excellent' AND loan_status = 'Rejected' THEN 1 ELSE 0 END) AS "Excellent",
+    SUM(CASE WHEN cibil_score_category = 'Good' AND loan_status = 'Rejected' THEN 1 ELSE 0 END) AS "Good",
+    SUM(CASE WHEN cibil_score_category = 'Fair' AND loan_status = 'Rejected' THEN 1 ELSE 0 END) AS "Fair",
+	SUM(CASE WHEN cibil_score_category = 'Low' AND loan_status = 'Rejected' THEN 1 ELSE 0 END) AS "Low"
+FROM loan_application_details;
+
+```
+<br>
+Output:
+<br>
+
+| **loan_status/cibil_score** | **Excellent** | **Good** | **Fair** | **Low** |
+|---|---|---|---|
+| Approved | 1050 | 740 | 681 | 185 |
+| Rejected | 6 | 5 | 2 | 1600 |
+
+<br>
 
 
 
