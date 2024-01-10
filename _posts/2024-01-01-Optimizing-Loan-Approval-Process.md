@@ -16,7 +16,7 @@ In this project we aim to create an end-to-end solution using Excel, SQL, Power 
     - [Growth/Next Steps](#overview-growth)
 - [01. Concept Overview](#concept-overview)
 - [02. Data Overview & Preparation](#data-overview)
-- [03. Data Cleaning & Transformation](#data-DCT)
+- [03. Data Cleaning & Transformation - SQL](#data-DCT)
 
 ___
 
@@ -76,9 +76,56 @@ A sample of this data (the first 5 rows) can be seen below:
 ___
 
 <br>
-# Data Cleaning & Transformation <a name="data-DCT"></a>
+# Data Cleaning & Transformation - SQL <a name="data-DCT"></a>
 
-Importing the *excel dataset* into the SQL database
+We created an *empty_table* named **loan_applications** with specified columns and datatypes to match the columns of the excel dataset.
+
+Importing the *excel dataset* into the SQL database by
+
+* Right click on Tables and select *Table Data Import Wizard*.
+* Select the file path and click on "Next".
+* Select *Use existing table* because you already created a skeleton of it and click on "Next".
+* You can see the column names and values. Just click "Next" again. Data will be imported successfully.
+
+```sql
+
+CREATE TABLE loan_applications (
+    loan_id INT PRIMARY KEY,
+    no_of_dependents INT,
+    education VARCHAR(50),
+    gender VARCHAR(10),
+    self_employed VARCHAR(10),
+    income_annum DECIMAL(10, 2),
+    loan_amount DECIMAL(10, 2),
+    loan_term INT,
+    cibil_score INT,
+    residential_assets_value DECIMAL(10, 2),
+    commercial_assets_value DECIMAL(10, 2),
+    luxury_assets_value DECIMAL(10, 2),
+    bank_asset_value DECIMAL(10, 2),
+    loan_status VARCHAR(20)
+);
+
+# Checking for blank spaces in loan_status column
+
+select loan_status from loan_applications 
+where substring(loan_status,1,1)=' ';
+
+```
+<br>
+output: a sample of 5 rows is shown below
+<br>
+<br>
+
+| **loan_status** |
+|---|
+|  Approved |
+|  Rejected |
+|  Rejected |
+|  Rejected |
+|  Rejected |
+
+It seems the column *loan_status* has **leading blank spaces**.
 
 ```sql
 
