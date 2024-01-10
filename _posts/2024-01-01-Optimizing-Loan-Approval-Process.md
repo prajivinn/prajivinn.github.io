@@ -334,7 +334,9 @@ output: A sample of first 5 rows of **21** columns is displayed below
 | 3 | 3 | Male | Post Graduate | No | 9100000 |	90 Lacs+ |
 | 4 | 3 | Female | Post Graduate | No | 8200000 | 80-90 Lacs |
 | 5 | 5 | Male | Post Graduate | Yes | 9800000 | 90 Lacs+ |
+
 <br>
+
 | **loan_amount** | **loan_amount_group** | **loan_term** | **cibil_score** | **cibil_score_category** | **residential_assets_value** | **residential_assets_value_group** |
 |---|---|---|---|---|---|---|
 | 29900000 | 2.5-3 | 12 | 778 | Excellent | 2400000 | 0-0.5 |
@@ -342,7 +344,9 @@ output: A sample of first 5 rows of **21** columns is displayed below
 | 29700000 | 2.5-3 | 20 | 506 | Low | 7100000 |	0.5-1 |
 | 30700000 | 3-3.5 | 8 | 467 | Low | 18200000 |	1.5-2 |
 | 24200000 | 2-2.5 | 20 | 382 |	Low | 12400000 | 1-1.5 |
+
 <br>
+
 | **commercial_assets_value** | **commercial_assets_value_group** | **luxury_assets_value** | **luxury_assets_value_group** | **bank_asset_value** | **bank_asset_value_group** | **loan_status** |
 |---|---|---|---|---|---|---|
 | 17600000 | 1.5-2 | 22700000 | 2-2.5 | 8000000 | 0.5-1 | Approved |
