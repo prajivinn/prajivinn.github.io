@@ -113,7 +113,7 @@ where substring(loan_status,1,1)=' ';
 
 ```
 <br>
-output: a sample of 5 rows is shown below
+Output: A sample of first 5 rows is displayed below
 <br>
 <br>
 
@@ -125,7 +125,82 @@ output: a sample of 5 rows is shown below
 |  Rejected |
 |  Rejected |
 
+<br>
 It seems the column *loan_status* has **leading blank spaces**.
+
+<br>
+
+```sql
+
+select education from loan_applications 
+where substring(education,1,1)=' ';
+
+```
+<br>
+Output: A sample of first 5 rows is displayed below
+<br>
+<br>
+
+| **education** |
+|---|
+| Not Graduate |
+| Not Graduate |
+| Not Graduate |
+| Not Graduate |
+| Not Graduate |
+
+<br>
+The *education* column has **leading blank spaces**.
+
+<br>
+
+```sql
+
+select gender from loan_applications 
+where substring(gender,1,1)=' ';
+
+```
+<br>
+Output: A sample of first 5 rows is displayed below
+<br>
+<br>
+
+| **gender** |
+|---|
+| Male |
+| Male |
+| Male |
+| Female |
+| Male |
+
+<br>
+The column *gender* has **leading blank spaces**.
+
+<br>
+
+```sql
+
+select self_employed from loan_applications 
+where substring(self_employed,1,1)=' ';
+
+```
+<br>
+Output: A sample of first 5 rows is displayed below
+<br>
+<br>
+
+| **gender** |
+|---|
+| No |
+| Yes |
+| No |
+| No |
+| Yes |
+
+<br>
+The column *gender* has **leading blank spaces**.
+
+<br>
 
 ```sql
 
@@ -233,5 +308,52 @@ FROM loan_applications;
 
 ```
 <br>
+
+We have created a *new table* called **loan_application_details** which contains no blank values in columns and performed feature engineering on some columns.
+
+* We removed the *leading blank spaces* using **TRIM** command of all the categorical variables such as *gender*, *education*, *self_employed* and *loan_status*.
+* We have put *cibil_score* under categories because there are different categories defined by government of India like for example cibil score above 690 or 700 is *Excellent* and there are also specified ranges for *Good*, *Fair* and *Low*.
+* We created bins/categories for columns such as *income_annum**, *loan_amount*, *residential_assests_value*, *commercial_assets_value*, *luxury_asset_value* and *bank_asset_value* because it will be helpful to view the distributions by categories when creating a dashboard.
+
+<br>
+
+```sql
+
+SELECT * FROM loan_application_details;
+
+```
+<br>
+output: A sample of first 5 rows of **21** columns is displayed below
+<br>
+<br>
+
+| **loan_id** | **no_of_dependents** | **gender** | **education** | **self_employed** | **income_annum** | **income_annum_group_lacs** |
+|---|---|---|---|---|---|---|
+| 1 | 2 | Male | Post Graduate | No | 9600000 |	90 Lacs+ |
+| 2 | 0 | Male | Post Graduate | Yes | 4100000 | 40-50 Lacs |
+| 3 | 3 | Male | Post Graduate | No | 9100000 |	90 Lacs+ |
+| 4 | 3 | Female | Post Graduate | No | 8200000 | 80-90 Lacs |
+| 5 | 5 | Male | Post Graduate | Yes | 9800000 | 90 Lacs+ |
+<br>
+| **loan_amount** | **loan_amount_group** | **loan_term** | **cibil_score** | **cibil_score_category** | **residential_assets_value** | **residential_assets_value_group** |
+|---|---|---|---|---|---|---|
+| 29900000 | 2.5-3 | 12 | 778 | Excellent | 2400000 | 0-0.5 |
+| 12200000 | 1-1.5 | 8 | 417 | Low | 2700000 | 0-0.5 |
+| 29700000 | 2.5-3 | 20 | 506 | Low | 7100000 |	0.5-1 |
+| 30700000 | 3-3.5 | 8 | 467 | Low | 18200000 |	1.5-2 |
+| 24200000 | 2-2.5 | 20 | 382 |	Low | 12400000 | 1-1.5 |
+<br>
+| **commercial_assets_value** | **commercial_assets_value_group** | **luxury_assets_value** | **luxury_assets_value_group** | **bank_asset_value** | **bank_asset_value_group** | **loan_status** |
+|---|---|---|---|---|---|---|
+| 17600000 | 1.5-2 | 22700000 | 2-2.5 | 8000000 | 0.5-1 | Approved |
+| 2200000 | 0-0.5 | 8800000 | 0.5-1 | 3300000 | 0-0.5 | Rejected |
+| 4500000 | 0-0.5 | 33300000 | 3-3.5 | 12800000 | 1-1.5 | Rejected |
+| 3300000 | 0-0.5 | 23300000 | 2-2.5 | 7900000 | 0.5-1 | Rejected |
+| 8200000 | 0.5-1 | 29400000 | 2.5-3 | 5000000 | 0.5-1 | Rejected |
+
+
+
+
+
 
 
