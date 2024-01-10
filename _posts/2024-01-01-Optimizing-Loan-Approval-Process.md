@@ -351,7 +351,7 @@ output: A sample of first 5 rows of **21** columns is displayed below
 
 <br>
 
-| **commercial_assets_value** | **commercial_assets_group** | **luxury_assets_value** | **luxury_assets_group** | **bank_asset_value** | **bank_asset_group** | **loan_status** |
+| **comm_assets_value** | **comm_assets_group** | **luxury_assets_val** | **luxury_assets_group** | **bank_asset_val** | **bank_asset_group** | **loan_status** |
 |---|---|---|---|---|---|---|
 | 17600000 | 1.5-2 | 22700000 | 2-2.5 | 8000000 | 0.5-1 | Approved |
 | 2200000 | 0-0.5 | 8800000 | 0.5-1 | 3300000 | 0-0.5 | Rejected |
