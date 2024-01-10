@@ -55,6 +55,7 @@ A sample of this data (the first 5 rows) can be seen below:
 
 <iframe width="1090" height="230" frameborder="0" scrolling="no" src="https://1drv.ms/x/c/a8cc30b6e6df073d/IQN599eh_Qx3RrSNkkxYeoTMAcN5fv3dIPMjnlBgXcH7r_U?wdAllowInteractivity=False&Item='Sheet1'!A1%3AN7&wdInConfigurator=True&wdInConfigurator=True"></iframe>
 
+<br>
 
 **Data Dictionary**
 
@@ -78,9 +79,9 @@ ___
 <br>
 # Data Cleaning & Transformation - SQL <a name="data-DCT"></a>
 
-We created an *empty_table* named **loan_applications** with specified columns and datatypes to match the columns of the excel dataset.
+We created an *empty_table* named **loan_applications** with specified columns and datatypes to match the columns of the excel dataset while importing it.
 
-Importing the *excel dataset* into the SQL database by
+Import the *excel dataset* into the SQL database by
 
 * Right click on Tables and select *Table Data Import Wizard*.
 * Select the file path and click on "Next".
@@ -363,6 +364,8 @@ This cleaned dataset can be used for further analysis.
 
 * For the column **residential_assets_value**, there are negative numbers and zero present in it. **Zero** means no residential assets available and **negative number** means there is already a **home loan** going on.
 
+<br>
+
 #### Finding Approval & Rejection applications and rates
 
 ```sql
@@ -383,6 +386,11 @@ Output:
 | **total_applications** | **approved_applications** | **rejected_applications** | **approval_rate** | **rejection_rate** |
 |---|---|---|---|---|
 | 4269 | 2656 | 1613 | 62.22 | 37.78 |
+
+<br>
+
+* approval_rate is 62.22%
+* rejection_rate is 37.78%
 
 <br>
 
@@ -409,6 +417,8 @@ Output:
 |---|---|---|
 | Approved | 1374 | 1282 |
 | Rejected | 833 | 780 |
+
+* Majority of the females got approved as well as rejected for loans compared to the males.
 
 <br>
 
@@ -438,6 +448,9 @@ Output:
 | Approved | 1288 | 1251 | 117 |
 | Rejected | 771 | 621 | 221 |
 
+* Majority of the applicants who did *post graduate* got rejected.
+* Majority of the applicants who did *not graduate* has got the loan approved.
+
 <br>
 
 ```sql
@@ -463,6 +476,10 @@ Output:
 |---|---|---|
 | Approved | 1318 | 1338 |
 | Rejected | 801 | 812 |
+
+<br>
+
+* The proportion of getting approved or rejected is almost equal aka 50% for the people who are and not self-employed. 
 
 <br>
 
@@ -496,6 +513,10 @@ Output:
 
 <br>
 
+* There are 6 applications who have *excellent* cibil_score but still got rejected. 
+* Majority of applicants who have *low* cibil_score got rejected but a group of people got approved.
+
+So cibil_score is not the most contributing factor but one of the factor. So we are not still clear what is the driving factor that decides the loan **approval** or **rejection** rate.
 
 
 
