@@ -7,6 +7,7 @@ tags: [EDA, PowerBI]
 
 In this project we perform exploratory data analaysis to identify factors influencing employee attrition and to analyze the effectiveness of training programs.
 
+# Table of contents
 
 - [00. Project Overview](#overview-main)
 - [01. Data Overview](#data-overview)
@@ -30,7 +31,11 @@ ___
 
 # Data Overview  <a name="data-overview"></a>
 
+A sample of first **5 rows** is shown below
+
 <iframe width="1090" height="230" frameborder="0" scrolling="no" src="https://1drv.ms/x/c/a8cc30b6e6df073d/IQOrPuKUu3eaR5oN5mS21z96ARzQlbvwZI80feRVs1JGlTs?wdAllowInteractivity=False&Item='Sheet1'!A1%3AN7&wdInConfigurator=True&wdInConfigurator=True"></iframe>
+
+**Data Dictionary**:
 
 * Employee_ID: Unique identifier for each employee.
 * Employee_Name: Name of the employee.
