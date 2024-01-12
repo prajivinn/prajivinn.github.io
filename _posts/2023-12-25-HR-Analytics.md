@@ -1,7 +1,7 @@
 ---
 layout: post
 title: HR-Analytics
-image: "/posts/regression-title-img.png"
+image: "/posts/emp_attrition.jpeg"
 tags: [EDA, PowerBI]
 ---
 
