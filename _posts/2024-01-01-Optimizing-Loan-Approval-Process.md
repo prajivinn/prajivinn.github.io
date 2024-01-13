@@ -16,7 +16,8 @@ In this project we aim to create an end-to-end solution using Excel, SQL, Power 
     - [Growth/Next Steps](#overview-growth)
 - [01. Concept Overview](#concept-overview)
 - [02. Data Overview & Preparation](#data-overview)
-- [03. Data Cleaning & Transformation - SQL](#data-DCT)
+- [03. Data Cleaning & Transformation](#data-DCT)
+- [04. Dashboard Creation](#data-DC)
 
 ___
 
@@ -25,6 +26,20 @@ ___
 ### Context <a name="overview-context"></a>
 
 A fintech company operating in India wants to optimize its loan approval process. They receive a large volume of loan applications daily and want to improve their approval process to reduce the risk of defaults while ensuring fair and timely approval decisions.
+
+* **Data Collection and Preparation**: Start by collecting historical loan application data in an Excel spreadsheet. This data includes information such as applicant details, financial history, loan amounts, interest rates, and whether the loan was approved or not.
+
+* **Data Import to SQL**: Import the Excel data into an SQL database for efficient management and analysis.
+  
+* **Data Cleaning and Transformation**: Perform data cleaning and transformation in SQL to handle missing values, outliers, and format discrepancies. Ensure that the dataset is well-prepared for analysis.
+
+* **Dashboard Creation in Power BI**: Connect the SQL database to Power BI and create a dashboard that provides real-time insights into the loan application process. Key visualizations should include approval rates, average loan amounts, and applicant demographics.
+  
+* **Predictive Modeling in Python**: Use Python to build a linear regression model that predicts the likelihood of loan approval based on applicant attributes. This model should help in assessing the creditworthiness of future applicants.
+  
+* **Recommendations**: Based on the analysis, provide recommendations to the fintech company to improve their loan approval process, such as adjusting approval criteria or interest rates.
+  
+This project aims to create an end-to-end solution using Excel, SQL, Power BI, and Python, providing valuable insights to help the FinTech company make informed decisions and optimize their loan approval process.
 
 ___
 
@@ -518,5 +533,19 @@ Output:
 
 So cibil_score is not the most contributing factor but one of the factor. So we are not still clear what is the driving factor that decides the loan **approval** or **rejection** rate.
 
+___
+
+# Dashboard Creation  <a name="data-DC"></a>
+
+<img width="1459" alt="Screenshot 2024-01-12 183031" src="https://github.com/prajivinn/prajivinn.github.io/assets/108303914/c54c1e10-61fc-4ec2-be3b-374267bed956">
+
+#### Extracting Observations
+
+* Approximately 62.2% of the loans in the dataset are approved( 2656 out of 4,269 ), indicating a slight class imbalance that doesn't require rebalancing.
+* Credit scores, particularly in the range of 540-550, serve as a distinct threshold for separating loan statuses.
+* The loan_status is highly correlated with credit_scores, but some applicants with high credit scores ( above 740 ) were still rejected, suggesting additional factors influencing loan approval.
+* No clear trends were observed between asset values and loan status, indicating that asset values alone might not be strong indicators of loan approval.
+
+**From the above observations, we can infer that credit_score could be one of factor for loan approval or rejection.**
 
 
