@@ -542,6 +542,7 @@ ___
 
 # Dashboard Creation  <a name="data-DC"></a>
 
+<br>
 <img width="1459" alt="Screenshot 2024-01-12 183031" src="https://github.com/prajivinn/prajivinn.github.io/assets/108303914/c54c1e10-61fc-4ec2-be3b-374267bed956">
 
 #### Extracting Observations
@@ -692,9 +693,11 @@ Output:
 | bank_asset_value_group | 4269 non-null | object | 
 | loan_status | 4269 non-null | object |
 
-<br>
+___
 
-#### Missing Values
+### Exploratory Data Analysis <a name="PM-EDA"></a>
+
+<br>
 
 ```python
 
@@ -751,12 +754,6 @@ df["loan_status"].value_counts(normalize = True)
 
 <br>
 We see that 62% of customers got their loan approved and 37% got rejected. This tells us that while the data isn’t perfectly balanced at 50:50, it isn’t too imbalanced either. Because of this, and as you will see, we make sure to not rely on classification accuracy alone when assessing results - also analysing Precision, Recall, and F1-Score.
-
-<br>
-
-___
-
-### Exploratory Data Analysis <a name="PI-EDA"></a>
 
 ```python
 
@@ -834,7 +831,7 @@ Output:
 
 ___
 
-### Logistic Regression <a name="PI-LR"></a>
+### Logistic Regression <a name="PM-LR"></a>
 
 <br>
 
@@ -891,7 +888,7 @@ Output:
 
 <br>
 
-**Split Out Data For Modelling**
+#### Split Out Data For Modelling
 
 In the next code block we do two things, we firstly split our data into an X object which contains only the predictor variables, and a y object that contains only our dependent variable.
 
@@ -922,7 +919,7 @@ print(y_test.shape)
 
 <br>
 
-**Categorical Predictor Variables**
+#### Categorical Predictor Variables
 
 In our dataset, we have one categorical variable gender which has values of “M” for Male, “F” for Female, and “U” for Unknown.
 
@@ -966,7 +963,7 @@ X_test.drop(categorical_vars, axis = 1, inplace = True)
 
 <br>
 
-**Feature Scaling**
+#### Feature Scaling
 
 ```python
 
@@ -983,7 +980,7 @@ X_test = pd.DataFrame(scale_stand.transform(X_test), columns = X_test.columns)
 
 <br>
 
-**Feature Selection** 
+#### Feature Selection
 
 As we discussed when applying Logistic Regression above - Feature Selection is the process used to select the input variables that are most important to your Machine Learning task. For more information around this, please see that section above.
 
@@ -1013,8 +1010,6 @@ X_train_features.columns
 
 ```
 <br>
-The below code then produces a plot that visualises the cross-validated classification accuracy with each potential number of features
-<br>
 
 ```python
 
@@ -1028,6 +1023,9 @@ plt.show()
 
 ```
 <br>
+The below code then produces a plot that visualises the cross-validated classification accuracy with each potential number of features
+
+<br>
 ![alt text](/img/posts/CP_3.jpg "LR_CP3")
 
 <br>
@@ -1035,7 +1033,7 @@ This creates the above plot, which shows us that the highest cross-validated cla
 
 <br>
 
-**Model Training**
+#### Model Training
 
 Instantiating and training our Logistic Regression model is done using the below code. We use the random_state parameter to ensure reproducible results, meaning any refinements can be compared to past results. We also specify max_iter = 1000 to allow the solver more attempts at finding an optimal regression line, as the default value of 100 was not enough.
 
@@ -1052,7 +1050,7 @@ lr.fit(X_train, y_train)
 
 <br>
 
-**Model Performance Assessment**:
+#### Model Performance Assessment 
 
 **Predict On The Test Set**
 To assess how well our model is predicting on new data - we use the trained model object (here called clf) and ask it to predict the signup_flag variable for the test set.
@@ -1070,7 +1068,8 @@ y_pred_prob = clf.predict_proba(X_test)[:,1]
 ```
 <br>
 
-**Confusion Matrix**
+#### Confusion Matrix
+
 A Confusion Matrix provides us a visual way to understand how our predictions match up against the actual values for those test set observations.
 
 The below code creates the Confusion Matrix using the confusion_matrix functionality from within scikit-learn and then plots it using matplotlib.
@@ -1105,7 +1104,7 @@ Since the proportion of signups in our data was around 30:70 we will next analys
 
 <br>
 
-**Classification Performance Metrics**
+#### Classification Performance Metrics
 
 **Classification Accuracy**
 
@@ -1211,7 +1210,7 @@ Output:
 
 <br>
 
-**Finding The Optimal Classification Threshold**
+#### Finding The Optimal Classification Threshold
 
 By default, most pre-built classification models & algorithms will just use a 50% probability to discern between a positive class prediction (delivery club signup) and a negative class prediction (delivery club non-signup).
 
