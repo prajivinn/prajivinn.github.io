@@ -23,6 +23,7 @@ In this project we aim to create an end-to-end solution using Excel, SQL, Power 
     - [Data Import & Analysis](#PM-DIA)
     - [Exploratory Data Analysis](#PM-EDA)
     - [Logistic Regression](#PM-LR)
+    - [Decision Tree](#PM-DT)
 
 ___
 
@@ -560,7 +561,7 @@ ___
 
 <br>
 
-### Modelling Overview  <a name="PM-overview"></a>
+## Modelling Overview  <a name="PM-overview"></a>
 
 We will build a model that looks to accurately predict *loan_status*, based upon the customer metrics.
 
@@ -573,7 +574,7 @@ As we are predicting a binary output, we tested four classification modelling ap
 * Random Forest
 * K Nearest Neighbours (KNN)
 
-### Data Import & Analysis <a name="PM-DIA"></a>
+## Data Import & Analysis <a name="PM-DIA"></a>
 
 <br>
 
@@ -695,7 +696,7 @@ Output:
 
 ___
 
-### Exploratory Data Analysis <a name="PM-EDA"></a>
+## Exploratory Data Analysis <a name="PM-EDA"></a>
 
 <br>
 
@@ -831,7 +832,7 @@ Output:
 
 ___
 
-### Logistic Regression <a name="PM-LR"></a>
+## Logistic Regression <a name="PM-LR"></a>
 
 <br>
 
@@ -1053,6 +1054,7 @@ lr.fit(X_train, y_train)
 #### Model Performance Assessment 
 
 **Predict On The Test Set**
+
 To assess how well our model is predicting on new data - we use the trained model object (here called clf) and ask it to predict the signup_flag variable for the test set.
 
 In the code below we create one object to hold the binary 1/0 predictions, and another to hold the actual prediction probabilities for the positive class.
@@ -1105,6 +1107,8 @@ Since the proportion of signups in our data was around 30:70 we will next analys
 <br>
 
 #### Classification Performance Metrics
+
+<br>
 
 **Classification Accuracy**
 
@@ -1212,7 +1216,7 @@ Output:
 
 #### Finding The Optimal Classification Threshold
 
-By default, most pre-built classification models & algorithms will just use a 50% probability to discern between a positive class prediction (delivery club signup) and a negative class prediction (delivery club non-signup).
+By default, most pre-built classification models & algorithms will just use a 50% probability to discern between a positive class prediction (loan status approved) and a negative class prediction (loan status rejected).
 
 Just because 50% is the default threshold does not mean it is the best one for our task.
 
@@ -1269,5 +1273,365 @@ Along the x-axis of the above plot we have the different classification threshol
 
 As you can see at the top of the plot, the optimal F1-Score for this model 0.94 and this is obtained at a classification threshold of 0.46. This is higher than the F1-Score of 0.934 that we achieved at the default classification threshold of 0.50!
 
-___
+<br>
+
+```python
+
+optimal_threshold = 0.46
+
+y_pred_class_opt_thresh = (y_pred_prob >= optimal_threshold) * 1
+
+y_pred_class_opt_thresh
+>> array([1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1,
+       1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1,
+       1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1,
+       1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 0,
+       1, 0, 1, 1, 1, 1, 0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1,
+       0, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1,
+       1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0,
+       1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1,
+       1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 0, 0, 1, 1, 0, 1,
+       1, 1, 0, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1,
+       0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 1,
+       0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 1, 1, 0, 1, 1, 0,
+       1, 0, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1,
+       1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 0, 1,
+       1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 1, 1, 1,
+       1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 1, 1, 0, 1,
+       1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0,
+       1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1,
+       1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0,
+       0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1,
+       0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1,
+       1, 1, 0, 0, 1, 0, 1, 0, 1, 1, 0, 0, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1,
+       1, 1, 0, 0, 1, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0,
+       1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1,
+       0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1,
+       1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 1,
+       1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1,
+       1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 1, 1, 0, 1, 1,
+       1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1,
+       0, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 0, 1, 1, 1, 0, 0, 1,
+       1, 1, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1,
+       1, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 1, 0, 1, 1, 0, 0, 1, 1, 1, 1,
+       1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0,
+       0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1,
+       1, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1,
+       0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0,
+       0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 0, 1,
+       1, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1,
+       1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0])
+
+```
+<br>
+Overall this model performed pretty well with f1-score of **94%** being reached when we altered our probability threshold classification
+
+<br>
+## Decision Tree <a name="PM-DT"></a>
+
+<br>
+We utlise the scikit-learn library within Python to model our data using Logistic Regression. The code sections below are broken up into 5 key sections:
+
+* Data Import
+* Missing Values
+* Data Preprocessing
+* Model Training
+* Model Performance Assessment
+* Decision Tree Regularisation
+
+<br>
+
+### Data Import
+
+```python
+
+# import required packages
+import pandas as pd
+import pickle
+import matplotlib.pyplot as plt
+import numpy as np
+from sklearn.tree import DecisionTreeClassifier, plot_tree
+from sklearn.utils import shuffle
+from sklearn.model_selection import train_test_split, cross_val_score, KFold
+from sklearn.metrics import confusion_matrix, accuracy_score, precision_score, recall_score, f1_score
+from sklearn.preprocessing import OneHotEncoder
+
+df = pd.read_sql(query, database)
+
+# dropping loan_id column
+df_model = df[['no_of_dependents', 'gender', 'education', 'self_employed','income_annum', 'loan_amount',     
+               'loan_term', 'cibil_score','residential_assets_value','commercial_assets_value', 
+               'luxury_assets_value',  'bank_asset_value', 'loan_status']]
+
+# label encoding
+df_model["loan_status"]= df_model["loan_status"].map({"Approved":1,"Rejected":0})
+
+```
+<br>
+
+### Missing Values
+
+The number of missing values in the data was extremely low, so instead of applying any imputation (i.e. mean, most common value) we will just remove those rows
+
+```python
+
+# checking for null values
+df_model.isna().sum().sum()
+>> 0
+
+```
+<br>
+
+### Data Preprocessing
+
+<br>
+
+```python
+
+# split data into X and y objects for modelling
+X = df_model.drop(["loan_status"], axis = 1)
+y = df_model["loan_status"]
+
+# split out training & test sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 42, stratify = y)
+
+print(X_train.shape)
+>> (3415, 12)
+print(X_test.shape)
+>> (854, 12)
+print(y_train.shape)
+>> (3415,)
+print(y_test.shape)
+>> (854,)
+
+```
+<br>
+#### Categorical Predictor Variables
+
+In our dataset, we have one categorical variable *gender* which has values of "M" for Male, "F" for Female, and "U" for Unknown.
+
+The Logistic Regression algorithm can't deal with data in this format as it can't assign any numerical meaning to it when looking to assess the relationship between the variable and the dependent variable.
+
+As *gender* doesn't have any explicit *order* to it, in other words, Male isn't higher or lower than Female and vice versa - one appropriate approach is to apply One Hot Encoding to the categorical column.
+
+One Hot Encoding can be thought of as a way to represent categorical variables as binary vectors, in other words, a set of *new* columns for each categorical value with either a 1 or a 0 saying whether that value is true or not for that observation.  These new columns would go into our model as input variables, and the original column is discarded.
+
+We also drop one of the new columns using the parameter *drop = "first"*.  We do this to avoid the *dummy variable trap* where our newly created encoded columns perfectly predict each other - and we run the risk of breaking the assumption that there is no multicollinearity, a requirement or at least an important consideration for some models, Linear Regression being one of them! Multicollinearity occurs when two or more input variables are *highly* correlated with each other, it is a scenario we attempt to avoid as in short, while it won't neccessarily affect the predictive accuracy of our model, it can make it difficult to trust the statistics around how well the model is performing, and how much each input variable is truly having.
+
+In the code, we also make sure to apply *fit_transform* to the training set, but only *transform* to the test set.  This means the One Hot Encoding logic will *learn and apply* the "rules" from the training data, but only *apply* them to the test data.  This is important in order to avoid *data leakage* where the test set *learns* information about the training data, and means we can't fully trust model performance metrics!
+
+For ease, after we have applied One Hot Encoding, we turn our training and test objects back into Pandas Dataframes, with the column names applied.
+
+<br>
+
+```python
+
+# list of categorical variables that need encoding
+categorical_vars = ["gender","education", "self_employed"]
+
+# instantiate OHE class
+one_hot_encoder = OneHotEncoder(sparse=False, drop = "first")
+
+# apply OHE
+X_train_encoded = one_hot_encoder.fit_transform(X_train[categorical_vars])
+X_test_encoded = one_hot_encoder.transform(X_test[categorical_vars])
+
+# extract feature names for encoded columns
+encoder_feature_names = one_hot_encoder.get_feature_names_out(categorical_vars)
+
+# turn objects back to pandas dataframe
+X_train_encoded = pd.DataFrame(X_train_encoded, columns = encoder_feature_names)
+X_train = pd.concat([X_train.reset_index(drop=True), X_train_encoded.reset_index(drop=True)], axis = 1)
+X_train.drop(categorical_vars, axis = 1, inplace = True)
+
+X_test_encoded = pd.DataFrame(X_test_encoded, columns = encoder_feature_names)
+X_test = pd.concat([X_test.reset_index(drop=True), X_test_encoded.reset_index(drop=True)], axis = 1)
+X_test.drop(categorical_vars, axis = 1, inplace = True)
+
+```
+<br>
+
+### Model Training
+
+<br>
+
+Instantiating and training our Decision Tree model is done using the below code.  We use the *random_state* parameter to ensure we get reproducible results, and this helps us understand any improvements in performance with changes to model hyperparameters.
+
+<br>
+
+```python
+
+# instantiate our model object
+dt = DecisionTreeClassifier(random_state = 42, max_depth = 5)
+
+# fit our model using our training & test sets
+dt.fit(X_train, y_train)
+
+```
+<br>
+
+### Model Performance Assessment
+
+<br>
+
+#### Predict On The Test Set
+
+Just like we did with Logistic Regression, to assess how well our model is predicting on new data - we use the trained model object (here called *clf*) and ask it to predict the *signup_flag* variable for the test set.
+
+In the code below we create one object to hold the binary 1/0 predictions, and another to hold the actual prediction probabilities for the positive class.
+
+```python
+
+# predict on the test set
+
+y_pred_class = dt.predict(X_test)
+y_pred_prob = dt.predict_proba(X_test)[:,1]
+
+```
+<br>
+
+#### Confusion Matrix
+
+As we discussed in the above section applying Logistic Regression - a Confusion Matrix provides us a visual way to understand how our predictions match up against the actual values for those test set observations.
+
+The below code creates the Confusion Matrix using the *confusion_matrix* functionality from within scikit-learn and then plots it using matplotlib.
+
+```python
+
+# create the confusion matrix
+conf_matrix = confusion_matrix(y_test, y_pred_class)
+
+# plot the confusion matrix
+plt.style.use("seaborn-poster")
+plt.matshow(conf_matrix, cmap = "coolwarm")
+plt.gca().xaxis.tick_bottom()
+plt.title("Confusion Matrix")
+plt.ylabel("Actual Class")
+plt.xlabel("Predicted Class")
+for (i, j), corr_value in np.ndenumerate(conf_matrix):
+    plt.text(j, i, corr_value, ha = "center", va = "center", fontsize = 20)
+
+plt.show()
+
+```
+<br>
+![alt text](/img/posts/CP_6.jpg "DT_CP6")
+
+<br>
+The aim is to have a high proportion of observations falling into the top left cell (predicted rejected and actual rejected) and the bottom right cell (predicted approved and actual approved).
+
+Since the proportion of signups in our data was around 30:70 we will again analyse not only Classification Accuracy, but also Precision, Recall, and F1-Score as they will help us assess how well our model has performed from different points of view.
+
+<br>
+
+#### Classification Performance Metrics
+
+<br>
+
+**Accuracy, Precision, Recall, F1-Score**
+
+For details on these performance metrics, please see the above section on Logistic Regression.  Using all four of these metrics in combination gives a really good overview of the performance of a classification model, and gives us an understanding of the different scenarios & considerations!
+
+In the code below, we utilise in-built functionality from scikit-learn to calculate these four metrics.
+
+```python
+
+print('Accuracy:', '%.3f' % accuracy_score(y_test, y_pred_class))
+>> Accuracy: 0.968
+
+print('Precision:', '%.3f' % precision_score(y_test, y_pred_class))
+>> Precision: 0.983
+
+print('Recall:', '%.3f' % recall_score(y_test, y_pred_class))
+>> Recall: 0.966
+
+print('F1 Score:', '%.3f' % f1_score(y_test, y_pred_class))
+>> F1 Score: 0.974
+
+```
+<br>
+* Accuracy: We have an accuracy of around 0.968. This suggests that our model is correctly classifying around 90.9% of instances.
+
+* Precision: Precision measures how many of the predicted positive instances are actually positive. With a precision of around 0.983, it means that about 98.3% of the instances predicted as positive by our model are truly positive.
+
+* Recall: Recall, also known as sensitivity or true positive rate, indicates how many of the actual positive instances our model is capturing. With a recall of around 0.966, it means that our model is correctly identifying about 96.6% of the actual positive instances.
+
+* F1 Score: The F1 score is the harmonic mean of precision and recall and provides a balanced view of a model's performance. With an F1 score of around 0.974, it indicates that the model is achieving a balanced trade-off between precision and recall.
+
+```python
+
+# plot the nodes of the decision tree
+plt.figure(figsize=(25,15))
+tree = plot_tree(dt,
+                 feature_names = X.columns,
+                 filled = True,
+                 rounded = True,
+                 fontsize = 16)
+
+```
+<br>
+That code gives us the below plot:
+
+<br
+![alt text](/img/posts/CP_7.jpg "DT_CP7")
+
+<br>
+This is a very powerful visual, and one that can be shown to stakeholders in the business to ensure they understand exactly what is driving the predictions.
+
+One interesting thing to note is that the very first split appears to be using the variable **income_annum** so it would seem that this is a very important variable when it comes to predicting loan status.
+
+<br>
+
+### Decision Tree Regularisation
+
+<br>
+Decision Tree’s can be prone to over-fitting, in other words, without any limits on their splitting, they will end up learning the training data perfectly. We would much prefer our model to have a more generalised set of rules, as this will be more robust & reliable when making predictions on new data.
+
+One effective method of avoiding this over-fitting, is to apply a **max depth** to the Decision Tree, meaning we only allow it to split the data a certain number of times before it is required to stop.
+
+We initially trained our model with a placeholder depth of 5, but unfortunately, we don’t necessarily know the optimal number for this. Below we will loop over a variety of values and assess which gives us the best predictive performance!
+
+<br>
+
+```python
+
+# finding the best max_depth
+
+# set up range for search, and empty list to append accuracy scores to
+max_depth_list = list(range(1,15))
+accuracy_scores = []
+
+# loop through each possible depth, train and validate model, append test set f1-score
+for depth in max_depth_list:
+    
+    dt = DecisionTreeClassifier(max_depth = depth, random_state = 42)
+    dt.fit(X_train,y_train)
+    y_pred = dt.predict(X_test)
+    accuracy = f1_score(y_test,y_pred)
+    accuracy_scores.append(accuracy)
+    
+# store max accuracy, and optimal depth    
+max_accuracy = max(accuracy_scores)
+max_accuracy_idx = accuracy_scores.index(max_accuracy)
+optimal_depth = max_depth_list[max_accuracy_idx]
+
+# plot accuracy by max depth
+plt.plot(max_depth_list,accuracy_scores)
+plt.scatter(optimal_depth, max_accuracy, marker = "x", color = "red")
+plt.title(f"Accuracy (F1 Score) by Max Depth \n Optimal Tree Depth: {optimal_depth} (F1 Score: {round(max_accuracy,4)})")
+plt.xlabel("Max Depth of Decision Tree")
+plt.ylabel("Accuracy (F1 Score)")
+plt.tight_layout()
+plt.show()
+
+```
+<br>
+That code gives us the below plot:
+
+<br
+![alt text](/img/posts/CP_8.jpg "DT_CP8")
+
+<br>
+In the plot we can see that the maximum F1-Score on the test set is found when applying a max_depth value of **12** which takes our F1-Score up to **0.9859**.
+
 
