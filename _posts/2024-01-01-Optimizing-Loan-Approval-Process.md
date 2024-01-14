@@ -1330,7 +1330,7 @@ Overall this model performed pretty well with f1-score of **94%** being reached 
 ## Decision Tree <a name="PM-DT"></a>
 
 <br>
-We utlise the scikit-learn library within Python to model our data using Logistic Regression. The code sections below are broken up into 5 key sections:
+We utlise the scikit-learn library within Python to model our data using Decision Tree. The code sections below are broken up into 5 key sections:
 
 * Data Import
 * Missing Values
@@ -1634,4 +1634,330 @@ That code gives us the below plot:
 <br>
 In the plot we can see that the maximum F1-Score on the test set is found when applying a max_depth value of **12** which takes our F1-Score up to **0.9859**.
 
+___
+<br>
+# Random Forest <a name="PM-RF"></a>
 
+<br>
+We utlise the scikit-learn library within Python to model our data using Random Forest. The code sections below are broken up into 5 key sections:
+
+* Data Import
+* Missing Values
+* Data Preprocessing
+* Model Training
+* Model Performance Assessment
+* Feature Importance
+
+<br>
+
+### Data Import
+
+```python
+
+# import required packages
+import pandas as pd
+import pickle
+import matplotlib.pyplot as plt
+import numpy as np
+from sklearn.tree import DecisionTreeClassifier, plot_tree
+from sklearn.utils import shuffle
+from sklearn.model_selection import train_test_split, cross_val_score, KFold
+from sklearn.metrics import confusion_matrix, accuracy_score, precision_score, recall_score, f1_score
+from sklearn.preprocessing import OneHotEncoder
+
+df = pd.read_sql(query, database)
+
+# dropping loan_id column
+df_model = df[['no_of_dependents', 'gender', 'education', 'self_employed','income_annum', 'loan_amount',     
+               'loan_term', 'cibil_score','residential_assets_value','commercial_assets_value', 
+               'luxury_assets_value',  'bank_asset_value', 'loan_status']]
+
+# label encoding
+df_model["loan_status"]= df_model["loan_status"].map({"Approved":1,"Rejected":0})
+
+```
+<br>
+### Missing Values
+
+The number of missing values in the data is 0.
+
+```python
+
+# checking for null values
+df_model.isna().sum().sum()
+>> 0
+
+```
+<br>
+
+### Data Preprocessing
+
+<br>
+
+```python
+
+# split data into X and y objects for modelling
+X = df_model.drop(["loan_status"], axis = 1)
+y = df_model["loan_status"]
+
+# split out training & test sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 42, stratify = y)
+
+print(X_train.shape)
+>> (3415, 12)
+print(X_test.shape)
+>> (854, 12)
+print(y_train.shape)
+>> (3415,)
+print(y_test.shape)
+>> (854,)
+
+```
+<br>
+
+#### Categorical Predictor Variables
+
+In our dataset, we have one categorical variable *gender* which has values of "M" for Male, "F" for Female, and "U" for Unknown.
+
+The Logistic Regression algorithm can't deal with data in this format as it can't assign any numerical meaning to it when looking to assess the relationship between the variable and the dependent variable.
+
+As *gender* doesn't have any explicit *order* to it, in other words, Male isn't higher or lower than Female and vice versa - one appropriate approach is to apply One Hot Encoding to the categorical column.
+
+One Hot Encoding can be thought of as a way to represent categorical variables as binary vectors, in other words, a set of *new* columns for each categorical value with either a 1 or a 0 saying whether that value is true or not for that observation.  These new columns would go into our model as input variables, and the original column is discarded.
+
+We also drop one of the new columns using the parameter *drop = "first"*.  We do this to avoid the *dummy variable trap* where our newly created encoded columns perfectly predict each other - and we run the risk of breaking the assumption that there is no multicollinearity, a requirement or at least an important consideration for some models, Linear Regression being one of them! Multicollinearity occurs when two or more input variables are *highly* correlated with each other, it is a scenario we attempt to avoid as in short, while it won't neccessarily affect the predictive accuracy of our model, it can make it difficult to trust the statistics around how well the model is performing, and how much each input variable is truly having.
+
+In the code, we also make sure to apply *fit_transform* to the training set, but only *transform* to the test set.  This means the One Hot Encoding logic will *learn and apply* the "rules" from the training data, but only *apply* them to the test data.  This is important in order to avoid *data leakage* where the test set *learns* information about the training data, and means we can't fully trust model performance metrics!
+
+For ease, after we have applied One Hot Encoding, we turn our training and test objects back into Pandas Dataframes, with the column names applied.
+
+<br>
+
+```python
+
+# list of categorical variables that need encoding
+categorical_vars = ["gender","education", "self_employed"]
+
+# instantiate OHE class
+one_hot_encoder = OneHotEncoder(sparse=False, drop = "first")
+
+# apply OHE
+X_train_encoded = one_hot_encoder.fit_transform(X_train[categorical_vars])
+X_test_encoded = one_hot_encoder.transform(X_test[categorical_vars])
+
+# extract feature names for encoded columns
+encoder_feature_names = one_hot_encoder.get_feature_names_out(categorical_vars)
+
+# turn objects back to pandas dataframe
+X_train_encoded = pd.DataFrame(X_train_encoded, columns = encoder_feature_names)
+X_train = pd.concat([X_train.reset_index(drop=True), X_train_encoded.reset_index(drop=True)], axis = 1)
+X_train.drop(categorical_vars, axis = 1, inplace = True)
+
+X_test_encoded = pd.DataFrame(X_test_encoded, columns = encoder_feature_names)
+X_test = pd.concat([X_test.reset_index(drop=True), X_test_encoded.reset_index(drop=True)], axis = 1)
+X_test.drop(categorical_vars, axis = 1, inplace = True)
+
+```
+<br>
+
+### Model Training
+
+<br>
+
+Instantiating and training our Random Forest model is done using the below code. We use the random_state parameter to ensure we get reproducible results, and this helps us understand any improvements in performance with changes to model hyperparameters.
+
+We also look to build more Decision Trees in the Random Forest (500) than would be done using the default value of 100.
+
+Lastly, since the default scikit-learn implementation of Random Forests does not limit the number of randomly selected variables offered up for splitting at each split point in each Decision Tree - we put this in place using the max_features parameter. This can always be refined later through testing, or through an approach such as gridsearch.
+
+<br>
+
+```python
+
+# instantiate our model object
+rf = RandomForestClassifier(random_state = 42, n_estimators = 500, max_features = 5)
+
+# fit our model using our training & test sets
+rf.fit(X_train, y_train)
+
+```
+<br>
+
+### Model Performance Assessment
+
+<br>
+
+#### Predict On The Test Set
+
+Just like we did with Logistic Regression & our Decision Tree, to assess how well our model is predicting on new data - we use the trained model object (here called clf) and ask it to predict the signup_flag variable for the test set.
+
+In the code below we create one object to hold the binary 1/0 predictions, and another to hold the actual prediction probabilities for the positive class.
+
+```python
+
+# predict on the test set
+
+y_pred_class = rf.predict(X_test)
+y_pred_prob = rf.predict_proba(X_test)[:,1]
+
+```
+<br>
+
+#### Confusion Matrix
+
+As we discussed in the above section applying Logistic Regression - a Confusion Matrix provides us a visual way to understand how our predictions match up against the actual values for those test set observations.
+
+The below code creates the Confusion Matrix using the *confusion_matrix* functionality from within scikit-learn and then plots it using matplotlib.
+
+```python
+
+# create the confusion matrix
+conf_matrix = confusion_matrix(y_test, y_pred_class)
+
+# plot the confusion matrix
+plt.style.use("seaborn-poster")
+plt.matshow(conf_matrix, cmap = "coolwarm")
+plt.gca().xaxis.tick_bottom()
+plt.title("Confusion Matrix")
+plt.ylabel("Actual Class")
+plt.xlabel("Predicted Class")
+for (i, j), corr_value in np.ndenumerate(conf_matrix):
+    plt.text(j, i, corr_value, ha = "center", va = "center", fontsize = 20)
+
+plt.savefig('CP_9.jpg',bbox_inches='tight',dpi=150)
+plt.show()
+
+```
+<br>
+![alt text](/img/posts/CP_9.jpg "RF_CP9")
+
+<br>
+The aim is to have a high proportion of observations falling into the top left cell (predicted rejected and actual rejected) and the bottom right cell (predicted approved and actual approved).
+
+Since the proportion of signups in our data was around 30:70 we will again analyse not only Classification Accuracy, but also Precision, Recall, and F1-Score as they will help us assess how well our model has performed from different points of view.
+
+<br>
+
+#### Classification Performance Metrics
+
+<br>
+
+**Accuracy, Precision, Recall, F1-Score**
+
+For details on these performance metrics, please see the above section on Logistic Regression.  Using all four of these metrics in combination gives a really good overview of the performance of a classification model, and gives us an understanding of the different scenarios & considerations!
+
+In the code below, we utilise in-built functionality from scikit-learn to calculate these four metrics.
+
+```python
+
+print('Accuracy:', '%.3f' % accuracy_score(y_test, y_pred_class))
+>> Accuracy: 0.985
+print('Precision:', '%.3f' % precision_score(y_test, y_pred_class))
+>> Precision: 0.985
+print('Recall:', '%.3f' % recall_score(y_test, y_pred_class))
+>> Recall: 0.991
+print('F1 Score:', '%.3f' % f1_score(y_test, y_pred_class))
+>> F1 Score: 0.988
+
+```
+<br>
+* Accuracy: We have an accuracy of around 0.968. This suggests that our model is correctly classifying around 90.9% of instances.
+
+* Precision: Precision measures how many of the predicted positive instances are actually positive. With a precision of around 0.983, it means that about 98.3% of the instances predicted as positive by our model are truly positive.
+
+* Recall: Recall, also known as sensitivity or true positive rate, indicates how many of the actual positive instances our model is capturing. With a recall of around 0.966, it means that our model is correctly identifying about 96.6% of the actual positive instances.
+
+* F1 Score: The F1 score is the harmonic mean of precision and recall and provides a balanced view of a model's performance. With an F1 score of around 0.974, it indicates that the model is achieving a balanced trade-off between precision and recall.
+
+<br>
+
+### Feature Importance
+
+<br>
+
+Random Forests are an ensemble model, made up of many, many Decision Trees, each of which is different due to the randomness of the data being provided, and the random selection of input variables available at each potential split point.
+
+Because of this, we end up with a powerful and robust model, but because of the random or different nature of all these Decision trees - the model gives us a unique insight into how important each of our input variables are to the overall model.
+
+As we’re using random samples of data, and input variables for each Decision Tree - there are many scenarios where certain input variables are being held back and this enables us a way to compare how accurate the models predictions are if that variable is or isn’t present.
+
+So, at a high level, in a Random Forest we can measure importance by asking How much would accuracy decrease if a specific input variable was removed or randomised?
+
+If this decrease in performance, or accuracy, is large, then we’d deem that input variable to be quite important, and if we see only a small decrease in accuracy, then we’d conclude that the variable is of less importance.
+
+At a high level, there are two common ways to tackle this. The first, often just called Feature Importance is where we find all nodes in the Decision Trees of the forest where a particular input variable is used to split the data and assess what the gini impurity score (for a Classification problem) was before the split was made, and compare this to the gini impurity score after the split was made. We can take the average of these improvements across all Decision Trees in the Random Forest to get a score that tells us how much better we’re making the model by using that input variable.
+
+If we do this for each of our input variables, we can compare these scores and understand which is adding the most value to the predictive power of the model!
+
+The other approach, often called Permutation Importance cleverly uses some data that has gone unused at when random samples are selected for each Decision Tree (this stage is called “bootstrap sampling” or “bootstrapping”)
+
+These observations that were not randomly selected for each Decision Tree are known as Out of Bag observations and these can be used for testing the accuracy of each particular Decision Tree.
+
+For each Decision Tree, all of the Out of Bag observations are gathered and then passed through. Once all of these observations have been run through the Decision Tree, we obtain a classification accuracy score for these predictions.
+
+In order to understand the importance, we randomise the values within one of the input variables - a process that essentially destroys any relationship that might exist between that input variable and the output variable - and run that updated data through the Decision Tree again, obtaining a second accuracy score. The difference between the original accuracy and the new accuracy gives us a view on how important that particular variable is for predicting the output.
+
+Permutation Importance is often preferred over Feature Importance which can at times inflate the importance of numerical features. Both are useful, and in most cases will give fairly similar results.
+
+Let’s put them both in place, and plot the results…
+
+```python
+
+# calculate feature importance
+feature_importance = pd.DataFrame(clf.feature_importances_)
+feature_names = pd.DataFrame(X.columns)
+feature_importance_summary = pd.concat([feature_names,feature_importance], axis = 1)
+feature_importance_summary.columns = ["input_variable","feature_importance"]
+feature_importance_summary.sort_values(by = "feature_importance",ascending=False, inplace = True)
+feature_importance_summary
+
+```
+<br>
+
+| **input_variable** | **feature_importance** |
+|---|---|
+| cibil_score | 0.816747 |
+| loan_term | 0.065288 |
+| loan_amount | 0.029542 |
+| income_annum | 0.016843 |
+| luxury_assets_value | 0.013493 |
+| education_Post Graduate | 0.012536
+| commercial_assets_value | 0.012152
+| residential_assets_value | 0.012024
+| bank_asset_value | 0.009939
+| no_of_dependents | 0.005875
+| education_Not Graduate | 0.002577
+| self_employed_Yes | 0.001598
+| gender_Male | 0.001387
+
+<br>
+
+```python
+
+# calculate permutation importance
+result = permutation_importance(rf, X_test, y_test, n_repeats = 10, random_state = 42)
+permutation_importance = pd.DataFrame(result["importances_mean"])
+feature_names = pd.DataFrame(X_train.columns)
+permutation_importance_summary = pd.concat([feature_names,permutation_importance], axis = 1)
+permutation_importance_summary.columns = ["input_variable","permutation_importance"]
+permutation_importance_summary.sort_values(by = "permutation_importance",ascending=False, inplace = True)
+permutation_importance_summary
+
+```
+<br>
+
+| **input_variable** | **feature_importance** |
+|---|---|
+| cibil_score | 0.422600 |
+| loan_term | 0.047658 |
+| loan_amount |	0.016628 |
+| income_annum | 0.013466 |
+| luxury_assets_value |	0.006089 |
+| commercial_assets_value | 0.004450 |
+| bank_asset_value | 0.001874 |
+| self_employed_Yes | 0.001639 |
+| no_of_dependents | 0.001522 |
+| residential_assets_value | 0.000703 |
+| gender_Male |	0.000351 |
+| education_Post Graduate | 0.000234 |
+| education_Not Graduate | -0.000351 |
