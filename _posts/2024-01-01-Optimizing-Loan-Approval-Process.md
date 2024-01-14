@@ -1371,7 +1371,7 @@ df_model["loan_status"]= df_model["loan_status"].map({"Approved":1,"Rejected":0}
 
 ### Missing Values
 
-The number of missing values in the data was extremely low, so instead of applying any imputation (i.e. mean, most common value) we will just remove those rows
+The number of missing values in the data is 0.
 
 ```python
 
@@ -1572,7 +1572,7 @@ tree = plot_tree(dt,
 <br>
 That code gives us the below plot:
 
-<br
+<br>
 ![alt text](/img/posts/CP_7.jpg "DT_CP7")
 
 <br>
@@ -1628,7 +1628,7 @@ plt.show()
 <br>
 That code gives us the below plot:
 
-<br
+<br>
 ![alt text](/img/posts/CP_8.jpg "DT_CP8")
 
 <br>
