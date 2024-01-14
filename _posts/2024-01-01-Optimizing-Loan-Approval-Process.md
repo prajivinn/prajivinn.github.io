@@ -92,10 +92,10 @@ A sample of this data (the first 5 rows) can be seen below:
 * loan_amount - Refers to the loan amount disbursed.
 * loan_term_yrs - Refers to the loan term in years.
 * cibil_score - This is a cibil score of the person.
-* residential_assets_value - Refers to the price of residential assets such as apartment, villa etc
-* commercial_assets_value - Refers to the price of commerical assets such as offices, medical centres, hotels, malls etc
-* luxury_assets_value - Refers to the price of luxury assets such as luxury cars or items
-* bank_asset_value - Refers how much money is in the bank including bank shares, Fixed deposits etc
+* residential_assets_value - Refers to the price of residential assets such as apartment, villa etc.
+* commercial_assets_value - Refers to the price of commerical assets such as offices, medical centres, hotels, malls etc.
+* luxury_assets_value - Refers to the price of luxury assets such as luxury cars or items.
+* bank_asset_value - Refers how much money is in the bank including bank shares, Fixed deposits etc.
 * loan_status - Refers to the status of the loan whether it is approved or not.
 
 ___
@@ -549,6 +549,8 @@ ___
 <br>
 <img width="1459" alt="Screenshot 2024-01-12 183031" src="https://github.com/prajivinn/prajivinn.github.io/assets/108303914/c54c1e10-61fc-4ec2-be3b-374267bed956">
 
+<br>
+
 #### Extracting Observations
 
 * Approximately 62.2% of the loans in the dataset are approved( 2656 out of 4,269 ), indicating a slight class imbalance that doesn't require rebalancing.
@@ -576,6 +578,8 @@ As we are predicting a binary output, we tested four classification modelling ap
 * Decision Tree
 * Random Forest
 * K Nearest Neighbours (KNN)
+
+<br>
 
 ## Data Import & Analysis <a name="PM-DIA"></a>
 
