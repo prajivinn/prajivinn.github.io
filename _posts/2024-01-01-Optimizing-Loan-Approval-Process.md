@@ -25,6 +25,8 @@ In this project we aim to create an end-to-end solution using Excel, SQL, Power 
     - [Logistic Regression](#PM-LR)
     - [Decision Tree](#PM-DT)
     - [Random Forest](#PM-RF)
+    - [K Nearest Neighbours](#PM-KNN)
+    - [Modelling Summary](#PM-MS)
 
 ___
 
@@ -1979,7 +1981,7 @@ permutation_importance_summary
 
 ___
 <br>
-# K Nearest Neighbours <a name="PM-knn"></a>
+# K Nearest Neighbours <a name="PM-KNN"></a>
 
 <br>
 We utlise the scikit-learn library within Python to model our data using KNN. The code sections below are broken up into 5 key sections:
