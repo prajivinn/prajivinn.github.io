@@ -1983,6 +1983,14 @@ permutation_importance_summary
 | education_Post Graduate | 0.000234 |
 | education_Not Graduate | -0.000351 |
 
+<br>
+
+The overall story from both approaches is very similar, in that by far, the most important or impactful input variables are **cibil_score** and **loan_term**.
+
+We found that **cibil_score** stands out as the most important factor influencing the model's predictions. One possible reason for this prominence could be that cibil_score has a notable relationship with the target variable loan_status. However, it's important to note that correlation doesn't imply causation. While cibil_score plays a crucial role in the model's predictions, it's important to remember that our model identifies patterns and associations in the data. The importance of a feature doesn't necessarily mean it directly causes the predicted outcomes.In the context of our problem, cibil_score corresponds to credit scores. We should also consider that other factors, interactions between features, and potential noise in the data can influence these findings. Therefore, a holistic understanding of the model's behavior requires taking these aspects into account. The insights from the feature importance analysis can guide us in making informed decisions and refining our strategies. It's important to interpret these findings alongside other domain knowledge and analysis.
+
+There are slight differences in the order or “importance” for the remaining variables but overall they have provided similar findings.
+
 ___
 <br>
 # K Nearest Neighbours <a name="PM-KNN"></a>
