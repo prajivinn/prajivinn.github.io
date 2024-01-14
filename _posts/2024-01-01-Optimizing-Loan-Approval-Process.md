@@ -24,6 +24,7 @@ In this project we aim to create an end-to-end solution using Excel, SQL, Power 
     - [Exploratory Data Analysis](#PM-EDA)
     - [Logistic Regression](#PM-LR)
     - [Decision Tree](#PM-DT)
+    - [Random Forest](#PM-RF)
 
 ___
 
