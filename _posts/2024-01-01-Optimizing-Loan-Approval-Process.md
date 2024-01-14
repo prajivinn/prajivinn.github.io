@@ -18,6 +18,9 @@ In this project we aim to create an end-to-end solution using Excel, SQL, Power 
 - [02. Data Overview & Preparation](#data-overview)
 - [03. Data Cleaning & Transformation](#data-DCT)
 - [04. Dashboard Creation](#data-DC)
+- [05. Predictive Modelling](#data-PM)
+    - [Modelling Overview](#PM-overview)
+    - [Logistic Regression](#PM-LR)
 
 ___
 
@@ -547,5 +550,280 @@ ___
 * No clear trends were observed between asset values and loan status, indicating that asset values alone might not be strong indicators of loan approval.
 
 **From the above observations, we can infer that credit_score could be one of factor for loan approval or rejection.**
+
+___
+
+# Predictive Modelling  <a name="data-PM"></a>
+
+<br>
+
+### Modelling Overview  <a name="PM-overview"></a>
+
+We will build a model that looks to accurately predict *loan_status*, based upon the customer metrics.
+
+If that can be achieved,...
+
+As we are predicting a binary output, we tested four classification modelling approaches, namely:
+
+* Logistic Regression
+* Decision Tree
+* Random Forest
+* K Nearest Neighbours (KNN)
+
+### Logistic Regression <a name="PM-LR"></a>
+
+#### Data Import
+
+```python
+
+from pymysql import connect
+import pandas as pd
+
+import pandas as pd
+import numpy as np
+from scipy import stats
+
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import MinMaxScaler
+
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+import scipy.stats as stats
+from statsmodels.formula.api import ols
+import statsmodels.api as sm
+
+from sklearn.preprocessing import OneHotEncoder
+from sklearn.feature_selection import RFECV
+
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import recall_score, precision_score, f1_score, accuracy_score, confusion_matrix
+import sklearn.metrics as metrics
+from tabulate import tabulate
+
+import warnings
+
+warnings.filterwarnings("ignore")
+
+database = connect(host = 'localhost', 
+                  user = 'root',
+                  password = '', 
+                  database = 'capstone')
+
+cur = database.cursor()
+
+query = 'SELECT * FROM loan_application_details;'
+cur.execute(query)
+>> 4269
+
+df = pd.read_sql(query, database)
+df.head()
+
+```
+<br>
+Output: A sample of first 5 rows of **21 columns** is displayed below
+<br>
+<br>
+
+| **loan_id** | **no_of_dependents** | **gender** | **education** | **self_employed** | **income_annum** | **income_annum_group_lacs** |
+|---|---|---|---|---|---|---|
+| 1 | 2 | Male | Post Graduate | No | 9600000.0 | 90 Lacs+ |
+| 2 | 0 | Male | Post Graduate | Yes | 4100000.0 | 40-50 Lacs |
+| 3 | 3 | Male | Post Graduate | No | 9100000.0 | 90 Lacs+ |
+| 4 | 3 | Female | Post Graduate | No | 8200000.0 | 80-90 Lacs |
+| 5 | 5 | Male | Post Graduate | Yes | 9800000.0 | 90 Lacs+ |
+
+<br>
+
+| **loan_amount** | **loan_amount_group** | **loan_term** | **cibil_score** | **cibil_score_category** | **residential_assets_value** | **residential_assets_value_group** |
+|---|---|---|---|---|---|---|
+| 29900000.0 | 2.5-3 | 12 | 778 | Excellent | 2400000.0 | 0-0.5 |
+| 12200000.0 | 1-1.5 | 8 | 417 | Low | 2700000.0 | 0-0.5 |
+| 29700000.0 | 2.5-3 | 20 | 506 | Low | 7100000.0 | 0.5-1 |
+| 30700000.0 | 3-3.5 | 8 | 467 | Low | 18200000.0 | 1.5-2 |
+| 24200000.0 | 2-2.5 | 20 | 382 |	Low | 12400000.0 | 1-1.5 |
+
+<br>
+
+| **comm_assets_value** | **comm_assets_group** | **luxury_assets_val** | **luxury_assets_group** | **bank_asset_val** | **bank_asset_group** | **loan_status** |
+|---|---|---|---|---|---|---|
+| 17600000.0 | 1.5-2 | 22700000.0 | 2-2.5 | 8000000.0 | 0.5-1 | Approved |
+| 2200000.0 | 0-0.5 | 8800000.0 | 0.5-1 | 3300000.0 | 0-0.5 | Rejected |
+| 4500000.0 | 0-0.5 | 33300000.0 | 3-3.5 | 12800000.0 | 1-1.5 | Rejected |
+| 3300000.0 | 0-0.5 | 23300000.0 | 2-2.5 | 7900000.0 | 0.5-1 | Rejected |
+| 8200000.0 | 0.5-1 | 29400000.0 | 2.5-3 | 5000000.0 | 0.5-1 | Rejected |
+
+<br>
+
+```python
+
+df.info()
+
+```
+<br>
+Output:
+<br>
+<br>
+
+| **Column** | **Non-Null Count** | **Dtype** |  
+|---|---|---|
+| loan_id | 4269 non-null | int64 |  
+| no_of_dependents | 4269 non-null | int64 |  
+| gender | 4269 non-null | object | 
+| education | 4269 non-null | object | 
+| self_employed | 4269 non-null | object | 
+| income_annum | 4269 non-null | float64 |
+| income_annum_group_lacs | 4269 non-null | object | 
+| loan_amount | 4269 non-null | float64 |
+| loan_amount_group | 4269 non-null | object | 
+| loan_term | 4269 non-null | int64 |  
+| cibil_score | 4269 non-null | int64 |  
+| cibil_score_category | 4269 non-null | object | 
+| residential_assets_value | 4269 non-null | float64 |
+| residential_assets_value_group | 4269 non-null | object | 
+| commercial_assets_value | 4269 non-null | float64 |
+| commercial_assets_value_group | 4269 non-null | object | 
+| luxury_assets_value | 4269 non-null | float64 |
+| luxury_assets_value_group | 4269 non-null | object | 
+| bank_asset_value | 4269 non-null | float64 |
+| bank_asset_value_group | 4269 non-null | object | 
+| loan_status | 4269 non-null | object |
+
+<br>
+
+#### Missing Values
+
+```python
+
+df.isna().sum()
+
+```
+<br>
+Output:
+<br>
+<br>
+
+| loan_id | 0 |
+| no_of_dependents | 0 |
+| gender | 0 |
+| education | 0 |
+| self_employed | 0 |
+| income_annum | 0 |
+| income_annum_group_lacs | 0 |
+| loan_amount | 0 |
+| loan_amount_group | 0 |
+| loan_term | 0 |
+| cibil_score | 0 |
+| cibil_score_category | 0 |
+| residential_assets_value | 0 | 
+| residential_assets_value_group | 0 |
+| commercial_assets_value | 0 |
+| commercial_assets_value_group | 0 |
+| luxury_assets_value | 0 |
+| luxury_assets_value_group | 0 |
+| bank_asset_value | 0 |
+| bank_asset_value_group | 0 |
+| loan_status | 0 |
+
+<br>
+There are no null values present in the dataset.
+
+<br>
+
+```python
+
+# Checking shape of the dataset
+df.shape
+>> (4269,21)
+
+df["loan_status"].value_counts(normalize = True)
+
+```
+<br>
+
+| **loan_status** | **value** |
+|---|---|
+| Approved | 0.62216 |
+| Rejected | 0.37784 |
+
+<br>
+We see that 62% of customers got their loan approved and 37% got rejected. This tells us that while the data isn’t perfectly balanced at 50:50, it isn’t too imbalanced either. Because of this, and as you will see, we make sure to not rely on classification accuracy alone when assessing results - also analysing Precision, Recall, and F1-Score.
+
+<br>
+
+#### Exploratory Data Analysis
+
+```python
+
+sns.scatterplot(x=df['income_annum'], y= df['loan_amount'], hue=df['loan_status'])
+plt.title("Loan Status, Loan Amount, Annual Income")
+plt.xlabel("Annual Income")
+plt.ylabel("Loan Amount")
+plt.show()
+
+```
+
+<br>
+![alt text](/img/posts/CP_1.jpg "LR_CP1")
+
+<br>
+As annual income rises, there is a tendency for the loan amount requested to increase. Notably, even among applicants with the highest annual incomes, some were approved for the highest loan amounts, while others faced rejections. This suggests that loan approval for a specific loan amount is not solely contingent on annual income.
+
+Let's look at the asset value variables. we will create a subset and get to know the correlation scores between those 4 asset values and other variables.
+
+<br>
+
+```python
+
+loan_asset_variables = df[['residential_assets_value', 'commercial_assets_value',
+       'luxury_assets_value', 'bank_asset_value', 'no_of_dependents',
+       'income_annum', 'loan_amount', 'loan_term', 'cibil_score']]
+
+loan_asset_variables_corr = loan_asset_variables.corr()
+
+sns.heatmap(loan_asset_variables_corr, annot=True, fmt=".2f", cmap="coolwarm")
+
+```
+
+<br>
+![alt text](/img/posts/CP_2.jpg "LR_CP2")
+
+<br>
+The asset values exhibit moderate to strong positive linear associations with annual income. Applicants with higher annual incomes tend to have greater purchasing power, particularly when it comes to properties with higher asset values, including luxury assets.
+
+<br>
+
+```python
+
+loan_term = pd.crosstab(index=df['loan_term'], columns=df['loan_status'])
+loan_term['Total'] = loan_term['Approved'] + loan_term['Rejected'] 
+loan_term['Approved_percentage'] = (loan_term['Approved']/loan_term['Total'])*100
+loan_term['Rejected_percentage'] = (loan_term['Rejected']/loan_term['Total'])*100
+loan_term
+
+```
+
+| **loan_term** | **Approved** | **Rejected** | **Total** | **Approved_percentage** | **Rejected_percentage** |
+|---|---|---|---|---|---|				
+| 2 | 315 | 89 | 404 | 77.970297 | 22.029703 |
+| 4 | 366 | 81 | 447 | 81.879195 | 18.120805 |
+| 6 | 282 | 208 | 490 | 57.551020 | 42.448980 |
+| 8 | 220 | 166 | 386 | 56.994819 | 43.005181 |
+| 10 | 229 | 207 | 436 | 52.522936 | 47.477064 |
+| 12 | 276 | 180 | 456 | 60.526316 | 39.473684 |
+| 14 | 239 | 166 | 405 | 59.012346 | 40.987654 |
+| 16 | 236 | 176 | 412 | 57.281553 | 42.718447 |
+| 18 | 257 | 165 | 422 | 60.900474 | 39.099526 |
+| 20 | 236 | 175 | 411 | 57.420925 | 42.579075 |
+
+<br>
+* It's evident that shorter loan terms, such as 4, 6, and 8 years, have significantly higher approval percentages (above 56%) compared to longer terms.
+* The 4-year term has the highest approval percentage, at 81.88%, suggesting that customers prefer shorter loan durations, possibly due to reduced interest costs.
+* Conversely, longer loan terms like 10, 12, and 14 years have higher rejection percentages, with the 14-year term having the highest at 40.99%.
+* This implies that customers are more likely to be rejected for loans with longer durations, possibly due to increased credit risk.
+* Despite varying approval and rejection percentages, the total number of applications remains relatively consistent, hovering around 400 to 450 applications for most loan terms.
+
+
 
 
