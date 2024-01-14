@@ -836,5 +836,439 @@ ___
 
 ### Logistic Regression <a name="PI-LR"></a>
 
+<br>
 
+```python
+
+df.columns
+>> Index(['loan_id', 'no_of_dependents', 'gender', 'education', 'self_employed',
+       'income_annum', 'income_annum_group_lacs', 'loan_amount',
+       'loan_amount_group', 'loan_term', 'cibil_score', 'cibil_score_category',
+       'residential_assets_value', 'residential_assets_value_group',
+       'commercial_assets_value', 'commercial_assets_value_group',
+       'luxury_assets_value', 'luxury_assets_value_group', 'bank_asset_value',
+       'bank_asset_value_group', 'loan_status'],
+      dtype='object')
+
+# Removing loan_id 
+df_model = df[['no_of_dependents', 'gender', 'education', 'self_employed','income_annum', 'loan_amount',     
+               'loan_term', 'cibil_score','residential_assets_value','commercial_assets_value', 
+               'luxury_assets_value',  'bank_asset_value', 'loan_status']]
+
+# Label encoding
+df_model["loan_status"]= df_model["loan_status"].map({"Approved":1,"Rejected":0})
+
+df_model.info()
+
+```
+<br>
+Output:
+<br>
+<br>
+
+| **Column** | **Non-Null Count** | **Dtype** |  
+|---|---|---|
+| no_of_dependents | 4269 non-null | int64 |  
+| gender | 4269 non-null | object | 
+| education | 4269 non-null | object | 
+| self_employed | 4269 non-null | object | 
+| income_annum | 4269 non-null | float64 |
+| income_annum_group_lacs | 4269 non-null | object | 
+| loan_amount | 4269 non-null | float64 |
+| loan_amount_group | 4269 non-null | object | 
+| loan_term | 4269 non-null | int64 |  
+| cibil_score | 4269 non-null | int64 |  
+| cibil_score_category | 4269 non-null | object | 
+| residential_assets_value | 4269 non-null | float64 |
+| residential_assets_value_group | 4269 non-null | object | 
+| commercial_assets_value | 4269 non-null | float64 |
+| commercial_assets_value_group | 4269 non-null | object | 
+| luxury_assets_value | 4269 non-null | float64 |
+| luxury_assets_value_group | 4269 non-null | object | 
+| bank_asset_value | 4269 non-null | float64 |
+| bank_asset_value_group | 4269 non-null | object | 
+| loan_status | 4269 non-null | int64 |
+
+<br>
+
+**Split Out Data For Modelling**
+
+In the next code block we do two things, we firstly split our data into an X object which contains only the predictor variables, and a y object that contains only our dependent variable.
+
+Once we have done this, we split our data into training and test sets to ensure we can fairly validate the accuracy of the predictions on data that was not used in training. In this case, we have allocated 80% of the data for training, and the remaining 20% for validation. We make sure to add in the stratify parameter to ensure that both our training and test sets have the same proportion of customers who got approved and rejected of the loan - meaning we can be more confident in our assessment of predictive performance.
+
+```python
+
+# split data into X and y objects for modelling
+X = df_model.drop(["loan_status"], axis = 1)
+y = df_model["loan_status"]
+
+# split out training & test sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 42, stratify = y)
+
+print(X_train.shape)
+>> (3415, 12)
+
+print(X_test.shape)
+>> (854, 12)
+
+print(y_train.shape)
+>> (3415,)
+
+print(y_test.shape)
+>> (854,)
+
+```
+
+<br>
+
+**Categorical Predictor Variables**
+
+In our dataset, we have one categorical variable gender which has values of “M” for Male, “F” for Female, and “U” for Unknown.
+
+The Logistic Regression algorithm can’t deal with data in this format as it can’t assign any numerical meaning to it when looking to assess the relationship between the variable and the dependent variable.
+
+As gender doesn’t have any explicit order to it, in other words, Male isn’t higher or lower than Female and vice versa - one appropriate approach is to apply One Hot Encoding to the categorical column.
+
+One Hot Encoding can be thought of as a way to represent categorical variables as binary vectors, in other words, a set of new columns for each categorical value with either a 1 or a 0 saying whether that value is true or not for that observation. These new columns would go into our model as input variables, and the original column is discarded.
+
+We also drop one of the new columns using the parameter drop = “first”. We do this to avoid the dummy variable trap where our newly created encoded columns perfectly predict each other - and we run the risk of breaking the assumption that there is no multicollinearity, a requirement or at least an important consideration for some models, Linear Regression being one of them! Multicollinearity occurs when two or more input variables are highly correlated with each other, it is a scenario we attempt to avoid as in short, while it won’t neccessarily affect the predictive accuracy of our model, it can make it difficult to trust the statistics around how well the model is performing, and how much each input variable is truly having.
+
+In the code, we also make sure to apply fit_transform to the training set, but only transform to the test set. This means the One Hot Encoding logic will learn and apply the “rules” from the training data, but only apply them to the test data. This is important in order to avoid data leakage where the test set learns information about the training data, and means we can’t fully trust model performance metrics!
+
+For ease, after we have applied One Hot Encoding, we turn our training and test objects back into Pandas Dataframes, with the column names applied.
+
+```python
+
+# list of categorical variables that need encoding
+categorical_vars = ["gender","education", "self_employed"]
+
+# instantiate OHE class
+one_hot_encoder = OneHotEncoder(sparse=False, drop = "first")
+
+# apply OHE
+X_train_encoded = one_hot_encoder.fit_transform(X_train[categorical_vars])
+X_test_encoded = one_hot_encoder.transform(X_test[categorical_vars])
+
+# extract feature names for encoded columns
+encoder_feature_names = one_hot_encoder.get_feature_names_out(categorical_vars)
+
+# turn objects back to pandas dataframe
+X_train_encoded = pd.DataFrame(X_train_encoded, columns = encoder_feature_names)
+X_train = pd.concat([X_train.reset_index(drop=True), X_train_encoded.reset_index(drop=True)], axis = 1)
+X_train.drop(categorical_vars, axis = 1, inplace = True)
+
+X_test_encoded = pd.DataFrame(X_test_encoded, columns = encoder_feature_names)
+X_test = pd.concat([X_test.reset_index(drop=True), X_test_encoded.reset_index(drop=True)], axis = 1)
+X_test.drop(categorical_vars, axis = 1, inplace = True)
+
+```
+
+<br>
+
+**Feature Scaling**
+
+```python
+
+# create our standardscaler object
+scale_stand = StandardScaler()
+
+# normalise the training set (using fit_transform)
+X_train = pd.DataFrame(scale_stand.fit_transform(X_train), columns = X_train.columns)
+
+# normalise the test set (using transform only)
+X_test = pd.DataFrame(scale_stand.transform(X_test), columns = X_test.columns)
+
+```
+
+<br>
+
+**Feature Selection** 
+
+As we discussed when applying Logistic Regression above - Feature Selection is the process used to select the input variables that are most important to your Machine Learning task. For more information around this, please see that section above.
+
+When applying KNN, Feature Selection is an interesting topic. The algorithm is measuring the distance between data-points across all dimensions, where each dimension is one of our input variables. The algorithm treats each input variable as equally important, there isn’t really a concept of “feature importance” so the spread of data within an unimportant variable could have an effect on judging other data points as either “close” or “far”. If we had a lot of “unimportant” variables in our data, this could create a lot of noise for the algorithm to deal with, and we’d just see poor classification accuracy without really knowing why.
+
+Having a high number of input variables also means the algorithm has to process a lot more information when processing distances between all of the data-points, so any way to reduce dimensionality is important from a computational perspective as well.
+
+For our task here we are again going to apply Recursive Feature Elimination With Cross Validation (RFECV) which is an approach that starts with all input variables, and then iteratively removes those with the weakest relationships with the output variable. RFECV does this using Cross Validation, so splits the data into many “chunks” and iteratively trains & validates models on each “chunk” seperately. This means that each time we assess different models with different variables included, or eliminated, the algorithm also knows how accurate each of those models was. From the suite of model scenarios that are created, the algorithm can determine which provided the best accuracy, and thus can infer the best set of input variables to use!
+
+```python
+
+# instantiate RFECV & the model type to be utilised
+clf = LogisticRegression(random_state = 42, max_iter = 1000)
+feature_selector = RFECV(clf)
+
+# fit RFECV onto our training & test data
+fit = feature_selector.fit(X_train,y_train)
+
+# extract & print the optimal number of features
+optimal_feature_count = feature_selector.n_features_
+print(f"Optimal number of features: {optimal_feature_count}")
+>> Optimal number of features: 3
+
+X_train_features = X_train.loc[:, feature_selector.get_support()]
+X_train_features.columns
+>> Index(['income_annum', 'loan_amount', 'cibil_score'], dtype='object')
+
+```
+<br>
+The below code then produces a plot that visualises the cross-validated classification accuracy with each potential number of features
+<br>
+
+```python
+
+plt.style.use('seaborn-poster')
+plt.plot(range(1, len(fit.cv_results_['mean_test_score']) + 1), fit.cv_results_['mean_test_score'], marker = "o")
+plt.ylabel("Classification Accuracy")
+plt.xlabel("Number of Features")
+plt.title(f"Feature Selection using RFECV \n Optimal number of features is {optimal_feature_count} (at score of {round(max(fit.cv_results_['mean_test_score']),4)})")
+plt.tight_layout()
+plt.show()
+
+```
+<br>
+![alt text](/img/posts/CP_3.jpg "LR_CP3")
+
+<br>
+This creates the above plot, which shows us that the highest cross-validated classification accuracy (0.9168) is when we include 3 of our  input variables such as *income_annum*, *loan_amount*, *cibil_score*. From the chart we can see that the **difference is not high when we include all the 13 variables** so it is negligible. We will continue on with all the 13 variables!
+
+<br>
+
+**Model Training**
+
+Instantiating and training our Logistic Regression model is done using the below code. We use the random_state parameter to ensure reproducible results, meaning any refinements can be compared to past results. We also specify max_iter = 1000 to allow the solver more attempts at finding an optimal regression line, as the default value of 100 was not enough.
+
+<br>
+
+```python
+
+lr = LogisticRegression(random_state = 42, max_iter = 1000)
+
+# fit our model using our training & test sets
+lr.fit(X_train, y_train)
+
+```
+
+<br>
+
+**Model Performance Assessment**:
+
+**Predict On The Test Set**
+To assess how well our model is predicting on new data - we use the trained model object (here called clf) and ask it to predict the signup_flag variable for the test set.
+
+In the code below we create one object to hold the binary 1/0 predictions, and another to hold the actual prediction probabilities for the positive class.
+
+<br>
+
+```python
+
+# predict on the test set
+y_pred_class = clf.predict(X_test)
+y_pred_prob = clf.predict_proba(X_test)[:,1]
+
+```
+<br>
+
+**Confusion Matrix**
+A Confusion Matrix provides us a visual way to understand how our predictions match up against the actual values for those test set observations.
+
+The below code creates the Confusion Matrix using the confusion_matrix functionality from within scikit-learn and then plots it using matplotlib.
+
+<br>
+
+```python
+
+# create the confusion matrix
+conf_matrix = confusion_matrix(y_test, y_pred_class)
+
+# plot the confusion matrix
+plt.style.use("seaborn-poster")
+plt.matshow(conf_matrix, cmap = "coolwarm")
+plt.gca().xaxis.tick_bottom()
+plt.title("Confusion Matrix")
+plt.ylabel("Actual Class")
+plt.xlabel("Predicted Class")
+for (i, j), corr_value in np.ndenumerate(conf_matrix):
+    plt.text(j, i, corr_value, ha = "center", va = "center", fontsize = 20)
+
+plt.show()
+
+```
+<br>
+![alt text](/img/posts/CP_4.jpg "LR_CP4")
+
+<br>
+The aim is to have a high proportion of observations falling into the top left cell (predicted rejected and actual rejected) and the bottom right cell (predicted approved and actual approved).
+
+Since the proportion of signups in our data was around 30:70 we will next analyse not only Classification Accuracy, but also Precision, Recall, and F1-Score which will help us assess how well our model has performed in reality.
+
+<br>
+
+**Classification Performance Metrics**
+
+**Classification Accuracy**
+
+Classification Accuracy is a metric that tells us of all predicted observations, what proportion did we correctly classify. This is very intuitive, but when dealing with imbalanced classes, can be misleading.
+
+An example of this could be a rare disease. A model with a 98% Classification Accuracy on might appear like a fantastic result, but if our data contained 98% of patients without the disease, and 2% with the disease - then a 98% Classification Accuracy could be obtained simply by predicting that no one has the disease - which wouldn’t be a great model in the real world. Luckily, there are other metrics which can help us!
+
+In this example of the rare disease, we could define Classification Accuracy as of all predicted patients, what proportion did we correctly classify as either having the disease, or not having the disease
+
+
+**Precision & Recall**
+
+Precision is a metric that tells us of all observations that were predicted as positive, how many actually were positive
+
+Keeping with the rare disease example, Precision would tell us of all patients we predicted to have the disease, how many actually did
+
+Recall is a metric that tells us of all positive observations, how many did we predict as positive
+
+Again, referring to the rare disease example, Recall would tell us of all patients who actually had the disease, how many did we correctly predict
+
+The tricky thing about Precision & Recall is that it is impossible to optimise both - it’s a zero-sum game. If you try to increase Precision, Recall decreases, and vice versa. Sometimes however it will make more sense to try and elevate one of them, in spite of the other. In the case of our rare-disease prediction like we’ve used in our example, perhaps it would be more important to optimise for Recall as we want to classify as many positive cases as possible. In saying this however, we don’t want to just classify every patient as having the disease, as that isn’t a great outcome either!
+
+So - there is one more metric we will discuss & calculate, which is actually a combination of both…
+
+
+**F1 Score**
+
+F1-Score is a metric that essentially “combines” both Precision & Recall. Technically speaking, it is the harmonic mean of these two metrics. A good, or high, F1-Score comes when there is a balance between Precision & Recall, rather than a disparity between them.
+
+Overall, optimising your model for F1-Score means that you’ll get a model that is working well for both positive & negative classifications rather than skewed towards one or the other. To return to the rare disease predictions, a high F1-Score would mean we’ve got a good balance between successfully predicting the disease when it’s present, and not predicting cases where it’s not present.
+
+Using all of these metrics in combination gives a really good overview of the performance of a classification model, and gives us an understanding of the different scenarios & considerations!
+
+
+In the code below, we utilise in-built functionality from scikit-learn to calculate these four metrics.
+
+<br>
+
+```python
+
+print('Accuracy:', '%.3f' % accuracy_score(y_test, y_pred_class))
+>> Accuracy: 0.917
+
+print('Precision:', '%.3f' % precision_score(y_test, y_pred_class))
+>> Precision: 0.921
+
+print('Recall:', '%.3f' % recall_score(y_test, y_pred_class))
+>> Recall: 0.947
+
+print('F1 Score:', '%.3f' % f1_score(y_test, y_pred_class))
+>> F1 Score: 0.934
+
+```
+<br>
+
+The scores in the confusion matrix above mean:
+
+* True negatives (upper left)  : The number of applications that were rejected that the model accurately predicted were rejected.
+* False negatives (bottom left): The number of applications that were approved that the model inaccurately predicted were rejected.
+* False positives (upper right): The number of applications that were rejected that the model inaccurately predicted were approved.
+* True positives (bottom right): The number of applications that were approved that the model accurately predicted were approved.
+
+Since our data is somewhat imbalanced, looking at these metrics rather than just Classification Accuracy on it’s own - is a good idea, and gives us a much better understanding of what our predictions mean! We will use these same metrics when applying other models for this task, and can compare how they stack up.
+
+<br>
+
+```python
+
+# Get feature names (if using a DataFrame)
+feature_names = X_train.columns if isinstance(X_train, pd.DataFrame) else np.arange(X_train.shape[1])
+
+# Create a DataFrame to store feature names and their coefficients
+feature_importance = pd.DataFrame({'Feature': feature_names, 'Coefficient': clf.coef_[0]})
+
+# Sort by absolute coefficient values in descending order to find the most important features
+feature_importance['Absolute_Coefficient'] = np.abs(feature_importance['Coefficient'])
+feature_importance = feature_importance.sort_values(by='Absolute_Coefficient', ascending=False)
+
+# Print or visualize the most important features
+print(feature_importance)
+
+```
+<br>
+Output:
+<br>
+<br>
+
+| **Feature** | **Coefficient** | **Absolute_Coefficient** |
+|---|---|---|
+| cibil_score | 4.081895 | 4.081895
+| income_annum | -1.626722 | 1.626722
+| loan_amount | 1.368553 | 1.368553
+| loan_term | -0.846972 | 0.846972
+| education_Post Graduate | -0.385638 | 0.385638 |
+| bank_asset_value | 0.172994 | 0.172994 |
+| luxury_assets_value | 0.134816 | 0.134816 |
+| commercial_assets_value | 0.068286 | 0.068286 |
+| no_of_dependents | -0.064599 | 0.064599 |
+| residential_assets_value | 0.035255 | 0.035255 |
+| education_Not Graduate | 0.026293 | 0.026293 |
+| gender_Male | 0.011976 | 0.011976 |
+| self_employed_Yes | 0.006791 | 0.006791 |
+
+<br>
+
+**Finding The Optimal Classification Threshold**
+
+By default, most pre-built classification models & algorithms will just use a 50% probability to discern between a positive class prediction (delivery club signup) and a negative class prediction (delivery club non-signup).
+
+Just because 50% is the default threshold does not mean it is the best one for our task.
+
+Here, we will test many potential classification thresholds, and plot the Precision, Recall & F1-Score, and find an optimal solution!
+
+```python
+
+# set up the list of thresholds to loop through
+thresholds = np.arange(0, 1, 0.01)
+
+# create empty lists to append the results to
+precision_scores = []
+recall_scores = []
+f1_scores = []
+
+# loop through each threshold - fit the model - append the results
+for threshold in thresholds:
+    
+    pred_class = (y_pred_prob >= threshold) * 1
+    
+    precision = precision_score(y_test, pred_class, zero_division = 0)
+    precision_scores.append(precision)
+    
+    recall = recall_score(y_test, pred_class)
+    recall_scores.append(recall)
+    
+    f1 = f1_score(y_test, pred_class)
+    f1_scores.append(f1)
+
+
+# extract the optimal f1-score (and it's index)
+max_f1 = max(f1_scores)
+max_f1_idx = f1_scores.index(max_f1)
+
+
+# plot the results
+plt.style.use("seaborn-poster")
+plt.plot(thresholds, precision_scores, label = "Precision", linestyle = "--")
+plt.plot(thresholds, recall_scores, label = "Recall", linestyle = "--")
+plt.plot(thresholds, f1_scores, label = "F1", linewidth = 5)
+plt.title(f"Finding the Optimal Threshold for Classification Model \n Max F1: {round(max_f1,2)} (Threshold = {round(thresholds[max_f1_idx],2)})")
+plt.xlabel("Threshold")
+plt.ylabel("Assessment Score")
+plt.legend(loc = "lower left")
+plt.tight_layout()
+plt.show()
+
+```
+<br>
+![alt text](/img/posts/CP_5.jpg "LR_CP5")
+
+<br>
+Along the x-axis of the above plot we have the different classification thresholds that were testing. Along the y-axis we have the performance score for each of our three metrics. As per the legend, we have Precision as a blue dotted line, Recall as an orange dotted line, and F1-Score as a thick green line. You can see the interesting “zero-sum” relationship between Precision & Recall and you can see that the point where Precision & Recall meet is where F1-Score is maximised.
+
+As you can see at the top of the plot, the optimal F1-Score for this model 0.94 and this is obtained at a classification threshold of 0.46. This is higher than the F1-Score of 0.934 that we achieved at the default classification threshold of 0.50!
+
+___
 
