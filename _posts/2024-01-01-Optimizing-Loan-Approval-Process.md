@@ -17,9 +17,11 @@ In this project we aim to create an end-to-end solution using Excel, SQL, Power 
 - [01. Concept Overview](#concept-overview)
 - [02. Data Overview & Preparation](#data-overview)
 - [03. Data Cleaning & Transformation](#data-DCT)
-- [04. Dashboard Creation](#data-DC)
+- [04. Exploratory Data Analysis - Dashboard Creation](#data-DC)
 - [05. Predictive Modelling](#data-PM)
     - [Modelling Overview](#PM-overview)
+    - [Data Import & Analysis](#PM-DIA)
+    - [Exploratory Data Analysis](#PM-EDA)
     - [Logistic Regression](#PM-LR)
 
 ___
@@ -570,9 +572,9 @@ As we are predicting a binary output, we tested four classification modelling ap
 * Random Forest
 * K Nearest Neighbours (KNN)
 
-### Logistic Regression <a name="PM-LR"></a>
+### Data Import & Analysis <a name="PM-DIA"></a>
 
-#### Data Import
+<br>
 
 ```python
 
@@ -752,7 +754,9 @@ We see that 62% of customers got their loan approved and 37% got rejected. This 
 
 <br>
 
-#### Exploratory Data Analysis
+___
+
+### Exploratory Data Analysis <a name="PI-EDA"></a>
 
 ```python
 
@@ -803,6 +807,10 @@ loan_term['Rejected_percentage'] = (loan_term['Rejected']/loan_term['Total'])*10
 loan_term
 
 ```
+<br>
+Output:
+<br>
+<br>
 
 | **loan_term** | **Approved** | **Rejected** | **Total** | **Approved_percentage** | **Rejected_percentage** |
 |---|---|---|---|---|---|				
@@ -824,6 +832,9 @@ loan_term
 * This implies that customers are more likely to be rejected for loans with longer durations, possibly due to increased credit risk.
 * Despite varying approval and rejection percentages, the total number of applications remains relatively consistent, hovering around 400 to 450 applications for most loan terms.
 
+___
+
+### Logistic Regression <a name="PI-LR"></a>
 
 
 
