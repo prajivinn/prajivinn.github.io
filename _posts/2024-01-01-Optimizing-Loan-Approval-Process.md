@@ -1695,6 +1695,14 @@ df_model.isna().sum().sum()
 
 <br>
 
+**Split Out Data For Modelling**
+
+In exactly the same way we’ve done for the other three models, in the next code block we do two things, we firstly split our data into an X object which contains only the predictor variables, and a y object that contains only our dependent variable.
+
+Once we have done this, we split our data into training and test sets to ensure we can fairly validate the accuracy of the predictions on data that was not used in training. In this case, we have allocated 80% of the data for training, and the remaining 20% for validation. Again, we make sure to add in the stratify parameter to ensure that both our training and test sets have the same proportion of customers who did, and did not, sign up for the delivery club - meaning we can be more confident in our assessment of predictive performance.
+
+<br>
+
 ```python
 
 # split data into X and y objects for modelling
@@ -1706,10 +1714,13 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, rando
 
 print(X_train.shape)
 >> (3415, 12)
+
 print(X_test.shape)
 >> (854, 12)
+
 print(y_train.shape)
 >> (3415,)
+
 print(y_test.shape)
 >> (854,)
 
@@ -1853,10 +1864,13 @@ In the code below, we utilise in-built functionality from scikit-learn to calcul
 
 print('Accuracy:', '%.3f' % accuracy_score(y_test, y_pred_class))
 >> Accuracy: 0.985
+
 print('Precision:', '%.3f' % precision_score(y_test, y_pred_class))
 >> Precision: 0.985
+
 print('Recall:', '%.3f' % recall_score(y_test, y_pred_class))
 >> Recall: 0.991
+
 print('F1 Score:', '%.3f' % f1_score(y_test, y_pred_class))
 >> F1 Score: 0.988
 
@@ -1962,3 +1976,433 @@ permutation_importance_summary
 | gender_Male |	0.000351 |
 | education_Post Graduate | 0.000234 |
 | education_Not Graduate | -0.000351 |
+
+___
+<br>
+# K Nearest Neighbours <a name="PM-knn"></a>
+
+<br>
+We utlise the scikit-learn library within Python to model our data using KNN. The code sections below are broken up into 5 key sections:
+
+* Data Import
+* Data Preprocessing
+* Model Training
+* Performance Assessment
+* Optimal Value For K
+
+<br>
+
+### Data Import
+
+```python
+
+# import required packages
+import pandas as pd
+import pickle
+import matplotlib.pyplot as plt
+import numpy as np
+from sklearn.tree import DecisionTreeClassifier, plot_tree
+from sklearn.utils import shuffle
+from sklearn.model_selection import train_test_split, cross_val_score, KFold
+from sklearn.metrics import confusion_matrix, accuracy_score, precision_score, recall_score, f1_score
+from sklearn.preprocessing import OneHotEncoder
+
+df = pd.read_sql(query, database)
+
+# dropping loan_id column
+df_model = df[['no_of_dependents', 'gender', 'education', 'self_employed','income_annum', 'loan_amount',     
+               'loan_term', 'cibil_score','residential_assets_value','commercial_assets_value', 
+               'luxury_assets_value',  'bank_asset_value', 'loan_status']]
+
+# label encoding
+df_model["loan_status"]= df_model["loan_status"].map({"Approved":1,"Rejected":0})
+
+```
+<br>
+### Missing Values
+
+The number of missing values in the data is 0.
+
+```python
+
+# checking for null values
+df_model.isna().sum().sum()
+>> 0
+
+```
+<br>
+
+### Data Preprocessing
+
+In exactly the same way we’ve done for the other three models, in the next code block we do two things, we firstly split our data into an X object which contains only the predictor variables, and a y object that contains only our dependent variable.
+
+Once we have done this, we split our data into training and test sets to ensure we can fairly validate the accuracy of the predictions on data that was not used in training. In this case, we have allocated 80% of the data for training, and the remaining 20% for validation. Again, we make sure to add in the stratify parameter to ensure that both our training and test sets have the same proportion of customers who did, and did not, sign up for the delivery club - meaning we can be more confident in our assessment of predictive performance.
+
+<br>
+
+```python
+
+# split data into X and y objects for modelling
+X = df_model.drop(["loan_status"], axis = 1)
+y = df_model["loan_status"]
+
+# split out training & test sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 42, stratify = y)
+
+print(X_train.shape)
+>> (3415, 12)
+
+print(X_test.shape)
+>> (854, 12)
+
+print(y_train.shape)
+>> (3415,)
+
+print(y_test.shape)
+>> (854,)
+
+```
+<br>
+
+#### Categorical Predictor Variables
+
+As we saw when applying the other algorithms, in our dataset, we have one categorical variable gender which has values of “M” for Male, “F” for Female, and “U” for Unknown.
+
+The KNN algorithm can’t deal with data in this format as it can’t assign any numerical meaning to it when looking to assess the relationship between the variable and the dependent variable.
+
+As gender doesn’t have any explicit order to it, in other words, Male isn’t higher or lower than Female and vice versa - one appropriate approach is to apply One Hot Encoding to the categorical column.
+
+One Hot Encoding can be thought of as a way to represent categorical variables as binary vectors, in other words, a set of new columns for each categorical value with either a 1 or a 0 saying whether that value is true or not for that observation. These new columns would go into our model as input variables, and the original column is discarded.
+
+We also drop one of the new columns using the parameter drop = “first”. We do this to avoid the dummy variable trap where our newly created encoded columns perfectly predict each other - and we run the risk of breaking the assumption that there is no multicollinearity, a requirement or at least an important consideration for some models, Linear Regression being one of them! Multicollinearity occurs when two or more input variables are highly correlated with each other, it is a scenario we attempt to avoid as in short, while it won’t neccessarily affect the predictive accuracy of our model, it can make it difficult to trust the statistics around how well the model is performing, and how much each input variable is truly having.
+
+In the code, we also make sure to apply fit_transform to the training set, but only transform to the test set. This means the One Hot Encoding logic will learn and apply the “rules” from the training data, but only apply them to the test data. This is important in order to avoid data leakage where the test set learns information about the training data, and means we can’t fully trust model performance metrics!
+
+For ease, after we have applied One Hot Encoding, we turn our training and test objects back into Pandas Dataframes, with the column names applied.
+
+<br>
+
+```python
+
+# list of categorical variables that need encoding
+categorical_vars = ["gender","education", "self_employed"]
+
+# instantiate OHE class
+one_hot_encoder = OneHotEncoder(sparse=False, drop = "first")
+
+# apply OHE
+X_train_encoded = one_hot_encoder.fit_transform(X_train[categorical_vars])
+X_test_encoded = one_hot_encoder.transform(X_test[categorical_vars])
+
+# extract feature names for encoded columns
+encoder_feature_names = one_hot_encoder.get_feature_names_out(categorical_vars)
+
+# turn objects back to pandas dataframe
+X_train_encoded = pd.DataFrame(X_train_encoded, columns = encoder_feature_names)
+X_train = pd.concat([X_train.reset_index(drop=True), X_train_encoded.reset_index(drop=True)], axis = 1)
+X_train.drop(categorical_vars, axis = 1, inplace = True)
+
+X_test_encoded = pd.DataFrame(X_test_encoded, columns = encoder_feature_names)
+X_test = pd.concat([X_test.reset_index(drop=True), X_test_encoded.reset_index(drop=True)], axis = 1)
+X_test.drop(categorical_vars, axis = 1, inplace = True)
+
+```
+<br>
+
+#### Feature Scaling
+
+As KNN is a distance based algorithm, in other words it is reliant on an understanding of how similar or different data points are across different dimensions in n-dimensional space, the application of Feature Scaling is extremely important.
+
+Feature Scaling is where we force the values from different columns to exist on the same scale, in order to enchance the learning capabilities of the model. There are two common approaches for this, Standardisation, and Normalisation.
+
+Standardisation rescales data to have a mean of 0, and a standard deviation of 1 - meaning most datapoints will most often fall between values of around -4 and +4.
+
+Normalisation rescales datapoints so that they exist in a range between 0 and 1.
+
+The below code uses the in-built MinMaxScaler functionality from scikit-learn to apply Normalisation to all of our input variables. The reason we choose Normalisation over Standardisation is that our scaled data will all exist between 0 and 1, and these will then be compatible with any categorical variables that we have encoded as 1’s and 0’s.
+
+In the code, we also make sure to apply fit_transform to the training set, but only transform to the test set. This means the scaling logic will learn and apply the scaling “rules” from the training data, but only apply them to the test data (or any other data we predict on in the future). This is important in order to avoid data leakage where the test set learns information about the training data, and means we can’t fully trust model performance metrics!
+
+<br>
+
+```python
+
+# create our scaler object
+scale_norm = MinMaxScaler()
+
+# normalise the training set (using fit_transform)
+X_train = pd.DataFrame(scale_norm.fit_transform(X_train), columns = X_train.columns)
+
+# normalise the test set (using transform only)
+X_test = pd.DataFrame(scale_norm.transform(X_test), columns = X_test.columns)
+
+```
+
+<br>
+
+#### Feature Selection
+
+As we discussed when applying Logistic Regression above - Feature Selection is the process used to select the input variables that are most important to your Machine Learning task. For more information around this, please see that section above.
+
+When applying KNN, Feature Selection is an interesting topic. The algorithm is measuring the distance between data-points across all dimensions, where each dimension is one of our input variables. The algorithm treats each input variable as equally important, there isn’t really a concept of “feature importance” so the spread of data within an unimportant variable could have an effect on judging other data points as either “close” or “far”. If we had a lot of “unimportant” variables in our data, this could create a lot of noise for the algorithm to deal with, and we’d just see poor classification accuracy without really knowing why.
+
+Having a high number of input variables also means the algorithm has to process a lot more information when processing distances between all of the data-points, so any way to reduce dimensionality is important from a computational perspective as well.
+
+For our task here we are again going to apply Recursive Feature Elimination With Cross Validation (RFECV) which is an approach that starts with all input variables, and then iteratively removes those with the weakest relationships with the output variable. RFECV does this using Cross Validation, so splits the data into many “chunks” and iteratively trains & validates models on each “chunk” seperately. This means that each time we assess different models with different variables included, or eliminated, the algorithm also knows how accurate each of those models was. From the suite of model scenarios that are created, the algorithm can determine which provided the best accuracy, and thus can infer the best set of input variables to use!
+
+<br>
+
+```python
+
+
+# instantiate RFECV & the model type to be utilised
+from sklearn.ensemble import RandomForestClassifier
+clf = RandomForestClassifier(random_state = 42)
+feature_selector = RFECV(clf)
+
+# fit RFECV onto our training & test data
+fit = feature_selector.fit(X_train,y_train)
+
+
+# extract & print the optimal number of features
+optimal_feature_count = feature_selector.n_features_
+print(f"Optimal number of features: {optimal_feature_count}")
+>> Optimal number of features: 4
+
+
+# limit our training & test sets to only include the selected variables
+X_train_features = X_train.loc[:, feature_selector.get_support()]
+X_train_features.columns
+>> Index(['income_annum', 'loan_amount', 'loan_term', 'cibil_score'], dtype='object')
+
+```
+
+<br>
+
+```python
+
+plt.style.use('seaborn-poster')
+plt.plot(range(1, len(fit.cv_results_['mean_test_score']) + 1), fit.cv_results_['mean_test_score'], marker = "o")
+plt.ylabel("Classification Accuracy")
+plt.xlabel("Number of Features")
+plt.title(f"Feature Selection using RFECV \n Optimal number of features is {optimal_feature_count} (at score of {round(max(fit.cv_results_['mean_test_score']),4)})")
+plt.tight_layout()
+plt.show()
+
+```
+<br>
+The above code then produces a plot that visualises the cross-validated classification accuracy with each potential number of features
+
+<br>
+![alt text](/img/posts/CP_10.jpg "knn_CP10")
+
+<br>
+This creates the below plot, which shows us that the highest cross-validated classification accuracy (0.9833) is when we include 4 of our original input variables - although there isn’t much difference in predictive performance between using 3 variables through to 13 variables - and this syncs with what we saw in the Random Forest section above where only three of the input variables scored highly when assessing Feature Importance & Permutation Importance.
+
+<br>
+
+### Model Training
+
+<br>
+
+Instantiating and training our KNN model is done using the below code. At this stage we will just use the default parameters, meaning that the algorithm:
+
+Will use a value for k of 5, or in other words it will base classifications based upon the 5 nearest neighbours
+Will use uniform weighting, or in other words an equal weighting to all 5 neighbours regardless of distance
+
+<br>
+
+```python
+
+# instantiate our model object
+knn = KNeighborsClassifier()
+
+# fit our model using our training & test sets
+knn.fit(X_train, y_train)
+
+```
+<br>
+
+### Model Performance Assessment
+
+**Predict On The Test Set**
+
+To assess how well our model is predicting on new data - we use the trained model object (here called knn) and ask it to predict the loan_status variable for the test set.
+
+In the code below we create one object to hold the binary 1/0 predictions, and another to hold the actual prediction probabilities for the positive class (which is based upon the majority class within the k nearest neighbours)
+
+```python
+
+# predict on the test set
+
+y_pred_class = rf.predict(X_test)
+y_pred_prob = rf.predict_proba(X_test)[:,1]
+
+```
+<br>
+
+#### Confusion Matrix
+
+As we’ve seen with all models so far, our Confusion Matrix provides us a visual way to understand how our predictions match up against the actual values for those test set observations.
+
+The below code creates the Confusion Matrix using the confusion_matrix functionality from within scikit-learn and then plots it using matplotlib.
+
+```python
+
+# create the confusion matrix
+conf_matrix = confusion_matrix(y_test, y_pred_class)
+
+# plot the confusion matrix
+plt.style.use("seaborn-poster")
+plt.matshow(conf_matrix, cmap = "coolwarm")
+plt.gca().xaxis.tick_bottom()
+plt.title("Confusion Matrix")
+plt.ylabel("Actual Class")
+plt.xlabel("Predicted Class")
+for (i, j), corr_value in np.ndenumerate(conf_matrix):
+    plt.text(j, i, corr_value, ha = "center", va = "center", fontsize = 20)
+
+plt.show()
+
+```
+<br>
+![alt text](/img/posts/CP_11.jpg "knn_CP11")
+
+<br>
+The aim is to have a high proportion of observations falling into the top left cell (predicted rejected and actual rejected) and the bottom right cell (predicted approved and actual approved).
+
+Since the proportion of signups in our data was around 30:70 we will next analyse not only Classification Accuracy, but also Precision, Recall, and F1-Score which will help us assess how well our model has performed in reality.
+
+<br>
+
+#### Classification Performance Metrics
+
+<br>
+
+**Accuracy, Precision, Recall, F1-Score**
+
+For details on these performance metrics, please see the above section on Logistic Regression. Using all four of these metrics in combination gives a really good overview of the performance of a classification model, and gives us an understanding of the different scenarios & considerations!
+
+In the code below, we utilise in-built functionality from scikit-learn to calculate these four metrics.
+
+```python
+
+print('Accuracy:', '%.3f' % accuracy_score(y_test, y_pred_class))
+>> Accuracy: 0.876
+print('Precision:', '%.3f' % precision_score(y_test, y_pred_class))
+>> Precision: 0.903
+print('Recall:', '%.3f' % recall_score(y_test, y_pred_class))
+>> Recall: 0.896
+print('F1 Score:', '%.3f' % f1_score(y_test, y_pred_class))
+>> F1 Score: 0.900
+
+```
+<br>
+
+* Accuracy: We have an accuracy of around 0.876. This suggests that our model is correctly classifying around 90.9% of instances.
+
+* Precision: Precision measures how many of the predicted positive instances are actually positive. With a precision of around 0.903, it means that about 90.3% of the instances predicted as positive by our model are truly positive.
+
+* Recall: Recall, also known as sensitivity or true positive rate, indicates how many of the actual positive instances our model is capturing. With a recall of around 0.896, it means that our model is correctly identifying about 89.6% of the actual positive instances.
+
+* F1 Score: The F1 score is the harmonic mean of precision and recall and provides a balanced view of a model's performance. With an F1 score of around 0.900, it indicates that the model is achieving a balanced trade-off between precision and recall.
+
+<br>
+
+### Finding Optimal Value of K
+
+<br>
+
+By default, the KNN algorithm within scikit-learn will use k = 5 meaning that classifications are based upon the five nearest neighbouring data-points in n-dimensional space.
+
+Just because this is the default threshold does not mean it is the best one for our task.
+
+Here, we will test many potential values for k, and plot the Precision, Recall & F1-Score, and find an optimal solution!
+
+<br>
+
+```python
+
+# set up range for search, and empty list to append accuracy scores to
+k_list = list(range(2,25))
+accuracy_scores = []
+
+# loop through each possible value of k, train and validate model, append test set f1-score
+for k in k_list:
+    
+    clf = KNeighborsClassifier(n_neighbors = k)
+    clf.fit(X_train,y_train)
+    y_pred = clf.predict(X_test)
+    accuracy = f1_score(y_test,y_pred)
+    accuracy_scores.append(accuracy)
+    
+# store max accuracy, and optimal k value    
+max_accuracy = max(accuracy_scores)
+max_accuracy_idx = accuracy_scores.index(max_accuracy)
+optimal_k_value = k_list[max_accuracy_idx]
+
+# plot accuracy by max depth
+plt.plot(k_list,accuracy_scores)
+plt.scatter(optimal_k_value, max_accuracy, marker = "x", color = "red")
+plt.title(f"Accuracy (F1 Score) by k \n Optimal Value for k: {optimal_k_value} (Accuracy: {round(max_accuracy,4)})")
+plt.xlabel("k")
+plt.ylabel("Accuracy (F1 Score)")
+plt.tight_layout()
+plt.savefig('CP_12.jpg',bbox_inches='tight',dpi=150)
+plt.show()
+
+```
+<br>
+That code gives us the below plot - which visualises the results!
+
+<br>
+![alt text](/img/posts/CP_12.jpg "knn_CP12")
+
+<br>
+In the plot we can see that the maximum F1-Score on the test set is found when applying a k value of **11**. We started with k=5, so we need to change!
+
+___
+<br>
+# Modelling Summary <a name="PM-MS"></a>
+
+<br>
+A secondary goal was to understand what the drivers for this are, so the client can get closer to the customers that need or want this service, and enhance their messaging.
+
+Based upon these, the chosen the model is the **Random Forest** as it was a) the most consistently performant on the test set across classication accuracy, precision, recall, and f1-score, and b) the feature importance and permutation importance allows the client an understanding of the key drivers behind loan_status.
+
+<br>
+
+Metric 1: **Classification Accuracy**
+
+
+* Random Forest = 0.985
+* Decision Tree = 0.968
+* Logistic Regression = 0.917
+* KNN = 0.876
+
+
+Metric 2: **Precision**
+
+
+* Random Forest = 0.985
+* Decision Tree = 0.983
+* Logistic Regression = 0.921
+* KNN = 0.903
+
+Metric 3: **Recall**
+
+
+* Random Forest = 0.991
+* Decision Tree = 0.966
+* Logistic Regression = 0.947
+* KNN = 0.896
+
+Metric 4: **F1 Score**
+
+
+* Random Forest = 0.988
+* Decision Tree = 0.974
+* Logistic Regression = 0.934
+* KNN = 0.900
+
+
