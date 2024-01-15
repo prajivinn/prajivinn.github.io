@@ -535,7 +535,7 @@ Output:
 * There are 6 applications who have *excellent* cibil_score but still got rejected. 
 * Majority of applicants who have *low* cibil_score got rejected but a group of people got approved.
 
-So cibil_score is not the most contributing factor but one of the factor.
+So *cibil_score* is not the most contributing factor but one of the factor.
 
 ___
 
@@ -1198,6 +1198,8 @@ print('F1 Score:', '%.3f' % f1_score(y_test, y_pred_class))
 Since our data is *somewhat* imbalanced, looking at these metrics rather than just Classification Accuracy on it’s own - is a good idea, and gives us a much better understanding of what our predictions mean! We will use these same metrics when applying other models for this task, and can compare how they stack up.
 
 <br>
+
+#### Finding Feature Importance
 
 Printing the features in *Descending* order
 
