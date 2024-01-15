@@ -1,11 +1,11 @@
 ---
 layout: post
-title: Optimizing Loan Approval Process For Fintech Company
+title: Optimizing Loan Approval Process For Fintech Company In India
 image: "/posts/OLAP.jpeg"
 tags: [Excel, SQL, PowerBI, Python, Machine Learning]
 ---
 
-In this project we aim to create an end-to-end solution using Excel, SQL, Power BI, and Python, providing valuable insights to help the FinTech company make informed decisions and optimize their loan approval process.
+In this project we aim to create an end-to-end solution using Excel, SQL, Power BI, and Python, providing valuable insights to help the FinTech company in India make informed decisions and optimize their loan approval process.
 
 # Table of contents
 
@@ -14,11 +14,10 @@ In this project we aim to create an end-to-end solution using Excel, SQL, Power 
     - [Actions](#overview-actions)
     - [Results](#overview-results)
     - [Growth/Next Steps](#overview-growth)
-- [01. Concept Overview](#concept-overview)
-- [02. Data Overview & Preparation](#data-overview)
-- [03. Data Cleaning & Transformation](#data-DCT)
-- [04. Exploratory Data Analysis - Dashboard Creation](#data-DC)
-- [05. Predictive Modelling](#data-PM)
+- [01. Data Overview & Preparation](#data-overview)
+- [02. Data Cleaning & Transformation](#data-DCT)
+- [03. Exploratory Data Analysis - Dashboard Creation](#data-DC)
+- [04. Predictive Modelling](#data-PM)
     - [Modelling Overview](#PM-overview)
     - [Data Import & Analysis](#PM-DIA)
     - [Exploratory Data Analysis](#PM-EDA)
@@ -27,6 +26,8 @@ In this project we aim to create an end-to-end solution using Excel, SQL, Power 
     - [Random Forest](#PM-RF)
     - [K Nearest Neighbours](#PM-KNN)
     - [Modelling Summary](#PM-MS)
+- [05. Conclusion](#data-conclusion)
+- [06. Growth/Next Steps](data-growth)
 
 ___
 
@@ -46,13 +47,7 @@ A fintech company operating in India wants to optimize its loan approval process
   
 * **Predictive Modeling in Python**: Use Python to build a linear regression model that predicts the likelihood of loan approval based on applicant attributes. This model should help in assessing the creditworthiness of future applicants.
   
-* **Recommendations**: Based on the analysis, provide recommendations to the fintech company to improve their loan approval process, such as adjusting approval criteria or interest rates.
-  
 This project aims to create an end-to-end solution using Excel, SQL, Power BI, and Python, providing valuable insights to help the FinTech company make informed decisions and optimize their loan approval process.
-
-___
-
-# Concept Overview  <a name="concept-overview"></a>
 
 ___
 
@@ -2493,5 +2488,3 @@ Metric 4: **F1 Score**
 * Decision Tree = 0.974
 * Logistic Regression = 0.934
 * KNN = 0.900
-
-
