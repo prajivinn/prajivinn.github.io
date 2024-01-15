@@ -759,7 +759,7 @@ df["loan_status"].value_counts(normalize = True)
 | Rejected | 0.37784 |
 
 <br>
-We see that 62% of customers got their loan approved and 37% got rejected. This tells us that while the data isn’t perfectly balanced at 50:50, it isn’t too imbalanced either. Because of this, and as you will see, we make sure to not rely on classification accuracy alone when assessing results - also analysing Precision, Recall, and F1-Score.
+We see that **62%** of customers got their loan approved and **37%** got rejected. This tells us that while the data isn’t perfectly balanced at 50:50, it isn’t too imbalanced either. Because of this, and as you will see, we make sure to not rely on classification accuracy alone when assessing results - also analysing Precision, Recall, and F1-Score.
 
 ```python
 
@@ -896,9 +896,13 @@ Output:
 
 #### Split Out Data For Modelling
 
+<br>
+
 In the next code block we do two things, we firstly split our data into an X object which contains only the predictor variables, and a y object that contains only our dependent variable.
 
 Once we have done this, we split our data into training and test sets to ensure we can fairly validate the accuracy of the predictions on data that was not used in training. In this case, we have allocated 80% of the data for training, and the remaining 20% for validation. We make sure to add in the stratify parameter to ensure that both our training and test sets have the same proportion of customers who got approved and rejected of the loan - meaning we can be more confident in our assessment of predictive performance.
+
+<br>
 
 ```python
 
@@ -927,19 +931,23 @@ print(y_test.shape)
 
 #### Categorical Predictor Variables
 
-In our dataset, we have one categorical variable gender which has values of “M” for Male, “F” for Female, and “U” for Unknown.
+<br>
 
-The Logistic Regression algorithm can’t deal with data in this format as it can’t assign any numerical meaning to it when looking to assess the relationship between the variable and the dependent variable.
+In our dataset, we have three categorical variables *gender*, *education*, *self_employed*.
 
-As gender doesn’t have any explicit order to it, in other words, Male isn’t higher or lower than Female and vice versa - one appropriate approach is to apply One Hot Encoding to the categorical column.
+The Logistic Regression algorithm can't deal with data in this format as it can't assign any numerical meaning to it when looking to assess the relationship between the variable and the dependent variable.
 
-One Hot Encoding can be thought of as a way to represent categorical variables as binary vectors, in other words, a set of new columns for each categorical value with either a 1 or a 0 saying whether that value is true or not for that observation. These new columns would go into our model as input variables, and the original column is discarded.
+As these three variables doesn't have any explicit *order* to it. For example, *gender*, aka Male isn't higher or lower than Female and vice versa - one appropriate approach is to apply One Hot Encoding to the categorical column.
 
-We also drop one of the new columns using the parameter drop = “first”. We do this to avoid the dummy variable trap where our newly created encoded columns perfectly predict each other - and we run the risk of breaking the assumption that there is no multicollinearity, a requirement or at least an important consideration for some models, Linear Regression being one of them! Multicollinearity occurs when two or more input variables are highly correlated with each other, it is a scenario we attempt to avoid as in short, while it won’t neccessarily affect the predictive accuracy of our model, it can make it difficult to trust the statistics around how well the model is performing, and how much each input variable is truly having.
+One Hot Encoding can be thought of as a way to represent categorical variables as binary vectors, in other words, a set of *new* columns for each categorical value with either a 1 or a 0 saying whether that value is true or not for that observation.  These new columns would go into our model as input variables, and the original column is discarded.
 
-In the code, we also make sure to apply fit_transform to the training set, but only transform to the test set. This means the One Hot Encoding logic will learn and apply the “rules” from the training data, but only apply them to the test data. This is important in order to avoid data leakage where the test set learns information about the training data, and means we can’t fully trust model performance metrics!
+We also drop one of the new columns using the parameter *drop = "first"*.  We do this to avoid the *dummy variable trap* where our newly created encoded columns perfectly predict each other - and we run the risk of breaking the assumption that there is no multicollinearity, a requirement or at least an important consideration for some models, Linear Regression being one of them! Multicollinearity occurs when two or more input variables are *highly* correlated with each other, it is a scenario we attempt to avoid as in short, while it won't neccessarily affect the predictive accuracy of our model, it can make it difficult to trust the statistics around how well the model is performing, and how much each input variable is truly having.
+
+In the code, we also make sure to apply *fit_transform* to the training set, but only *transform* to the test set.  This means the One Hot Encoding logic will *learn and apply* the "rules" from the training data, but only *apply* them to the test data.  This is important in order to avoid *data leakage* where the test set *learns* information about the training data, and means we can't fully trust model performance metrics!
 
 For ease, after we have applied One Hot Encoding, we turn our training and test objects back into Pandas Dataframes, with the column names applied.
+
+<br>
 
 ```python
 
@@ -995,13 +1003,19 @@ X_test = pd.DataFrame(scale_stand.transform(X_test), columns = X_test.columns)
 
 #### Feature Selection
 
-As we discussed when applying Logistic Regression above - Feature Selection is the process used to select the input variables that are most important to your Machine Learning task. For more information around this, please see that section above.
+<br>
 
-When applying KNN, Feature Selection is an interesting topic. The algorithm is measuring the distance between data-points across all dimensions, where each dimension is one of our input variables. The algorithm treats each input variable as equally important, there isn’t really a concept of “feature importance” so the spread of data within an unimportant variable could have an effect on judging other data points as either “close” or “far”. If we had a lot of “unimportant” variables in our data, this could create a lot of noise for the algorithm to deal with, and we’d just see poor classification accuracy without really knowing why.
+Feature Selection is the process used to select the input variables that are most important to your Machine Learning task. It can be a very important addition or at least, consideration, in certain scenarios. The potential benefits of Feature Selection are:
 
-Having a high number of input variables also means the algorithm has to process a lot more information when processing distances between all of the data-points, so any way to reduce dimensionality is important from a computational perspective as well.
+* **Improved Model Accuracy** - eliminating noise can help true relationships stand out
+* **Lower Computational Cost** - our model becomes faster to train, and faster to make predictions
+* **Explainability** - understanding & explaining outputs for stakeholder & customers becomes much easier
+  
+There are many, many ways to apply Feature Selection. These range from simple methods such as a *Correlation Matrix* showing variable relationships, to *Univariate Testing* which helps us understand statistical relationships between variables, and then to even more powerful approaches like *Recursive Feature Elimination (RFE)* which is an approach that starts with all input variables, and then iteratively removes those with the weakest relationships with the output variable.
 
-For our task here we are again going to apply Recursive Feature Elimination With Cross Validation (RFECV) which is an approach that starts with all input variables, and then iteratively removes those with the weakest relationships with the output variable. RFECV does this using Cross Validation, so splits the data into many “chunks” and iteratively trains & validates models on each “chunk” seperately. This means that each time we assess different models with different variables included, or eliminated, the algorithm also knows how accurate each of those models was. From the suite of model scenarios that are created, the algorithm can determine which provided the best accuracy, and thus can infer the best set of input variables to use!
+For our task we applied a variation of Reursive Feature Elimination called *Recursive Feature Elimination With Cross Validation (RFECV)* where we split the data into many “chunks” and iteratively trains & validates models on each “chunk” seperately. This means that each time we assess different models with different variables included, or eliminated, the algorithm also knows how accurate each of those models was. From the suite of model scenarios that are created, the algorithm can determine which provided the best accuracy, and thus can infer the best set of input variables to use!
+
+<br>
 
 ```python
 
@@ -1048,7 +1062,7 @@ This creates the above plot, which shows us that the highest cross-validated cla
 
 #### Model Training
 
-Instantiating and training our Logistic Regression model is done using the below code. We use the random_state parameter to ensure reproducible results, meaning any refinements can be compared to past results. We also specify max_iter = 1000 to allow the solver more attempts at finding an optimal regression line, as the default value of 100 was not enough.
+Instantiating and training our Logistic Regression model is done using the below code. We use the *random_state* parameter to ensure reproducible results, meaning any refinements can be compared to past results. We also specify max_iter = 1000 to allow the solver more attempts at finding an optimal regression line, as the default value of 100 was not enough.
 
 <br>
 
@@ -1065,9 +1079,11 @@ lr.fit(X_train, y_train)
 
 #### Model Performance Assessment 
 
+<br>
+
 **Predict On The Test Set**
 
-To assess how well our model is predicting on new data - we use the trained model object (here called clf) and ask it to predict the signup_flag variable for the test set.
+To assess how well our model is predicting on new data - we use the trained model object (here called *clf*) and ask it to predict the *loan_status* variable for the test set.
 
 In the code below we create one object to hold the binary 1/0 predictions, and another to hold the actual prediction probabilities for the positive class.
 
@@ -1084,9 +1100,11 @@ y_pred_prob = clf.predict_proba(X_test)[:,1]
 
 #### Confusion Matrix
 
+<br>
+
 A Confusion Matrix provides us a visual way to understand how our predictions match up against the actual values for those test set observations.
 
-The below code creates the Confusion Matrix using the confusion_matrix functionality from within scikit-learn and then plots it using matplotlib.
+The below code creates the Confusion Matrix using the *confusion_matrix* functionality from within scikit-learn and then plots it using matplotlib.
 
 <br>
 
@@ -1131,26 +1149,26 @@ The scores in the confusion matrix above mean:
 
 **Classification Accuracy**
 
-Classification Accuracy is a metric that tells us of all predicted observations, what proportion did we correctly classify. This is very intuitive, but when dealing with imbalanced classes, can be misleading.
+Classification Accuracy is a metric that tells us *of all predicted observations, what proportion did we correctly classify*. This is very intuitive, but when dealing with imbalanced classes, can be misleading.
 
-An example of this could be a rare disease. A model with a 98% Classification Accuracy on might appear like a fantastic result, but if our data contained 98% of patients without the disease, and 2% with the disease - then a 98% Classification Accuracy could be obtained simply by predicting that no one has the disease - which wouldn’t be a great model in the real world. Luckily, there are other metrics which can help us!
+An example of this could be a rare disease. A model with a 98% Classification Accuracy on might appear like a fantastic result, but if our data contained 98% of patients *without* the disease, and 2% with the disease - then a 98% Classification Accuracy could be obtained simply by predicting that *no one* has the disease - which wouldn’t be a great model in the real world. Luckily, there are other metrics which can help us!
 
-In this example of the rare disease, we could define Classification Accuracy as of all predicted patients, what proportion did we correctly classify as either having the disease, or not having the disease
+In this example of the rare disease, we could define Classification Accuracy as *of all predicted patients, what proportion did we correctly classify as either having the disease, or not having the disease*
 
 
 **Precision & Recall**
 
-Precision is a metric that tells us of all observations that were predicted as positive, how many actually were positive
+Precision is a metric that tells us *of all observations that were predicted as positive, how many actually were positive*
 
-Keeping with the rare disease example, Precision would tell us of all patients we predicted to have the disease, how many actually did
+Keeping with the rare disease example, Precision would tell us *of all patients we predicted to have the disease, how many actually did*
 
-Recall is a metric that tells us of all positive observations, how many did we predict as positive
+Recall is a metric that tells us *of all positive observations, how many did we predict as positive*
 
-Again, referring to the rare disease example, Recall would tell us of all patients who actually had the disease, how many did we correctly predict
+Again, referring to the rare disease example, Recall would tell us *of all patients who actually had the disease, how many did we correctly predict*
 
 The tricky thing about Precision & Recall is that it is impossible to optimise both - it’s a zero-sum game. If you try to increase Precision, Recall decreases, and vice versa. Sometimes however it will make more sense to try and elevate one of them, in spite of the other. In the case of our rare-disease prediction like we’ve used in our example, perhaps it would be more important to optimise for Recall as we want to classify as many positive cases as possible. In saying this however, we don’t want to just classify every patient as having the disease, as that isn’t a great outcome either!
 
-So - there is one more metric we will discuss & calculate, which is actually a combination of both…
+So - there is one more metric we will discuss & calculate, which is actually a *combination* of both…
 
 
 **F1 Score**
@@ -1195,6 +1213,10 @@ Since our data is *somewhat* imbalanced, looking at these metrics rather than ju
 
 <br>
 
+Printing the features in *Descending* order
+
+<br>
+
 ```python
 
 # Get feature names (if using a DataFrame)
@@ -1233,7 +1255,7 @@ Output:
 | self_employed_Yes | 0.006791 | 0.006791 |
 
 <br>
-The above table is based on ranking from **highest to lowest features**.
+The above table is based on ranking from *highest to lowest features*.
 
 Based on our EDA, cibil_score & annual income are top ones. Here loan_amount is coming which we were actually seeing it because loan amount and loan income has strong positive correlation. Also, loan_term which we have seen in our exploratory data analysis comes as 4th important feature. Then surprisingly education_post_graduate has come as 5th important feature. We can see luxury & bank asset values as 6th & 7th feature importance.
 
@@ -1246,7 +1268,7 @@ For every unit increase in *cibil_score*, the loan approval gets increased by ap
 
 By default, most pre-built classification models & algorithms will just use a 50% probability to discern between a positive class prediction (loan status approved) and a negative class prediction (loan status rejected).
 
-Just because 50% is the default threshold does not mean it is the best one for our task.
+Just because 50% is the default threshold *does not mean* it is the best one for our task.
 
 Here, we will test many potential classification thresholds, and plot the Precision, Recall & F1-Score, and find an optimal solution!
 
@@ -1352,7 +1374,7 @@ y_pred_class_opt_thresh
 
 ```
 <br>
-Overall this model performed pretty well with f1-score of **94%** being reached when we altered our probability threshold classification
+Overall this model performed pretty well with f1-score of **94%** being reached when we altered our probability threshold classification.
 
 <br>
 ## Decision Tree <a name="PM-DT"></a>
@@ -1365,6 +1387,7 @@ We utlise the scikit-learn library within Python to model our data using Decisio
 * Data Preprocessing
 * Model Training
 * Model Performance Assessment
+* Visualise Our Decision Tree
 * Decision Tree Regularisation
 
 <br>
@@ -1399,7 +1422,10 @@ df_model["loan_status"]= df_model["loan_status"].map({"Approved":1,"Rejected":0}
 
 ### Missing Values
 
-The number of missing values in the data is 0.
+<br>
+While Logistic Regression is susceptible to the effects of outliers, and highly correlated input variables - Decision Trees are not, so the required preprocessing here is lighter. We still however will put in place logic for missing values in the data.
+
+* The number of missing values in the data is 0.
 
 ```python
 
@@ -1411,6 +1437,16 @@ df_model.isna().sum().sum()
 <br>
 
 ### Data Preprocessing
+
+<br>
+
+**Split Out Data For Modelling**
+
+<br>
+
+In exactly the same way we did for Logistic Regression, in the next code block we do two things, we firstly split our data into an X object which contains only the predictor variables, and a y object that contains only our dependent variable.
+
+Once we have done this, we split our data into training and test sets to ensure we can fairly validate the accuracy of the predictions on data that was not used in training. In this case, we have allocated 80% of the data for training, and the remaining 20% for validation. Again, we make sure to add in the *stratify* parameter to ensure that both our training and test sets have the same proportion of customers whose loan got approved, and rejected - meaning we can be more confident in our assessment of predictive performance.
 
 <br>
 
@@ -1436,19 +1472,13 @@ print(y_test.shape)
 <br>
 #### Categorical Predictor Variables
 
-In our dataset, we have one categorical variable *gender* which has values of "M" for Male, "F" for Female, and "U" for Unknown.
+<br>
 
-The Logistic Regression algorithm can't deal with data in this format as it can't assign any numerical meaning to it when looking to assess the relationship between the variable and the dependent variable.
+In our dataset, we have three categorical variables *gender*, *education*, *self_employed*.
 
-As *gender* doesn't have any explicit *order* to it, in other words, Male isn't higher or lower than Female and vice versa - one appropriate approach is to apply One Hot Encoding to the categorical column.
+Just like the Logisitc Regression algorithm, the Decision Tree cannot deal with data in this format as it can’t assign any numerical meaning to it when looking to assess the relationship between the variable and the dependent variable.
 
-One Hot Encoding can be thought of as a way to represent categorical variables as binary vectors, in other words, a set of *new* columns for each categorical value with either a 1 or a 0 saying whether that value is true or not for that observation.  These new columns would go into our model as input variables, and the original column is discarded.
-
-We also drop one of the new columns using the parameter *drop = "first"*.  We do this to avoid the *dummy variable trap* where our newly created encoded columns perfectly predict each other - and we run the risk of breaking the assumption that there is no multicollinearity, a requirement or at least an important consideration for some models, Linear Regression being one of them! Multicollinearity occurs when two or more input variables are *highly* correlated with each other, it is a scenario we attempt to avoid as in short, while it won't neccessarily affect the predictive accuracy of our model, it can make it difficult to trust the statistics around how well the model is performing, and how much each input variable is truly having.
-
-In the code, we also make sure to apply *fit_transform* to the training set, but only *transform* to the test set.  This means the One Hot Encoding logic will *learn and apply* the "rules" from the training data, but only *apply* them to the test data.  This is important in order to avoid *data leakage* where the test set *learns* information about the training data, and means we can't fully trust model performance metrics!
-
-For ease, after we have applied One Hot Encoding, we turn our training and test objects back into Pandas Dataframes, with the column names applied.
+For example *gender* doesn’t have any explicit *order* to it, in other words, Male isn’t higher or lower than Female and vice versa - we would again apply One Hot Encoding to all the three categorical columns.
 
 <br>
 
@@ -1504,7 +1534,9 @@ dt.fit(X_train, y_train)
 
 #### Predict On The Test Set
 
-Just like we did with Logistic Regression, to assess how well our model is predicting on new data - we use the trained model object (here called *clf*) and ask it to predict the *signup_flag* variable for the test set.
+<br>
+
+Just like we did with Logistic Regression, to assess how well our model is predicting on new data - we use the trained model object (here called *dt*) and ask it to predict the *signup_flag* variable for the test set.
 
 In the code below we create one object to hold the binary 1/0 predictions, and another to hold the actual prediction probabilities for the positive class.
 
@@ -1593,6 +1625,17 @@ print('F1 Score:', '%.3f' % f1_score(y_test, y_pred_class))
 
 * F1 Score: The F1 score is the harmonic mean of precision and recall and provides a balanced view of a model's performance. With an F1 score of around 0.974, it indicates that the model is achieving a balanced trade-off between precision and recall.
 
+These are all higher than what we saw when applying Logistic Regression, even after we had optimised the classification threshold!
+
+<br>
+
+### Visualise Our Decision Tree
+
+<br>
+To see the decisions that have been made in the tree, we can use the plot_tree functionality that we imported from scikit-learn. To do this, we use the below code:
+
+<br>
+
 ```python
 
 # plot the nodes of the decision tree
@@ -1613,18 +1656,18 @@ That code gives us the below plot:
 <br>
 This is a very powerful visual, and one that can be shown to stakeholders in the business to ensure they understand exactly what is driving the predictions.
 
-One interesting thing to note is that the very first split appears to be using the variable **income_annum** so it would seem that this is a very important variable when it comes to predicting loan status.
+One interesting thing to note is that the *very first split* appears to be using the variable **income_annum** so it would seem that this is a very important variable when it comes to predicting loan status.
 
 <br>
 
 ### Decision Tree Regularisation
 
 <br>
-Decision Tree’s can be prone to over-fitting, in other words, without any limits on their splitting, they will end up learning the training data perfectly. We would much prefer our model to have a more generalised set of rules, as this will be more robust & reliable when making predictions on new data.
+Decision Tree’s can be prone to over-fitting, in other words, without any limits on their splitting, they will end up learning the training data perfectly. We would much prefer our model to have a more *generalised* set of rules, as this will be more robust & reliable when making predictions on *new* data.
 
 One effective method of avoiding this over-fitting, is to apply a **max depth** to the Decision Tree, meaning we only allow it to split the data a certain number of times before it is required to stop.
 
-We initially trained our model with a placeholder depth of 5, but unfortunately, we don’t necessarily know the optimal number for this. Below we will loop over a variety of values and assess which gives us the best predictive performance!
+We initially trained our model with a placeholder depth of 5, but unfortunately, we don’t necessarily know the *optimal number* for this. Below we will loop over a variety of values and assess which gives us the best predictive performance!
 
 <br>
 
@@ -1731,7 +1774,9 @@ df_model.isna().sum().sum()
 
 **Split Out Data For Modelling**
 
-In exactly the same way we’ve done for the other three models, in the next code block we do two things, we firstly split our data into an X object which contains only the predictor variables, and a y object that contains only our dependent variable.
+<br>
+
+In exactly the same way we did for both Logistic Regression & our Decision Tree, in the next code block we do two things, we firstly split our data into an X object which contains only the predictor variables, and a y object that contains only our dependent variable.
 
 Once we have done this, we split our data into training and test sets to ensure we can fairly validate the accuracy of the predictions on data that was not used in training. In this case, we have allocated 80% of the data for training, and the remaining 20% for validation. Again, we make sure to add in the stratify parameter to ensure that both our training and test sets have the same proportion of customers who did, and did not, sign up for the delivery club - meaning we can be more confident in our assessment of predictive performance.
 
@@ -1763,19 +1808,12 @@ print(y_test.shape)
 
 #### Categorical Predictor Variables
 
-In our dataset, we have one categorical variable *gender* which has values of "M" for Male, "F" for Female, and "U" for Unknown.
+<br>
+In our dataset, we have three categorical variables *gender*, *education* and *self_employed*.
 
-The Random Forest algorithm can't deal with data in this format as it can't assign any numerical meaning to it when looking to assess the relationship between the variable and the dependent variable.
+Just like the Logistic Regression algorithm, Random Forests cannot deal with data in this format as it can’t assign any numerical meaning to it when looking to assess the relationship between the variable and the dependent variable.
 
-As *gender* doesn't have any explicit *order* to it, in other words, Male isn't higher or lower than Female and vice versa - one appropriate approach is to apply One Hot Encoding to the categorical column.
-
-One Hot Encoding can be thought of as a way to represent categorical variables as binary vectors, in other words, a set of *new* columns for each categorical value with either a 1 or a 0 saying whether that value is true or not for that observation.  These new columns would go into our model as input variables, and the original column is discarded.
-
-We also drop one of the new columns using the parameter *drop = "first"*.  We do this to avoid the *dummy variable trap* where our newly created encoded columns perfectly predict each other - and we run the risk of breaking the assumption that there is no multicollinearity, a requirement or at least an important consideration for some models, Linear Regression being one of them! Multicollinearity occurs when two or more input variables are *highly* correlated with each other, it is a scenario we attempt to avoid as in short, while it won't neccessarily affect the predictive accuracy of our model, it can make it difficult to trust the statistics around how well the model is performing, and how much each input variable is truly having.
-
-In the code, we also make sure to apply *fit_transform* to the training set, but only *transform* to the test set.  This means the One Hot Encoding logic will *learn and apply* the "rules" from the training data, but only *apply* them to the test data.  This is important in order to avoid *data leakage* where the test set *learns* information about the training data, and means we can't fully trust model performance metrics!
-
-For ease, after we have applied One Hot Encoding, we turn our training and test objects back into Pandas Dataframes, with the column names applied.
+For example *gender* doesn’t have any explicit *order* to it, in other words, Male isn’t higher or lower than Female and vice versa. We would again apply One Hot Encoding to all the three categorical columns.
 
 <br>
 
@@ -1810,11 +1848,11 @@ X_test.drop(categorical_vars, axis = 1, inplace = True)
 
 <br>
 
-Instantiating and training our Random Forest model is done using the below code. We use the random_state parameter to ensure we get reproducible results, and this helps us understand any improvements in performance with changes to model hyperparameters.
+Instantiating and training our Random Forest model is done using the below code. We use the *random_state* parameter to ensure we get reproducible results, and this helps us understand any improvements in performance with changes to model hyperparameters.
 
 We also look to build more Decision Trees in the Random Forest (500) than would be done using the default value of 100.
 
-Lastly, since the default scikit-learn implementation of Random Forests does not limit the number of randomly selected variables offered up for splitting at each split point in each Decision Tree - we put this in place using the max_features parameter. This can always be refined later through testing, or through an approach such as gridsearch.
+Lastly, since the default scikit-learn implementation of Random Forests does not limit the number of randomly selected variables offered up for splitting at each split point in each Decision Tree - we put this in place using the *max_features* parameter. This can always be refined later through testing, or through an approach such as gridsearch.
 
 <br>
 
@@ -1835,7 +1873,7 @@ rf.fit(X_train, y_train)
 
 #### Predict On The Test Set
 
-Just like we did with Logistic Regression & our Decision Tree, to assess how well our model is predicting on new data - we use the trained model object (here called clf) and ask it to predict the signup_flag variable for the test set.
+Just like we did with Logistic Regression & our Decision Tree, to assess how well our model is predicting on new data - we use the trained model object (here called rf) and ask it to predict the signup_flag variable for the test set.
 
 In the code below we create one object to hold the binary 1/0 predictions, and another to hold the actual prediction probabilities for the positive class.
 
@@ -1926,6 +1964,8 @@ print('F1 Score:', '%.3f' % f1_score(y_test, y_pred_class))
 
 * F1 Score: The F1 score is the harmonic mean of precision and recall and provides a balanced view of a model's performance. With an F1 score of around 0.974, it indicates that the model is achieving a balanced trade-off between precision and recall.
 
+**These are all higher than what we saw when applying Logistic Regression, and marginally higher than what we got from our Decision Tree. If we are after out and out accuracy then this would be the best model to choose. If we were happier with a simpler, easier explain model, but that had almost the same performance - then we may choose the Decision Tree instead!**.
+
 <br>
 
 ### Feature Importance
@@ -1938,23 +1978,23 @@ Because of this, we end up with a powerful and robust model, but because of the 
 
 As we’re using random samples of data, and input variables for each Decision Tree - there are many scenarios where certain input variables are being held back and this enables us a way to compare how accurate the models predictions are if that variable is or isn’t present.
 
-So, at a high level, in a Random Forest we can measure importance by asking How much would accuracy decrease if a specific input variable was removed or randomised?
+So, at a high level, in a Random Forest we can measure *importance* by asking *How much would accuracy decrease if a specific input variable was removed or randomised?*
 
 If this decrease in performance, or accuracy, is large, then we’d deem that input variable to be quite important, and if we see only a small decrease in accuracy, then we’d conclude that the variable is of less importance.
 
-At a high level, there are two common ways to tackle this. The first, often just called Feature Importance is where we find all nodes in the Decision Trees of the forest where a particular input variable is used to split the data and assess what the gini impurity score (for a Classification problem) was before the split was made, and compare this to the gini impurity score after the split was made. We can take the average of these improvements across all Decision Trees in the Random Forest to get a score that tells us how much better we’re making the model by using that input variable.
+At a high level, there are two common ways to tackle this. The first, often just called Feature Importance is where we find all nodes in the Decision Trees of the forest where a particular input variable is used to split the data and assess what the gini impurity score (for a Classification problem) was before the split was made, and compare this to the gini impurity score after the split was made. We can take the *average* of these improvements across all Decision Trees in the Random Forest to get a score that tells us how much better we’re making the model by using that input variable.
 
-If we do this for each of our input variables, we can compare these scores and understand which is adding the most value to the predictive power of the model!
+If we do this for *each* of our input variables, we can compare these scores and understand which is adding the most value to the predictive power of the model!
 
-The other approach, often called Permutation Importance cleverly uses some data that has gone unused at when random samples are selected for each Decision Tree (this stage is called “bootstrap sampling” or “bootstrapping”)
+The other approach, often called Permutation Importance cleverly uses some data that has gone *unused* at when random samples are selected for each Decision Tree (this stage is called “bootstrap sampling” or “bootstrapping”)
 
-These observations that were not randomly selected for each Decision Tree are known as Out of Bag observations and these can be used for testing the accuracy of each particular Decision Tree.
+These observations that were not randomly selected for each Decision Tree are known as *Out of Bag* observations and these can be used for testing the accuracy of each particular Decision Tree.
 
-For each Decision Tree, all of the Out of Bag observations are gathered and then passed through. Once all of these observations have been run through the Decision Tree, we obtain a classification accuracy score for these predictions.
+For each Decision Tree, all of the *Out of Bag* observations are gathered and then passed through. Once all of these observations have been run through the Decision Tree, we obtain a classification accuracy score for these predictions.
 
-In order to understand the importance, we randomise the values within one of the input variables - a process that essentially destroys any relationship that might exist between that input variable and the output variable - and run that updated data through the Decision Tree again, obtaining a second accuracy score. The difference between the original accuracy and the new accuracy gives us a view on how important that particular variable is for predicting the output.
+In order to understand the *importance*, we *randomise* the values within one of the input variables - a process that essentially destroys any relationship that might exist between that input variable and the output variable - and run that updated data through the Decision Tree again, obtaining a second accuracy score. The difference between the original accuracy and the new accuracy gives us a view on how important that particular variable is for predicting the output.
 
-Permutation Importance is often preferred over Feature Importance which can at times inflate the importance of numerical features. Both are useful, and in most cases will give fairly similar results.
+*Permutation Importance* is often preferred over *Feature Importance* which can at times inflate the importance of numerical features. Both are useful, and in most cases will give fairly similar results.
 
 Let’s put them both in place, and plot the results…
 
@@ -2021,7 +2061,7 @@ permutation_importance_summary
 
 <br>
 
-The overall story from both approaches is very similar, in that by far, the most important or impactful input variables are **cibil_score** and **loan_term**.
+The overall story from both approaches is very similar, in that by far, the most important or impactful input variables are *cibil_score* and *loan_term*.
 
 We found that **cibil_score** stands out as the most important factor influencing the model's predictions. One possible reason for this prominence could be that cibil_score has a notable relationship with the target variable loan_status. However, it's important to note that correlation doesn't imply causation. While cibil_score plays a crucial role in the model's predictions, it's important to remember that our model identifies patterns and associations in the data. The importance of a feature doesn't necessarily mean it directly causes the predicted outcomes.In the context of our problem, cibil_score corresponds to credit scores. We should also consider that other factors, interactions between features, and potential noise in the data can influence these findings. Therefore, a holistic understanding of the model's behavior requires taking these aspects into account. The insights from the feature importance analysis can guide us in making informed decisions and refining our strategies. It's important to interpret these findings alongside other domain knowledge and analysis.
 
@@ -2084,6 +2124,10 @@ df_model.isna().sum().sum()
 
 ### Data Preprocessing
 
+<br>
+
+**Split Out Data For Modelling**
+
 In exactly the same way we’ve done for the other three models, in the next code block we do two things, we firstly split our data into an X object which contains only the predictor variables, and a y object that contains only our dependent variable.
 
 Once we have done this, we split our data into training and test sets to ensure we can fairly validate the accuracy of the predictions on data that was not used in training. In this case, we have allocated 80% of the data for training, and the remaining 20% for validation. Again, we make sure to add in the stratify parameter to ensure that both our training and test sets have the same proportion of customers who did, and did not, sign up for the delivery club - meaning we can be more confident in our assessment of predictive performance.
@@ -2116,17 +2160,17 @@ print(y_test.shape)
 
 #### Categorical Predictor Variables
 
-As we saw when applying the other algorithms, in our dataset, we have one categorical variable gender which has values of “M” for Male, “F” for Female, and “U” for Unknown.
+As we saw when applying the other algorithms, in our dataset, we have three categorical variables *gender*, *education*, *self_employed*.
 
 The KNN algorithm can’t deal with data in this format as it can’t assign any numerical meaning to it when looking to assess the relationship between the variable and the dependent variable.
 
-As gender doesn’t have any explicit order to it, in other words, Male isn’t higher or lower than Female and vice versa - one appropriate approach is to apply One Hot Encoding to the categorical column.
+For example *gender* doesn’t have any explicit *order* to it, in other words, Male isn’t higher or lower than Female and vice versa - one appropriate approach is to apply One Hot Encoding to all the three categorical column.
 
-One Hot Encoding can be thought of as a way to represent categorical variables as binary vectors, in other words, a set of new columns for each categorical value with either a 1 or a 0 saying whether that value is true or not for that observation. These new columns would go into our model as input variables, and the original column is discarded.
+One Hot Encoding can be thought of as a way to represent categorical variables as binary vectors, in other words, a set of *new* columns for each categorical value with either a 1 or a 0 saying whether that value is true or not for that observation. These new columns would go into our model as input variables, and the original column is discarded.
 
-We also drop one of the new columns using the parameter drop = “first”. We do this to avoid the dummy variable trap where our newly created encoded columns perfectly predict each other - and we run the risk of breaking the assumption that there is no multicollinearity, a requirement or at least an important consideration for some models, Linear Regression being one of them! Multicollinearity occurs when two or more input variables are highly correlated with each other, it is a scenario we attempt to avoid as in short, while it won’t neccessarily affect the predictive accuracy of our model, it can make it difficult to trust the statistics around how well the model is performing, and how much each input variable is truly having.
+We also drop one of the new columns using the parameter *drop = “first”*. We do this to avoid the *dummy variable* trap where our newly created encoded columns perfectly predict each other - and we run the risk of breaking the assumption that there is no multicollinearity, a requirement or at least an important consideration for some models, Linear Regression being one of them! Multicollinearity occurs when two or more input variables are *highly* correlated with each other, it is a scenario we attempt to avoid as in short, while it won’t neccessarily affect the predictive accuracy of our model, it can make it difficult to trust the statistics around how well the model is performing, and how much each input variable is truly having.
 
-In the code, we also make sure to apply fit_transform to the training set, but only transform to the test set. This means the One Hot Encoding logic will learn and apply the “rules” from the training data, but only apply them to the test data. This is important in order to avoid data leakage where the test set learns information about the training data, and means we can’t fully trust model performance metrics!
+In the code, we also make sure to apply *fit_transform* to the training set, but only *transform* to the test set. This means the One Hot Encoding logic will *learn and apply* the “rules” from the training data, but only *apply* them to the test data. This is important in order to avoid *data leakage* where the test set *learns* information about the training data, and means we can’t fully trust model performance metrics!
 
 For ease, after we have applied One Hot Encoding, we turn our training and test objects back into Pandas Dataframes, with the column names applied.
 
@@ -2161,7 +2205,8 @@ X_test.drop(categorical_vars, axis = 1, inplace = True)
 
 #### Feature Scaling
 
-As KNN is a distance based algorithm, in other words it is reliant on an understanding of how similar or different data points are across different dimensions in n-dimensional space, the application of Feature Scaling is extremely important.
+<br>
+As KNN is a *distance* based algorithm, in other words it is reliant on an understanding of how similar or different data points are across different dimensions in n-dimensional space, the application of Feature Scaling is extremely important.
 
 Feature Scaling is where we force the values from different columns to exist on the same scale, in order to enchance the learning capabilities of the model. There are two common approaches for this, Standardisation, and Normalisation.
 
@@ -2169,9 +2214,9 @@ Standardisation rescales data to have a mean of 0, and a standard deviation of 1
 
 Normalisation rescales datapoints so that they exist in a range between 0 and 1.
 
-The below code uses the in-built MinMaxScaler functionality from scikit-learn to apply Normalisation to all of our input variables. The reason we choose Normalisation over Standardisation is that our scaled data will all exist between 0 and 1, and these will then be compatible with any categorical variables that we have encoded as 1’s and 0’s.
+The below code uses the in-built *MinMaxScaler* functionality from scikit-learn to apply Normalisation to all of our input variables. The reason we choose Normalisation over Standardisation is that our scaled data will all exist between 0 and 1, and these will then be compatible with any categorical variables that we have encoded as 1’s and 0’s.
 
-In the code, we also make sure to apply fit_transform to the training set, but only transform to the test set. This means the scaling logic will learn and apply the scaling “rules” from the training data, but only apply them to the test data (or any other data we predict on in the future). This is important in order to avoid data leakage where the test set learns information about the training data, and means we can’t fully trust model performance metrics!
+In the code, we also make sure to apply *fit_transform* to the training set, but only *transform* to the test set. This means the scaling logic will learn and apply the scaling “rules” from the training data, but only apply them to the test data (or any other data we predict on in the future). This is important in order to avoid data leakage where the test set learns information about the training data, and means we can’t fully trust model performance metrics!
 
 <br>
 
@@ -2194,11 +2239,11 @@ X_test = pd.DataFrame(scale_norm.transform(X_test), columns = X_test.columns)
 
 As we discussed when applying Logistic Regression above - Feature Selection is the process used to select the input variables that are most important to your Machine Learning task. For more information around this, please see that section above.
 
-When applying KNN, Feature Selection is an interesting topic. The algorithm is measuring the distance between data-points across all dimensions, where each dimension is one of our input variables. The algorithm treats each input variable as equally important, there isn’t really a concept of “feature importance” so the spread of data within an unimportant variable could have an effect on judging other data points as either “close” or “far”. If we had a lot of “unimportant” variables in our data, this could create a lot of noise for the algorithm to deal with, and we’d just see poor classification accuracy without really knowing why.
+When applying KNN, Feature Selection is an interesting topic. The algorithm is measuring the distance between data-points across all dimensions, where each dimension is one of our input variables. The algorithm treats each input variable as equally important, there isn’t really a concept of “feature importance” so the spread of data within an unimportant variable could have an effect on judging other data points as either “close” or “far”. If we had a lot of “unimportant” variables in our data, this *could* create a lot of noise for the algorithm to deal with, and we’d just see poor classification accuracy without really knowing why.
 
 Having a high number of input variables also means the algorithm has to process a lot more information when processing distances between all of the data-points, so any way to reduce dimensionality is important from a computational perspective as well.
 
-For our task here we are again going to apply Recursive Feature Elimination With Cross Validation (RFECV) which is an approach that starts with all input variables, and then iteratively removes those with the weakest relationships with the output variable. RFECV does this using Cross Validation, so splits the data into many “chunks” and iteratively trains & validates models on each “chunk” seperately. This means that each time we assess different models with different variables included, or eliminated, the algorithm also knows how accurate each of those models was. From the suite of model scenarios that are created, the algorithm can determine which provided the best accuracy, and thus can infer the best set of input variables to use!
+For our task here we are again going to apply *Recursive Feature Elimination With Cross Validation (RFECV)* which is an approach that starts with all input variables, and then iteratively removes those with the weakest relationships with the output variable. RFECV does this using Cross Validation, so splits the data into many “chunks” and iteratively trains & validates models on each “chunk” seperately. This means that each time we assess different models with different variables included, or eliminated, the algorithm also knows how accurate each of those models was. From the suite of model scenarios that are created, the algorithm can determine which provided the best accuracy, and thus can infer the best set of input variables to use!
 
 <br>
 
@@ -2247,7 +2292,7 @@ The above code then produces a plot that visualises the cross-validated classifi
 ![alt text](/img/posts/CP_10.jpg "knn_CP10")
 
 <br>
-This creates the below plot, which shows us that the highest cross-validated classification accuracy (0.9833) is when we include 4 of our original input variables - although there isn’t much difference in predictive performance between using 4 variables through to 13 variables - and this syncs with what we saw in the Random Forest section above where only three of the input variables scored highly when assessing Feature Importance & Permutation Importance.
+This creates the below plot, which shows us that the highest cross-validated classification accuracy (0.9833) is when we include 4 of our original input variables - although there isn’t much difference in predictive performance between using 4 variables through to 13 variables - and this syncs with what we saw in the Random Forest section above where only three of the input variables scored highly when assessing Feature Importance & Permutation Importance. So we go with all the 13 variables!.
 
 <br>
 
@@ -2258,7 +2303,7 @@ This creates the below plot, which shows us that the highest cross-validated cla
 Instantiating and training our KNN model is done using the below code. At this stage we will just use the default parameters, meaning that the algorithm:
 
 Will use a value for k of 5, or in other words it will base classifications based upon the 5 nearest neighbours
-Will use uniform weighting, or in other words an equal weighting to all 5 neighbours regardless of distance
+Will use *uniform weighting*, or in other words an equal weighting to all 5 neighbours regardless of distance
 
 <br>
 
@@ -2275,11 +2320,15 @@ knn.fit(X_train, y_train)
 
 ### Model Performance Assessment
 
+<br>
+
 **Predict On The Test Set**
 
 To assess how well our model is predicting on new data - we use the trained model object (here called knn) and ask it to predict the loan_status variable for the test set.
 
 In the code below we create one object to hold the binary 1/0 predictions, and another to hold the actual prediction probabilities for the positive class (which is based upon the majority class within the k nearest neighbours)
+
+<br>
 
 ```python
 
@@ -2295,7 +2344,7 @@ y_pred_prob = rf.predict_proba(X_test)[:,1]
 
 As we’ve seen with all models so far, our Confusion Matrix provides us a visual way to understand how our predictions match up against the actual values for those test set observations.
 
-The below code creates the Confusion Matrix using the confusion_matrix functionality from within scikit-learn and then plots it using matplotlib.
+The below code creates the Confusion Matrix using the *confusion_matrix* functionality from within scikit-learn and then plots it using matplotlib.
 
 ```python
 
@@ -2343,6 +2392,8 @@ For details on these performance metrics, please see the above section on Logist
 
 In the code below, we utilise in-built functionality from scikit-learn to calculate these four metrics.
 
+<br>
+
 ```python
 
 print('Accuracy:', '%.3f' % accuracy_score(y_test, y_pred_class))
@@ -2373,7 +2424,7 @@ print('F1 Score:', '%.3f' % f1_score(y_test, y_pred_class))
 
 By default, the KNN algorithm within scikit-learn will use k = 5 meaning that classifications are based upon the five nearest neighbouring data-points in n-dimensional space.
 
-Just because this is the default threshold does not mean it is the best one for our task.
+Just because this is the default threshold *does not mean* it is the best one for our task.
 
 Here, we will test many potential values for k, and plot the Precision, Recall & F1-Score, and find an optimal solution!
 
