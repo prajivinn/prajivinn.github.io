@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Optimizing Loan Approval Process For Fintech Company
-image: "/posts/startup-title.jpeg"
+image: "/posts/OLAP.jpeg"
 tags: [Excel, SQL, PowerBI, Python, Machine Learning]
 ---
 
@@ -540,7 +540,7 @@ Output:
 * There are 6 applications who have *excellent* cibil_score but still got rejected. 
 * Majority of applicants who have *low* cibil_score got rejected but a group of people got approved.
 
-So cibil_score is not the most contributing factor but one of the factor. So we are not still clear what is the driving factor that decides the loan **approval** or **rejection** rate.
+So cibil_score is not the most contributing factor but one of the factor.
 
 ___
 
@@ -554,11 +554,9 @@ ___
 #### Extracting Observations
 
 * Approximately 62.2% of the loans in the dataset are approved( 2656 out of 4,269 ), indicating a slight class imbalance that doesn't require rebalancing.
-* Credit scores, particularly in the range of 540-550, serve as a distinct threshold for separating loan statuses.
-* The loan_status is highly correlated with credit_scores, but some applicants with high credit scores ( above 740 ) were still rejected, suggesting additional factors influencing loan approval.
-* No clear trends were observed between asset values and loan status, indicating that asset values alone might not be strong indicators of loan approval.
-
-**From the above observations, we can infer that credit_score could be one of factor for loan approval or rejection.**
+* Cibil score aka credit scores, particularly in the range of 540-550, serve as a distinct threshold for separating loan statuses.
+* The loan_status is highly correlated with cibil scores, but some applicants with high cibil scores ( above 740 ) were still rejected, suggesting additional factors influencing loan approval.
+* No clear trends were observed between asset values and loan status, indicating that asset values alone might not be **strong indicators of loan approval**.
 
 ___
 
@@ -973,6 +971,13 @@ X_test.drop(categorical_vars, axis = 1, inplace = True)
 
 #### Feature Scaling
 
+<br>
+The concept of *standardisation* comes into picture when continuous independent variables are measured at different scales. A variable called "transaction amount' that ranges between $100 and $10000 carries more weightage as compared to a variable i.e number of transactions that in general ranges between 0 and 30 because there is a huge magnitude difference between these two variables. Hence, it is required to transform the data to comparable scales for calculation purpose. 
+
+**The idea is to rescale an original variable to have equal range and/or variance**.
+
+<br>
+
 ```python
 
 # create our standardscaler object
@@ -1109,7 +1114,14 @@ plt.show()
 <br>
 The aim is to have a high proportion of observations falling into the top left cell (predicted rejected and actual rejected) and the bottom right cell (predicted approved and actual approved).
 
-Since the proportion of signups in our data was around 30:70 we will next analyse not only Classification Accuracy, but also Precision, Recall, and F1-Score which will help us assess how well our model has performed in reality.
+Since the proportion of signups in our data was around 62:37 we will next analyse not only Classification Accuracy, but also Precision, Recall, and F1-Score which will help us assess how well our model has performed in reality.
+
+The scores in the confusion matrix above mean:
+
+* True negatives (upper left)  : The number of applications that were rejected that the model accurately predicted were rejected.
+* False negatives (bottom left): The number of applications that were approved that the model inaccurately predicted were rejected.
+* False positives (upper right): The number of applications that were rejected that the model inaccurately predicted were approved.
+* True positives (bottom right): The number of applications that were approved that the model accurately predicted were approved.
 
 <br>
 
@@ -1171,14 +1183,15 @@ print('F1 Score:', '%.3f' % f1_score(y_test, y_pred_class))
 ```
 <br>
 
-The scores in the confusion matrix above mean:
+* Accuracy: We have an accuracy of around 0.917. This suggests that our model is correctly classifying around 91.7% of instances.
 
-* True negatives (upper left)  : The number of applications that were rejected that the model accurately predicted were rejected.
-* False negatives (bottom left): The number of applications that were approved that the model inaccurately predicted were rejected.
-* False positives (upper right): The number of applications that were rejected that the model inaccurately predicted were approved.
-* True positives (bottom right): The number of applications that were approved that the model accurately predicted were approved.
+* Precision: Precision measures how many of the predicted positive instances are actually positive. With a precision of around 0.921, it means that about 92.1% of the instances predicted as positive by our model are truly positive.
 
-Since our data is somewhat imbalanced, looking at these metrics rather than just Classification Accuracy on it’s own - is a good idea, and gives us a much better understanding of what our predictions mean! We will use these same metrics when applying other models for this task, and can compare how they stack up.
+* Recall: Recall, also known as sensitivity or true positive rate, indicates how many of the actual positive instances our model is capturing. With a recall of around 0.947, it means that our model is correctly identifying about 94.7% of the actual positive instances.
+
+* F1 Score: The F1 score is the harmonic mean of precision and recall and provides a balanced view of a model's performance. With an F1 score of around 0.934, it indicates that the model is achieving a balanced trade-off between precision and recall.
+
+Since our data is *somewhat* imbalanced, looking at these metrics rather than just Classification Accuracy on it’s own - is a good idea, and gives us a much better understanding of what our predictions mean! We will use these same metrics when applying other models for this task, and can compare how they stack up.
 
 <br>
 
@@ -1218,6 +1231,14 @@ Output:
 | education_Not Graduate | 0.026293 | 0.026293 |
 | gender_Male | 0.011976 | 0.011976 |
 | self_employed_Yes | 0.006791 | 0.006791 |
+
+<br>
+The above table is based on ranking from **highest to lowest features**.
+
+Based on our EDA, cibil_score & annual income are top ones. Here loan_amount is coming which we were actually seeing it because loan amount and loan income has strong positive correlation. Also, loan_term which we have seen in our exploratory data analysis comes as 4th important feature. Then surprisingly education_post_graduate has come as 5th important feature. We can see luxury & bank asset values as 6th & 7th feature importance.
+
+For every unit increase in *cibil_score*, the loan approval gets increased by approximately 4%. 
+
 
 <br>
 
@@ -1527,7 +1548,14 @@ plt.show()
 <br>
 The aim is to have a high proportion of observations falling into the top left cell (predicted rejected and actual rejected) and the bottom right cell (predicted approved and actual approved).
 
-Since the proportion of signups in our data was around 30:70 we will again analyse not only Classification Accuracy, but also Precision, Recall, and F1-Score as they will help us assess how well our model has performed from different points of view.
+Since the proportion of signups in our data was around 62:37 we will again analyse not only Classification Accuracy, but also Precision, Recall, and F1-Score as they will help us assess how well our model has performed from different points of view.
+
+The scores in the confusion matrix above mean:
+
+* True negatives (upper left)  : The number of applications that were rejected that the model accurately predicted were rejected.
+* False negatives (bottom left): The number of applications that were approved that the model inaccurately predicted were rejected.
+* False positives (upper right): The number of applications that were rejected that the model inaccurately predicted were approved.
+* True positives (bottom right): The number of applications that were approved that the model accurately predicted were approved.
 
 <br>
 
@@ -1737,7 +1765,7 @@ print(y_test.shape)
 
 In our dataset, we have one categorical variable *gender* which has values of "M" for Male, "F" for Female, and "U" for Unknown.
 
-The Logistic Regression algorithm can't deal with data in this format as it can't assign any numerical meaning to it when looking to assess the relationship between the variable and the dependent variable.
+The Random Forest algorithm can't deal with data in this format as it can't assign any numerical meaning to it when looking to assess the relationship between the variable and the dependent variable.
 
 As *gender* doesn't have any explicit *order* to it, in other words, Male isn't higher or lower than Female and vice versa - one appropriate approach is to apply One Hot Encoding to the categorical column.
 
@@ -1852,7 +1880,15 @@ plt.show()
 <br>
 The aim is to have a high proportion of observations falling into the top left cell (predicted rejected and actual rejected) and the bottom right cell (predicted approved and actual approved).
 
-Since the proportion of signups in our data was around 30:70 we will again analyse not only Classification Accuracy, but also Precision, Recall, and F1-Score as they will help us assess how well our model has performed from different points of view.
+Since the proportion of signups in our data was around 62:37 we will again analyse not only Classification Accuracy, but also Precision, Recall, and F1-Score as they will help us assess how well our model has performed from different points of view.
+
+The scores in the confusion matrix above mean:
+
+* True negatives (upper left)  : The number of applications that were rejected that the model accurately predicted were rejected.
+* False negatives (bottom left): The number of applications that were approved that the model inaccurately predicted were rejected.
+* False positives (upper right): The number of applications that were rejected that the model inaccurately predicted were approved.
+* True positives (bottom right): The number of applications that were approved that the model accurately predicted were approved.
+
 
 <br>
 
@@ -2211,7 +2247,7 @@ The above code then produces a plot that visualises the cross-validated classifi
 ![alt text](/img/posts/CP_10.jpg "knn_CP10")
 
 <br>
-This creates the below plot, which shows us that the highest cross-validated classification accuracy (0.9833) is when we include 4 of our original input variables - although there isn’t much difference in predictive performance between using 3 variables through to 13 variables - and this syncs with what we saw in the Random Forest section above where only three of the input variables scored highly when assessing Feature Importance & Permutation Importance.
+This creates the below plot, which shows us that the highest cross-validated classification accuracy (0.9833) is when we include 4 of our original input variables - although there isn’t much difference in predictive performance between using 4 variables through to 13 variables - and this syncs with what we saw in the Random Forest section above where only three of the input variables scored highly when assessing Feature Importance & Permutation Importance.
 
 <br>
 
@@ -2285,7 +2321,15 @@ plt.show()
 <br>
 The aim is to have a high proportion of observations falling into the top left cell (predicted rejected and actual rejected) and the bottom right cell (predicted approved and actual approved).
 
-Since the proportion of signups in our data was around 30:70 we will next analyse not only Classification Accuracy, but also Precision, Recall, and F1-Score which will help us assess how well our model has performed in reality.
+Since the proportion of signups in our data was around 62:37 we will next analyse not only Classification Accuracy, but also Precision, Recall, and F1-Score which will help us assess how well our model has performed in reality.
+
+The scores in the confusion matrix above mean:
+
+* True negatives (upper left)  : The number of applications that were rejected that the model accurately predicted were rejected.
+* False negatives (bottom left): The number of applications that were approved that the model inaccurately predicted were rejected.
+* False positives (upper right): The number of applications that were rejected that the model inaccurately predicted were approved.
+* True positives (bottom right): The number of applications that were approved that the model accurately predicted were approved.
+
 
 <br>
 
@@ -2380,9 +2424,13 @@ ___
 # Modelling Summary <a name="PM-MS"></a>
 
 <br>
-A secondary goal was to understand what the drivers for this are, so the client can get closer to the customers that need or want this service, and enhance their messaging.
+The goal for the project was to build a model that would accurately predict the customers that would get the loan approved. A secondary goal was to understand what the drivers for this are, so the client can get closer to the customers that need or want this service, and enhance their messaging.
 
-Based upon these, the chosen the model is the **Random Forest** as it was a) the most consistently performant on the test set across classication accuracy, precision, recall, and f1-score, and b) the feature importance and permutation importance allows the client an understanding of the key drivers behind loan_status.
+Based upon these, the chosen the model is the **Random Forest** as it was 
+
+a) the most consistently performant on the test set across classication accuracy, precision, recall, and f1-score
+
+b) the feature importance and permutation importance allows the client an understanding of the key drivers behind loan_status.
 
 <br>
 
