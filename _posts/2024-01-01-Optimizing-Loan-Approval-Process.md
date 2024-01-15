@@ -896,8 +896,6 @@ Output:
 
 #### Split Out Data For Modelling
 
-<br>
-
 In the next code block we do two things, we firstly split our data into an X object which contains only the predictor variables, and a y object that contains only our dependent variable.
 
 Once we have done this, we split our data into training and test sets to ensure we can fairly validate the accuracy of the predictions on data that was not used in training. In this case, we have allocated 80% of the data for training, and the remaining 20% for validation. We make sure to add in the stratify parameter to ensure that both our training and test sets have the same proportion of customers who got approved and rejected of the loan - meaning we can be more confident in our assessment of predictive performance.
@@ -930,8 +928,6 @@ print(y_test.shape)
 <br>
 
 #### Categorical Predictor Variables
-
-<br>
 
 In our dataset, we have three categorical variables *gender*, *education*, *self_employed*.
 
@@ -979,7 +975,6 @@ X_test.drop(categorical_vars, axis = 1, inplace = True)
 
 #### Feature Scaling
 
-<br>
 The concept of *standardisation* comes into picture when continuous independent variables are measured at different scales. A variable called "transaction amount' that ranges between $100 and $10000 carries more weightage as compared to a variable i.e number of transactions that in general ranges between 0 and 30 because there is a huge magnitude difference between these two variables. Hence, it is required to transform the data to comparable scales for calculation purpose. 
 
 **The idea is to rescale an original variable to have equal range and/or variance**.
@@ -1002,8 +997,6 @@ X_test = pd.DataFrame(scale_stand.transform(X_test), columns = X_test.columns)
 <br>
 
 #### Feature Selection
-
-<br>
 
 Feature Selection is the process used to select the input variables that are most important to your Machine Learning task. It can be a very important addition or at least, consideration, in certain scenarios. The potential benefits of Feature Selection are:
 
@@ -1099,8 +1092,6 @@ y_pred_prob = clf.predict_proba(X_test)[:,1]
 <br>
 
 #### Confusion Matrix
-
-<br>
 
 A Confusion Matrix provides us a visual way to understand how our predictions match up against the actual values for those test set observations.
 
@@ -1422,8 +1413,7 @@ df_model["loan_status"]= df_model["loan_status"].map({"Approved":1,"Rejected":0}
 
 ### Missing Values
 
-<br>
-While Logistic Regression is susceptible to the effects of outliers, and highly correlated input variables - Decision Trees are not, so the required preprocessing here is lighter. We still however will put in place logic for missing values in the data.
+We still however will put in place logic for missing values in the data.
 
 * The number of missing values in the data is 0.
 
@@ -1440,9 +1430,7 @@ df_model.isna().sum().sum()
 
 <br>
 
-**Split Out Data For Modelling**
-
-<br>
+#### Split Out Data For Modelling
 
 In exactly the same way we did for Logistic Regression, in the next code block we do two things, we firstly split our data into an X object which contains only the predictor variables, and a y object that contains only our dependent variable.
 
@@ -1471,8 +1459,6 @@ print(y_test.shape)
 ```
 <br>
 #### Categorical Predictor Variables
-
-<br>
 
 In our dataset, we have three categorical variables *gender*, *education*, *self_employed*.
 
@@ -1511,8 +1497,6 @@ X_test.drop(categorical_vars, axis = 1, inplace = True)
 
 ### Model Training
 
-<br>
-
 Instantiating and training our Decision Tree model is done using the below code.  We use the *random_state* parameter to ensure we get reproducible results, and this helps us understand any improvements in performance with changes to model hyperparameters.
 
 <br>
@@ -1533,8 +1517,6 @@ dt.fit(X_train, y_train)
 <br>
 
 #### Predict On The Test Set
-
-<br>
 
 Just like we did with Logistic Regression, to assess how well our model is predicting on new data - we use the trained model object (here called *dt*) and ask it to predict the *signup_flag* variable for the test set.
 
@@ -1631,7 +1613,6 @@ These are all higher than what we saw when applying Logistic Regression, even af
 
 ### Visualise Our Decision Tree
 
-<br>
 To see the decisions that have been made in the tree, we can use the plot_tree functionality that we imported from scikit-learn. To do this, we use the below code:
 
 <br>
@@ -1662,7 +1643,6 @@ One interesting thing to note is that the *very first split* appears to be using
 
 ### Decision Tree Regularisation
 
-<br>
 Decision Tree’s can be prone to over-fitting, in other words, without any limits on their splitting, they will end up learning the training data perfectly. We would much prefer our model to have a more *generalised* set of rules, as this will be more robust & reliable when making predictions on *new* data.
 
 One effective method of avoiding this over-fitting, is to apply a **max depth** to the Decision Tree, meaning we only allow it to split the data a certain number of times before it is required to stop.
@@ -1757,6 +1737,8 @@ df_model["loan_status"]= df_model["loan_status"].map({"Approved":1,"Rejected":0}
 <br>
 ### Missing Values
 
+Again, this is exactly the same process we ran for Logistic Regression & the Decision Tree.
+
 The number of missing values in the data is 0.
 
 ```python
@@ -1772,9 +1754,7 @@ df_model.isna().sum().sum()
 
 <br>
 
-**Split Out Data For Modelling**
-
-<br>
+#### Split Out Data For Modelling
 
 In exactly the same way we did for both Logistic Regression & our Decision Tree, in the next code block we do two things, we firstly split our data into an X object which contains only the predictor variables, and a y object that contains only our dependent variable.
 
@@ -1808,7 +1788,6 @@ print(y_test.shape)
 
 #### Categorical Predictor Variables
 
-<br>
 In our dataset, we have three categorical variables *gender*, *education* and *self_employed*.
 
 Just like the Logistic Regression algorithm, Random Forests cannot deal with data in this format as it can’t assign any numerical meaning to it when looking to assess the relationship between the variable and the dependent variable.
@@ -1845,8 +1824,6 @@ X_test.drop(categorical_vars, axis = 1, inplace = True)
 <br>
 
 ### Model Training
-
-<br>
 
 Instantiating and training our Random Forest model is done using the below code. We use the *random_state* parameter to ensure we get reproducible results, and this helps us understand any improvements in performance with changes to model hyperparameters.
 
@@ -1998,6 +1975,8 @@ In order to understand the *importance*, we *randomise* the values within one of
 
 Let’s put them both in place, and plot the results…
 
+<br>
+
 ```python
 
 # calculate feature importance
@@ -2126,7 +2105,7 @@ df_model.isna().sum().sum()
 
 <br>
 
-**Split Out Data For Modelling**
+#### Split Out Data For Modelling
 
 In exactly the same way we’ve done for the other three models, in the next code block we do two things, we firstly split our data into an X object which contains only the predictor variables, and a y object that contains only our dependent variable.
 
@@ -2205,7 +2184,6 @@ X_test.drop(categorical_vars, axis = 1, inplace = True)
 
 #### Feature Scaling
 
-<br>
 As KNN is a *distance* based algorithm, in other words it is reliant on an understanding of how similar or different data points are across different dimensions in n-dimensional space, the application of Feature Scaling is extremely important.
 
 Feature Scaling is where we force the values from different columns to exist on the same scale, in order to enchance the learning capabilities of the model. There are two common approaches for this, Standardisation, and Normalisation.
@@ -2298,8 +2276,6 @@ This creates the below plot, which shows us that the highest cross-validated cla
 
 ### Model Training
 
-<br>
-
 Instantiating and training our KNN model is done using the below code. At this stage we will just use the default parameters, meaning that the algorithm:
 
 Will use a value for k of 5, or in other words it will base classifications based upon the 5 nearest neighbours
@@ -2322,7 +2298,7 @@ knn.fit(X_train, y_train)
 
 <br>
 
-**Predict On The Test Set**
+#### Predict On The Test Set
 
 To assess how well our model is predicting on new data - we use the trained model object (here called knn) and ask it to predict the loan_status variable for the test set.
 
@@ -2345,6 +2321,8 @@ y_pred_prob = rf.predict_proba(X_test)[:,1]
 As we’ve seen with all models so far, our Confusion Matrix provides us a visual way to understand how our predictions match up against the actual values for those test set observations.
 
 The below code creates the Confusion Matrix using the *confusion_matrix* functionality from within scikit-learn and then plots it using matplotlib.
+
+<br>
 
 ```python
 
@@ -2419,8 +2397,6 @@ print('F1 Score:', '%.3f' % f1_score(y_test, y_pred_class))
 <br>
 
 ### Finding Optimal Value of K
-
-<br>
 
 By default, the KNN algorithm within scikit-learn will use k = 5 meaning that classifications are based upon the five nearest neighbouring data-points in n-dimensional space.
 
