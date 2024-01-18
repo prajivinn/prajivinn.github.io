@@ -14,10 +14,10 @@ In this project we aim to create an end-to-end solution using Excel, SQL, Power 
     - [Actions](#overview-actions)
     - [Results](#overview-results)
     - [Growth/Next Steps](#overview-growth)
-- [01. Data Overview & Preparation](#data-overview)
-- [02. Data Cleaning & Transformation](#data-DCT)
-- [03. Exploratory Data Analysis - Dashboard Creation](#data-DC)
-- [04. Predictive Modelling](#data-PM)
+- [01. Data Overview & Preparation - Excel](#data-overview)
+- [02. Data Cleaning & Transformation - SQL](#data-DCT)
+- [03. Exploratory Data Analysis - PowerBI](#data-DC)
+- [04. Predictive Modelling - Python](#data-PM)
     - [Modelling Overview](#PM-overview)
     - [Data Import & Analysis](#PM-DIA)
     - [Exploratory Data Analysis](#PM-EDA)
@@ -27,7 +27,7 @@ In this project we aim to create an end-to-end solution using Excel, SQL, Power 
     - [K Nearest Neighbours](#PM-KNN)
     - [Modelling Summary](#PM-MS)
 - [05. Conclusion](#data-conclusion)
-- [06. Growth/Next Steps](data-growth)
+- [06. Growth & Next Steps](data-growth)
 
 ___
 
@@ -37,22 +37,11 @@ ___
 
 A fintech company operating in India wants to optimize its loan approval process. They receive a large volume of loan applications daily and want to improve their approval process to reduce the risk of defaults while ensuring fair and timely approval decisions.
 
-* **Data Collection and Preparation**: Start by collecting historical loan application data in an Excel spreadsheet. This data includes information such as applicant details, financial history, loan amounts, interest rates, and whether the loan was approved or not.
-
-* **Data Import to SQL**: Import the Excel data into an SQL database for efficient management and analysis.
-  
-* **Data Cleaning and Transformation**: Perform data cleaning and transformation in SQL to handle missing values, outliers, and format discrepancies. Ensure that the dataset is well-prepared for analysis.
-
-* **Dashboard Creation in Power BI**: Connect the SQL database to Power BI and create a dashboard that provides real-time insights into the loan application process. Key visualizations should include approval rates, average loan amounts, and applicant demographics.
-  
-* **Predictive Modeling in Python**: Use Python to build a linear regression model that predicts the likelihood of loan approval based on applicant attributes. This model should help in assessing the creditworthiness of future applicants.
-  
-This project aims to create an end-to-end solution using Excel, SQL, Power BI, and Python, providing valuable insights to help the FinTech company make informed decisions and optimize their loan approval process.
-
+We will build an ML model that would help the company to assess the creditworthiness of future applicants which would help them process loans faster.
 ___
 
 <br>
-# Data Overview & Preparation  <a name="data-overview"></a>
+# Data Overview & Preparation - Excel  <a name="data-overview"></a>
 
 This data includes information such as applicant details, financial history, loan amounts, interest rates, and whether the loan was approved or not.
 
@@ -539,7 +528,7 @@ So *cibil_score* is not the most contributing factor but one of the factor.
 
 ___
 
-# Dashboard Creation  <a name="data-DC"></a>
+# Exploratory Data Analysis - PowerBI<a name="data-DC"></a>
 
 <br>
 <img width="1459" alt="Screenshot 2024-01-12 183031" src="https://github.com/prajivinn/prajivinn.github.io/assets/108303914/c54c1e10-61fc-4ec2-be3b-374267bed956">
@@ -555,7 +544,7 @@ ___
 
 ___
 
-# Predictive Modelling  <a name="data-PM"></a>
+# Predictive Modelling - Python  <a name="data-PM"></a>
 
 <br>
 
@@ -563,7 +552,7 @@ ___
 
 We will build a model that looks to accurately predict *loan_status*, based upon the customer metrics.
 
-If that can be achieved,...
+If this can be achieved, then it would be helpful in assessing the *creditworthiness* of future applicants
 
 As we are predicting a binary output, we tested four classification modelling approaches, namely:
 
@@ -2448,13 +2437,13 @@ ___
 # Modelling Summary <a name="PM-MS"></a>
 
 <br>
-The goal for the project was to build a model that would accurately predict the customers that would get the loan approved. A secondary goal was to understand what the drivers for this are, so the client can get closer to the customers that need or want this service, and enhance their messaging.
+The goal was to build a model that would *accurately* predict the loan_status which will be helpful in determining the *creditworthiness* of future applicants.
 
-Based upon these, the chosen the model is the **Random Forest** as it was 
+The chosen model is the **Random Forest** as it was 
 
-a) the most consistently performant on the test set across classication accuracy, precision, recall, and f1-score
+a) the most consistently performant on the test set across classification accuracy, precision, recall, and f1-score.
 
-b) the feature importance and permutation importance allows the client an understanding of the key drivers behind loan_status.
+b) the feature importance and permutation importance allows the client an understanding of the *key drivers* behind loan_status.
 
 <br>
 
@@ -2490,3 +2479,23 @@ Metric 4: **F1 Score**
 * Decision Tree = 0.974
 * Logistic Regression = 0.934
 * KNN = 0.900
+
+___
+<br>
+# Conclusion <a name="data-conclusion"></a>
+
+Based on the exploratory data analysis performed using SQL, PowerBI and Python it is found that the *major* factors affecting the loan approval or rejection are
+
+* Cibil_score
+* annual_income
+* loan_term
+
+**Random_Forest** is the chosen model.
+
+___
+<br>
+# Growth & Next Steps <a name="data-growth"></a>
+
+While predictive accuracy was relatively high - other modelling approaches could be tested, especially those somewhat similar to Random Forest, for example XGBoost, LightGBM to see if even more accuracy could be gained.
+
+From a data point of view, further variables could be collected, and further feature engineering and fine tuning model parameters could be undertaken to enhance predictive accuracy further.
