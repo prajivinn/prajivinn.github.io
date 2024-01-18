@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Dominos Pizza Sales Using SQL
-image: "/posts/Dominos.jpeg"
+image: "/posts/dominos.jpeg"
 tags: [EDA, SQL]
 ---
 
