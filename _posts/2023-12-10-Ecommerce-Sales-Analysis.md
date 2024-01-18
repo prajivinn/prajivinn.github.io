@@ -11,7 +11,7 @@ In this project we perform data analysis using SQL to gain insights into sales p
 
 - [00. Project Overview](#overview-main)
 - [01. Data Overview & Preparation](#data-overview)
-- [02. Exploratory Data Analysis](#data-DC)
+- [02. Exploratory Data Analysis](#data-EDA)
 
 ___
 
@@ -194,3 +194,282 @@ Output: A sample of first 5 rows is displayed below:
 * Quantity – Total quantity ordered by the customer.
 * Subtotal – represents subtotal for each product.
 * EmployeeID – ID of the employee who handled the order of the customer.
+
+___
+
+<br>
+# Explorating Data Analysis  <a name="data-EDA"></a>
+
+<br>
+
+## Total Sales Amount by Customer
+
+<br>
+
+```sql
+
+select c.FirstName, c.LastName, SUM(O.TotalAmount) as Total_Sales
+from Orders O 
+INNER JOIN customers c
+        ON O.CustomerID=c.CustomerID
+GROUP BY O.CustomerID;
+
+```
+<br>
+Output:
+<br>
+<br>
+
+| **FirstName** |	**LastName** | **total_sales** |
+|---|---|---|
+| John | Doe | 6030.00 |
+| Jane | Smith | 4900.00 |
+| Michael |	Johnson | 3540.00 |
+| Emily |	Williams | 4350.00 |
+| Daniel | Brown | 2820.00 |
+
+<br>
+
+#### Observations
+
+* Highest Purchase is done by John Doe followed by Jane Smith who is the second highest. The increase in the purchase of the products can be due to the ratings and reviews of the products.
+* Lowest purchase is done by Daniel brown.
+
+#### Insights
+
+* Identifying top-performing customers can help tailor marketing and loyalty programs.
+
+<br>
+
+## Orders with Above-Average Total Amount
+
+<br>
+
+```sql
+
+SELECT OrderID, OrderDate, TotalAmount
+FROM orders
+WHERE TotalAmount > (SELECT avg(TotalAmount) FROM orders)
+;
+
+```
+<br>
+Output:
+<br>
+<br>
+
+| **OrderID** | **OrderDate** | **TotalAmount** |
+|---|---|---|
+| 1 |	2023-01-15 | 1800.00 |
+| 4 |	2023-04-05 | 1200.00 |
+| 8 |	2023-08-05 | 1600.00 |
+| 9 |	2023-08-15 | 1100.00 |
+| 10 | 2023-08-25 | 1650.00 |
+| 14 | 2023-10-15 | 2000.00 |
+| 16 | 2023-11-18 | 1200.00 |
+| 19 | 2024-01-05 | 1100.00 |
+| 20 | 2024-01-18 | 1400.00 |
+
+<br>
+
+#### Observations
+
+* The customers with order ID's such as  1, 4, 5, 8, 9, 10, 14, and 16 have above-average total amounts.
+* This can be because of any unexpected needs to purchase extra products during those days rather than their usual pattern or can be due to seasonality trends, where customers purchase more products based on offers provided.
+
+#### Insights
+
+* Focusing on high-value orders can inform targeted marketing or upselling strategies.
+
+<br>
+
+## Total Quantity and Subtotal by Product 
+
+<br>
+
+```sql
+
+SELECT o.ProductID, p.ProductName, sum(o.Quantity) as Total_Quantity, sum(o.Subtotal) as SubTotal
+FROM orderdetails o
+INNER JOIN products p 
+	ON o.ProductID = p.ProductID
+GROUP BY o.ProductID, p.ProductName;
+
+```
+<br>
+Output:
+<br>
+<br>
+
+| **ProductID** | **ProductName** | **total_quantity** | **subtotal** |
+| 1 |	Laptop | 9 | 9000.00 |
+| 2 |	Smartphone | 6 | 4800.00 |
+| 3 |	Chair |	6 |	900.00 |
+| 4 |	Tablet | 7 | 4200.00 |
+| 5 |	Desk | 6 | 1200.00 |
+
+<br>
+
+#### Observations
+
+* Laptop is the one which has been ordered more compared to the other products while the smartphone, chair and desk are equal in terms of quantity ordered by the customers.
+* Laptop (ProductID 1) has the highest total quantity sold (9) and subtotal ($9,000).
+* Chair (ProductID 3) has the lowest total quantity sold (6) and subtotal ($900).
+
+#### Insights
+
+* Understanding product performance is essential for inventory management and marketing decisions.
+
+<br>
+
+## Categorizing Orders by Total Amount 
+
+<br>
+
+```sql
+
+SELECT OrderID, TotalAmount,
+CASE 
+	WHEN TotalAmount >= 1500 THEN 'High'
+    WHEN TotalAmount >= 1000 AND TotalAmount < 1500 THEN 'Medium'
+    ELSE 'Low'
+END AS Category
+FROM orders;
+
+```
+<br>
+Output:
+<br>
+<br>
+
+| **OrderID** |	**TotalAmount** | **Category** |
+|---|---|---|
+| 1	| 1800.00 | High |
+| 2 |	950.00 | Low |
+| 3 | 450.00 | Low |
+| 4 |	1200.00 |	Medium |
+| 5 |	900.00 | Low |
+| 6 |	700.00 | Low |
+| 7 | 850.00 | Low |
+| 8 |	1600.00 |	High |
+| 9	| 1100.00 |	Medium |
+| 10 | 1650.00 | High |
+| 11 | 720.00 |	Low | 
+| 12 | 980.00 |	Low |
+| 13 | 570.00 |	Low |
+| 14 | 2000.00 | High |
+| 15 | 850.00 |	Low |
+| 16 | 1200.00 | Medium |
+| 17 | 920.00 |	Low |
+| 18 | 700.00 |	Low |
+| 19 | 1100.00 | Medium |
+| 20 | 1400.00 | Medium |
+
+<br>
+
+#### Observations
+
+* Most of the customer’s total order amount falls under “Low” category. Maybe the price of the products is too high or maybe the customer can’t find the exact product which they are looking for. In this case, we can study the customer’s needs to understand their preferences. As per their preferences, we can arrange the products in different categories so that the customers can easily locate the desired ones.
+
+* There are only 4 orders where the total amount is high. In this case we can keep track of these customers and provide additional discount/offers to these customers.
+
+#### Insights
+
+* Categorizing orders can help identify trends and segment customers for targeted promotions.
+
+<br>
+
+## Employee Order Ranking
+
+<br>
+
+```sql
+
+SELECT EmployeeID, COUNT(OrderID) as Total_Orders,
+  RANK() OVER (ORDER BY COUNT(OrderID) DESC) AS OrderRank
+FROM orders
+GROUP BY EmployeeID;
+
+```
+<br>
+Output:
+<br>
+<br>
+
+| **EmployeeID** | **Total_orders** | **rankemp** |
+|---|---|---|
+| 2 |	6 |	1 |
+| 1 |	5 |	2 |
+| 3 |	5 |	2 | 
+| 4 |	4 |	4 |
+
+<br>
+
+#### Observations
+
+* Maximum orders are handled by the employee Emily Williams (EmployeeID – 2) followed by David Johnson(EmployeeID - 1)
+* Based on the ranking, we can understand which employees are performing well and which are not. We can give them awards for achieving high number of orders.
+
+#### Insights
+
+* Recognizing high-performing employees can inform recognition and incentive programs.
+
+<br>
+
+## Products Ordered Above Average Quantity
+
+<br>
+
+```sql
+
+WITH avgquant AS (
+SELECT ProductID, sum(Quantity) AS total_quantity
+FROM OrderDetails
+GROUP BY ProductID
+)
+SELECT o.ProductID, p.ProductName, sum(o.Quantity) AS Total_Quantity
+FROM OrderDetails o 
+INNER JOIN Products p
+        ON o.ProductID=p.ProductID
+GROUP BY o.ProductID
+HAVING total_quantity > ( SELECT avg(total_quantity) FROM avgquant);
+
+```
+<br>
+Output:
+<br>
+<br>
+
+| **ProductName** | **ProductID** | **Total_quantity** |
+|---|---|---|
+| Laptop | 1 | 9 |
+| Tablet | 4 | 7 |
+
+<br>
+
+#### Observations
+
+* Laptop and Tablet have been ordered more than the average quantity across all the products.
+* This can be due to the reviews and ratings of the products or based on seasonality trends i.e., offers offered on these products.
+
+#### Insights
+
+* Identifying top-selling products can guide inventory and marketing efforts.
+
+<br>
+
+## Customer and Employee Details 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
