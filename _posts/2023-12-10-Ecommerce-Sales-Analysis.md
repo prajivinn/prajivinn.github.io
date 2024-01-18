@@ -460,6 +460,139 @@ Output:
 
 ## Customer and Employee Details 
 
+<br>
+
+```sql
+
+SELECT c.FirstName AS CustomerFirstName, c.LastName AS CustomerLastName, e.FirstName AS EmployeeFirstName, e.LastName AS EmployeeLastName
+FROM customers c 
+INNER JOIN orders o
+        ON c.CustomerID = o.CustomerID
+INNER JOIN employees e
+        ON o.EmployeeID = e.EmployeeID;
+
+```
+<br>
+Output:
+<br>
+<br>
+
+| **CustFirstName** | **CustLastName** | **EmpFirstName** | **EmpLastName** | **EmployeeID** |
+|---|---|---|---|---|
+| John | Doe | Emily | Williams | 2 |
+| John | Doe | David | Johnson | 1 |
+| John | Doe | Emily | Williams | 2 |
+| John | Doe | Daniel |	Smith | 3 |
+| John | Doe | Daniel |	Smith | 3 |
+| Jane | Smith | Daniel | Smith | 3 |
+| Jane | Smith | Emily | Williams | 2 |
+| Jane | Smith | Sarah | Jones | 4 |
+| Jane | Smith | Emily | Williams | 2 |
+| Jane | Smith | Emily | Williams | 2 |
+| Michael | Johnson | Sarah | Jones | 4 |
+| Michael | Johnson | Daniel | Smith | 3 |
+| Michael | Johnson | Sarah | Jones | 4 |
+| Michale | Johnson | Sarah | Jones | 4 |
+| Emily | Williams | David | Johnson | 1 |
+| Emily | Williams | David | Johnson | 1 |
+| Emily | Williams | David | Johnson | 1 |
+| Daniel | Brown | David | Johnson | 1 |
+| Daniel | Brown | Emily | Williams | 2 |
+| Daniel | Brown | Daniel | Smith | 3 |
+
+<br>
+
+#### Observations
+
+* Maximum orders are handled by the employee Emily Williams (EmployeeID – 2).
+
+#### Insights
+
+* Understanding the customer-employee interaction can be valuable for customer satisfaction.
+
+<br>
+
+## Total Quantity Sold and Average Price by Category
+
+<br>
+
+```sql
+
+SELECT p.Category, SUM(o.Quantity) as Total_Quantity, AVG(p.Price) as Average_Price_Per_Category
+FROM products p
+INNER JOIN orderdetails o
+	ON p.ProductID = o.ProductID
+GROUP BY p.Category;
+
+```
+<br>
+Output:
+<br>
+<br>
+
+| **Category** | **Total_quantity** | **Avg_category** |
+|---|---|---|
+| Electronics | 22 | 783.333333 |
+| Furniture | 12 | 200.000000 |
+
+<br>
+
+#### Observations
+
+* Electronics has the highest quantity sold, followed by Furniture.
+* Electronics category also has the highest average price.
+
+#### Insights
+
+* Knowing category performance can inform pricing and marketing strategies.
+
+<br>
+
+## Customers with Above-Average Orders
+
+<br>
+
+```sql
+
+WITH Customer_Orders as (
+SELECT CustomerID, COUNT(CustomerID) AS orders
+FROM orders
+GROUP BY CustomerID)
+
+SELECT o.CustomerID,c.FirstName, c.LastName, COUNT(o.CustomerID) AS orders
+FROM orders o 
+INNER JOIN customers c
+        ON o.CustomerID = c.CustomerID
+GROUP BY o.CustomerID
+HAVING orders > ( SELECT avg(orders) FROM Customer_Orders);
+
+```
+<br>
+Output:
+<br>
+<br>
+
+| **CustomerID** | **FirstName** | **LastName** | **Orders** |
+|---|---|---|
+| 101 | John | Doe | 5 |
+| 102 | Jane | Smith | 5 |
+
+<br>
+
+#### Observations
+
+* John Doe and Jane Smith have placed orders more than the average number of orders which indeed says they are more active in placing orders.
+
+#### Insights
+
+* Targeting active customers with special offers or loyalty programs can boost sales.
+
+
+
+
+
+
+
 
 
 
