@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Ecommerce Sales Analysis Using SQL
-image: "/posts/OLAP.jpeg"
+image: "/posts/ES.jpeg"
 tags: [EDA, SQL]
 ---
 
