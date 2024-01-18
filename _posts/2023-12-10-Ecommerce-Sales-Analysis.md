@@ -5,7 +5,7 @@ image: "/posts/OLAP.jpeg"
 tags: [EDA, SQL]
 ---
 
-In this project we perform data analysis using SQL to gain insights into sales patterns and customer behavior.
+In this project we Perform SQL queries to analyze sales data and answer various business questions.
 
 # Table of contents
 
@@ -26,6 +26,8 @@ ___
 <br>
 # Data Overview & Preparation <a name="data-overview"></a>
 
+<br>
+
 ## Customers Table
 
 <br>
@@ -42,11 +44,11 @@ Output:
 
 | CustomerID | FirstName | LastName | Email | Country |
 |---|---|---|---|---|
-| 101 |	John | Doe | john.doe@example.com |	USA |
+| 101 |	John | Doe | john.doe@example.com | USA |
 | 102 |	Jane | Smith | jane.smith@example.com |	Canada |
-| 103 |	Michael |	Johnson |	michael.johnson@example.com |	USA |
+| 103 |	Michael | Johnson | michael.johnson@example.com | USA |
 | 104 |	Emily |	Williams | emily.williams@example.com |	UK |
-| 105 |	Daniel | Brown | daniel.brown@example.com |	Australia |
+| 105 |	Daniel | Brown | daniel.brown@example.com | Australia |
 
 <br>
 
@@ -76,11 +78,11 @@ Output:
 
 | **EmployeeID** | **FirstName** | **LastName** | **Position** | **Department** | **JoinDate** |
 |---|---|---|---|---|---|
-| 1 |	David | Johnson | Manager | Sales | 2020-01-15 |
-| 2 |	Emily |	Williams | Analyst | Marketing | 2021-03-10 |
-| 3 |	Daniel | Smith | Developer | IT |	2019-06-20 |
-| 4 |	Sarah |	Jones | Analyst |	Marketing |	2022-02-01 |
-| 5	| James |	Miller | Developer | IT | 2020-08-12 |
+| 1 | David | Johnson | Manager | Sales | 2020-01-15 |
+| 2 | Emily | Williams | Analyst | Marketing | 2021-03-10 |
+| 3 | Daniel | Smith | Developer | IT |	2019-06-20 |
+| 4 | Sarah | Jones | Analyst |	Marketing | 2022-02-01 |
+| 5 | James | Miller | Developer | IT | 2020-08-12 |
 
 <br>
 
@@ -111,11 +113,11 @@ Output:
 
 | **ProductID** | **ProductName** | **Category** | **Price** |
 |---|---|---|---|
-| 1 |	Laptop | Electronics | 1000 |
-| 2 |	Smartphone | Electronics | 800 |
-| 3 |	Chair |	Furniture |	150 |
-| 4 |	Tablet | Electronics | 400 |
-| 5 |	Desk | Furniture | 250 |
+| 1 | Laptop | Electronics | 1000 |
+| 2 | Smartphone | Electronics | 800 |
+| 3 | Chair | Furniture | 150 |
+| 4 | Tablet | Electronics | 400 |
+| 5 | Desk | Furniture | 250 |
 
 <br>
 
@@ -144,11 +146,11 @@ Output: A sample of first 5 rows is displayed below:
 
 | **OrderID** |	**CustomerID** | **OrderDate** | **TotalAmount** | **EmployeeID** |
 |---|---|---|---|---|
-| 1 |	101 |	2023-01-15 | 1800.00 | 2 |
-| 2 |	102 |	2023-02-10 | 950.00 | 3 |
-| 3 |	101 |	2023-03-20 | 450.00 | 1 |
-| 4 |	103 |	2023-04-05 | 1200.00 | 4 |
-| 5 |	102 |	2023-05-18 | 900.00 | 2 |
+| 1 | 101 | 2023-01-15 | 1800.00 | 2 |
+| 2 | 102 | 2023-02-10 | 950.00 | 3 |
+| 3 | 101 | 2023-03-20 | 450.00 | 1 |
+| 4 | 103 | 2023-04-05 | 1200.00 | 4 |
+| 5 | 102 | 2023-05-18 | 900.00 | 2 |
 
 <br>
 
@@ -178,11 +180,11 @@ Output: A sample of first 5 rows is displayed below:
 
 | **OrderDetailID** | **OrderID** | **ProductID** | **Quantity** | **Subtotal** | **EmployeeID** |
 |---|---|---|---|---|---|
-| 1 |	1 |	1 |	2 |	2000.00 | 2 |
-| 2 |	1 |	3 |	1 |	150.00 | 3 |
-| 3 |	2 |	2 |	1 |	800.00 | 1 |
-| 4 |	3 |	5 |	3 | 600.00 | 4 |
-| 5 |	4 |	1 |	1 |	1000.00 | 2 |
+| 1 | 1 | 1 | 2 | 2000.00 | 2 |
+| 2 | 1 | 3 | 1 | 150.00 | 3 |
+| 3 | 2 | 2 | 1 | 800.00 | 1 |
+| 4 | 3 | 5 | 3 | 600.00 | 4 |
+| 5 | 4 | 1 | 1 | 1000.00 | 2 |
 
 <br>
 
@@ -199,6 +201,10 @@ ___
 
 <br>
 # Explorating Data Analysis  <a name="data-EDA"></a>
+
+<br>
+
+This section represents each of the analysis conducted for answering the business questions, along with the key findings and insights.
 
 <br>
 
@@ -220,12 +226,12 @@ Output:
 <br>
 <br>
 
-| **FirstName** |	**LastName** | **total_sales** |
+| **FirstName** | **LastName** | **total_sales** |
 |---|---|---|
 | John | Doe | 6030.00 |
 | Jane | Smith | 4900.00 |
-| Michael |	Johnson | 3540.00 |
-| Emily |	Williams | 4350.00 |
+| Michael | Johnson | 3540.00 |
+| Emily | Williams | 4350.00 |
 | Daniel | Brown | 2820.00 |
 
 <br>
@@ -234,6 +240,8 @@ Output:
 
 * Highest Purchase is done by John Doe followed by Jane Smith who is the second highest. The increase in the purchase of the products can be due to the ratings and reviews of the products.
 * Lowest purchase is done by Daniel brown.
+
+<br>
 
 #### Insights
 
@@ -260,10 +268,10 @@ Output:
 
 | **OrderID** | **OrderDate** | **TotalAmount** |
 |---|---|---|
-| 1 |	2023-01-15 | 1800.00 |
-| 4 |	2023-04-05 | 1200.00 |
-| 8 |	2023-08-05 | 1600.00 |
-| 9 |	2023-08-15 | 1100.00 |
+| 1 | 2023-01-15 | 1800.00 |
+| 4 | 2023-04-05 | 1200.00 |
+| 8 | 2023-08-05 | 1600.00 |
+| 9 | 2023-08-15 | 1100.00 |
 | 10 | 2023-08-25 | 1650.00 |
 | 14 | 2023-10-15 | 2000.00 |
 | 16 | 2023-11-18 | 1200.00 |
@@ -276,6 +284,8 @@ Output:
 
 * The customers with order ID's such as  1, 4, 5, 8, 9, 10, 14, and 16 have above-average total amounts.
 * This can be because of any unexpected needs to purchase extra products during those days rather than their usual pattern or can be due to seasonality trends, where customers purchase more products based on offers provided.
+
+<br>
 
 #### Insights
 
@@ -302,11 +312,11 @@ Output:
 <br>
 
 | **ProductID** | **ProductName** | **total_quantity** | **subtotal** |
-| 1 |	Laptop | 9 | 9000.00 |
-| 2 |	Smartphone | 6 | 4800.00 |
-| 3 |	Chair |	6 |	900.00 |
-| 4 |	Tablet | 7 | 4200.00 |
-| 5 |	Desk | 6 | 1200.00 |
+| 1 | Laptop | 9 | 9000.00 |
+| 2 | Smartphone | 6 | 4800.00 |
+| 3 | Chair | 6 | 900.00 |
+| 4 | Tablet | 7 | 4200.00 |
+| 5 | Desk | 6 | 1200.00 |
 
 <br>
 
@@ -315,6 +325,8 @@ Output:
 * Laptop is the one which has been ordered more compared to the other products while the smartphone, chair and desk are equal in terms of quantity ordered by the customers.
 * Laptop (ProductID 1) has the highest total quantity sold (9) and subtotal ($9,000).
 * Chair (ProductID 3) has the lowest total quantity sold (6) and subtotal ($900).
+
+<br>
 
 #### Insights
 
@@ -344,15 +356,15 @@ Output:
 
 | **OrderID** |	**TotalAmount** | **Category** |
 |---|---|---|
-| 1	| 1800.00 | High |
-| 2 |	950.00 | Low |
+| 1 | 1800.00 | High |
+| 2 | 950.00 | Low |
 | 3 | 450.00 | Low |
-| 4 |	1200.00 |	Medium |
-| 5 |	900.00 | Low |
-| 6 |	700.00 | Low |
+| 4 | 1200.00 |	Medium |
+| 5 | 900.00 | Low |
+| 6 | 700.00 | Low |
 | 7 | 850.00 | Low |
-| 8 |	1600.00 |	High |
-| 9	| 1100.00 |	Medium |
+| 8 | 1600.00 |	High |
+| 9 | 1100.00 |	Medium |
 | 10 | 1650.00 | High |
 | 11 | 720.00 |	Low | 
 | 12 | 980.00 |	Low |
@@ -372,6 +384,8 @@ Output:
 * Most of the customer’s total order amount falls under “Low” category. Maybe the price of the products is too high or maybe the customer can’t find the exact product which they are looking for. In this case, we can study the customer’s needs to understand their preferences. As per their preferences, we can arrange the products in different categories so that the customers can easily locate the desired ones.
 
 * There are only 4 orders where the total amount is high. In this case we can keep track of these customers and provide additional discount/offers to these customers.
+
+<br>
 
 #### Insights
 
@@ -398,10 +412,10 @@ Output:
 
 | **EmployeeID** | **Total_orders** | **rankemp** |
 |---|---|---|
-| 2 |	6 |	1 |
-| 1 |	5 |	2 |
-| 3 |	5 |	2 | 
-| 4 |	4 |	4 |
+| 2 | 6 | 1 |
+| 1 | 5 | 2 |
+| 3 | 5 | 2 | 
+| 4 | 4 | 4 |
 
 <br>
 
@@ -409,6 +423,8 @@ Output:
 
 * Maximum orders are handled by the employee Emily Williams (EmployeeID – 2) followed by David Johnson(EmployeeID - 1)
 * Based on the ranking, we can understand which employees are performing well and which are not. We can give them awards for achieving high number of orders.
+
+<br>
 
 #### Insights
 
@@ -449,8 +465,9 @@ Output:
 
 #### Observations
 
-* Laptop and Tablet have been ordered more than the average quantity across all the products.
-* This can be due to the reviews and ratings of the products or based on seasonality trends i.e., offers offered on these products.
+* Products such as Laptop (ProductID 1) and Tablet (ProductID 4) have above-average sales quantities. This can be due to the reviews and ratings of the products or based on seasonality trends i.e., offers offered on these products.
+  
+<br>
 
 #### Insights
 
@@ -505,6 +522,9 @@ Output:
 #### Observations
 
 * Maximum orders are handled by the employee Emily Williams (EmployeeID – 2).
+* Provides a linkage between customers, orders, and employees, enabling customer service tracking.
+
+<br>
 
 #### Insights
 
@@ -582,6 +602,8 @@ Output:
 #### Observations
 
 * John Doe and Jane Smith have placed orders more than the average number of orders which indeed says they are more active in placing orders.
+
+<br>
 
 #### Insights
 
