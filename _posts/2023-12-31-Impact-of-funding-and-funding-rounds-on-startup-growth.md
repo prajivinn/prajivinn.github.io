@@ -33,7 +33,7 @@ Company X, a leading Indian online publisher dedicated to startup industry insig
 This project seeks to address the critical questions of **whether there is a statistically significant difference in the mean funds raised by startups that are currently operating compared to those that have ceased operations**. Additionally, we aim to investigate whether **there exists a significant disparity in the number of funding rounds between currently operating startups and startups that have closed**.
 
 <br>
-<br>
+
 ### Actions <a name="overview-actions"></a>
 
 We removed incorrect or irrelevant values from the dataset & formatted it for proper analysis. Based on the problem statements, we filtered the data aka the variables of our interest such as **funding_total_usd**, **status** and **funding_rounds**.
@@ -67,7 +67,6 @@ We set out our hypotheses and Acceptance Criteria for the test, as follows:
 As a requirement of the Chi-Square Test For Independence, we aggregated this data down to a 2x2 matrix for *rounds of funding category* by *status* and fed this into the algorithm (using the *scipy* library) to calculate the Chi-Square Statistic, p-value, Degrees of Freedom, and expected values.
 
 <br>
-<br>
 
 ### Results <a name="overview-results"></a>
 
@@ -88,7 +87,6 @@ The p-value for our specified acceptance criteria or alpha of 0.05 is **0.29**.
 Based upon the above statistics, we retain the null hypothesis, and conclude that: **There is no relationship in the number of funding rounds between currently operating startups and startups that have closed**. They are independent.
 
 <br>
-<br>
 
 ### Growth/Next Steps <a name="overview-growth"></a>
 
@@ -101,6 +99,7 @@ ___
 # Concept Overview  <a name="concept-overview"></a>
 
 <br>
+
 #### Hypothesis Testing
 
 Hypothesis refers to a statement or assumption about a population parameter, which is a characteristic of a larger group or population. A Hypothesis Test is used to assess the plausibility, or likelihood of an assumed viewpoint based on sample data - in other words, a it helps us assess whether a certain view we have about some data is likely to be true or not.
@@ -108,6 +107,7 @@ Hypothesis refers to a statement or assumption about a population parameter, whi
 The objective of the Hypothesis Testing is to ESTABLISH a specific value for the parameter(s) and perform a statistical TEST to see whether that value is tenable(meaning - defensible or justifiable) in the light of the evidence gathered from the sample.
 
 <br>
+
 **The Null Hypothesis**
 
 Null hypothesis(Ho) - the presumed current status of the matter or status quo. It is a statement assumed to be true if proven otherwise.
@@ -115,6 +115,7 @@ Null hypothesis(Ho) - the presumed current status of the matter or status quo. I
 In any Hypothesis Test, we start with the Null Hypothesis. The Null Hypothesis is where we state our initial viewpoint, and in statistics, and specifically Hypothesis Testing, our initial viewpoint is always that the result is purely by chance or that there is no relationship or association between two outcomes or groups.
 
 <br>
+
 **The Alternate Hypothesis**
 
 Alternative hypothesis(Ha) - It represents the opposing viewpoint, a specific research hypothesis or a targeted improvement basically something that challenges null hypothesis.
@@ -122,6 +123,7 @@ Alternative hypothesis(Ha) - It represents the opposing viewpoint, a specific re
 The aim of the Hypothesis Test is to look for evidence to support or reject the Null Hypothesis.  If we reject the Null Hypothesis, that would mean we’d be supporting the Alternate Hypothesis.  The Alternate Hypothesis is essentially the opposite viewpoint to the Null Hypothesis - that the result is *not* by chance, or that there *is* a relationship between two outcomes or groups.
 
 <br>
+
 **What is one tailed test?**
 
 One-Tailed test talks about only one direction. Direction can be "Increase" or "Decrease" but not *both*.
@@ -132,6 +134,7 @@ For example, The Research question: Does a new exercise regimen lead to an incre
 * Alternative hypothesis(Ha): The new exercise regimen leads to a significant increase in average running speed.
 
 <br>
+
 **What is two tailed test?**
 
 Two-Tailed test talks about both directions. This is why it is called Two-tailed t-test
@@ -142,6 +145,7 @@ For example, The Research question: Is the average IQ score of a sample *signifi
 * Alternative Hypothesis(Ha): The average IQ score of the sample is significantly different from the national average of 100.
 
 <br>
+
 **What is Test Statistic**
 
 * A test statisitc is a numerical value calculated from sample data during hypothesis testing
@@ -153,6 +157,7 @@ For example, The Research question: Is the average IQ score of a sample *signifi
 * The choice of test statistic depends on the nature of the data and the specific hypothesis being tested
 
 <br>
+
 **probabilistic nature of hypothesis testing**
 
 * The very nature of hypothesis testing is that it is probabilistic in nature. We say this because hypothesis testing relies on using a sample of data to make conclusions about an entire population.
@@ -164,6 +169,7 @@ For example, The Research question: Is the average IQ score of a sample *signifi
 * Sometimes our result may not be right thing and that’s the reason there are errors associated with hypothesis testing.
 
 <br>
+
 **Type I and Type II Error**
 
 As the results/conlusions in hypothesis testing are not 100% certain, there are errors associated with hypothesis testing.
@@ -175,6 +181,7 @@ As the results/conlusions in hypothesis testing are not 100% certain, there are 
 * Type II Error ( false negative ): “ The new drug lowers blood pressure, but the study fails to detect this effect “
 
 <br>
+
 **Level of Significance, p-value, critical region**
 
 * **Level of Significance**: Probability of rejecting the null hypothesis when it is true. Let us set it at 5%
@@ -184,6 +191,7 @@ As the results/conlusions in hypothesis testing are not 100% certain, there are 
 There are two ways to compare the final answer of hypothesis testing, one way to get the answer is looking at the p-value and the level of significance and other way is to look at the test statistic and the critical value. 
 
 <br>
+
 **Types Of Hypothesis Test**
 
 There are many different types of Hypothesis Tests, each of which is appropriate for use in differing scenarios - depending on a) the type of data that you’re looking to test and b) the question that you’re asking of that data.
@@ -191,11 +199,13 @@ There are many different types of Hypothesis Tests, each of which is appropriate
 In the case of our task here, where we are looking to understand the impact of funding and funding rounds on startups in India - We will utilise the Independence Two sample T-Test and Chi-Square Test For Independence.
 
 <br>
+
 #### Independent Two Sample T-Test
 
 When we want to compare means from 2 samples that are independent, we then use Independent two sample t-test. The assumption of two sample t-test is that the variance of the samples should be same. We need to make sure that this assumption is satisfied and to test this assumption there is a test called levene's test.
 
 <br>
+
 #### Chi-Square Test For Independence
 
 The Chi-Square Test For Independence is a type of Hypothesis Test that assumes observed frequencies for categorical variables will match the expected frequencies.
