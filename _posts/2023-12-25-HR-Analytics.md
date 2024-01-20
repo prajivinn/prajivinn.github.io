@@ -33,7 +33,11 @@ ___
 
 A sample of first **5 rows** is shown below
 
+<br>
+
 <iframe width="1090" height="230" frameborder="0" scrolling="no" src="https://1drv.ms/x/c/a8cc30b6e6df073d/IQOrPuKUu3eaR5oN5mS21z96ARzQlbvwZI80feRVs1JGlTs?wdAllowInteractivity=False&Item='Sheet1'!A1%3AN7&wdInConfigurator=True&wdInConfigurator=True"></iframe>
+
+<br>
 
 **Data Dictionary**:
 
@@ -75,6 +79,7 @@ ___
 
 ___
 <br>
+
 # Extracting Observations <a name="data-obs"></a>
 
 *	There are total of 159 employees and attrition rate is about **34%**.
@@ -85,21 +90,31 @@ ___
   
 *	Average working and training hours are **41** and **20**.
 
+<br>
+
 **Age Distribution**:
 
 * Of 159 employees, 86 employees are above 30 years, and 73 employees are below 30 years. So, the ratio is almost equal. There is not much difference.
+
+<br>
 
 **Gender Distribution**:
 
 * Out of 159 employees, 54 employees left the company. Of the 54 employees who left most of them are male i.e., 52% but the male to female ratio is almost equal. There is a difference about 2-3%.
 
+<br>
+
 **Promotion vs Years of Experience**:
 
 *	Among the 54 employees who left, 45 were not promoted and in 43 of them had spent more than 3 years in same position. Also, only 9 people received promotions. Additionally, out of the 159 employees who stayed, 33 were promoted. So promotion could be one of the factor which lead them to leave the company.
 
+<br>
+
 **Salary Buckets vs Satisfaction Score**:
 
 *	Employees who left generally had salaries below the average salary of 68k. Out of 54 people, 41% (22 employees) had salaries lower than the company's average. Considering the range of salary group 50-60k, There are 8 people. Out of 8, 6 employees had an overall satisfaction score of 2-3. Considering the stats, we can assume salary could be one of the factor in employee attrition.
+
+<br>
 
 **Attrition by Department**:
 
@@ -107,12 +122,15 @@ ___
   
 *	Of 28 people from Finance department, 54% of them i.e., 15 people have left the company followed by 36% i.e., 18 people from IT department which is second highest in attrition by department.
 
+<br>
+
 **Attrition By Position**:
 
 *	Of 54 people who left, most of them are from positions such as Data Scientist, Financial Analyst & Software engineer followed by financial & marketing manager as the second highest.
   
 *	Of 28 data scientist, 32% (9 people) and of 21 financial analyst, 43% (9 people) and of 22 software engineers, 41% (9 people) and of 7 financial manager, 86% (6 people) and of 11 marketing manager, 55% (6 people) have left the company.
 
+<br>
 
 **Work Hours Distribution**:
 
@@ -122,11 +140,15 @@ ___
   
 *	So work hours could be one of the major contributor to the employee attrition.
 
+<br>
+
 **Training Hours Distribution**:
 
 *	Of 54 employees who left, 44% (24 people) have undergone training less than the average training hours which is 20.
   
 *	when training is inadequate, there are chances that employees may feel unprepared for challenges and less confident in their abilities. They may also feel disconnected from their workplace and are less likely to stay with the company.
+
+<br>
 
 **Training Hours vs Satisfaction Score**:
 
@@ -134,7 +156,9 @@ ___
   
 *	Within this group of 24 people, 11 people took 15 hours training. Out of 11, 6 employees had overall satisfaction score of 2-3.
   
-*	Since it is an overall satisfaction score, we can assume the training is not good. 
+*	Since it is an overall satisfaction score, we can assume the training is not good.
+
+<br>
 
 **Department vs Training Hours**:
 
@@ -144,7 +168,13 @@ ___
   
 *	Within the group of 54 people who had left the company, second highest are from IT department. Of 50 people from IT department, 18 (36%) people left the company. The average training hours for these 18 people is found to be is 17, but the average is used to be 20 for the 105 people who have not left the company.
 
+<br>
+
+___
+
 ## Recommendations Based On Analysis <a name="data-insights"></a>
+
+<br>
 
 As per the observations of the dashboard, below are the factors leading to the attrition of the company:
 
