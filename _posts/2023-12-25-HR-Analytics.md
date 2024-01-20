@@ -59,13 +59,15 @@ ___
 
 **Attrition** - Yes
 
-![HR_Analytics_Attrition_Yes](https://github.com/prajivinn/Employee_Attrition_PowerBi/assets/108303914/24dc6159-e9e8-46c6-ad44-24f45bdf55ab)
+<img width="1920" alt="yes-blank" src="https://github.com/prajivinn/prajivinn.github.io/assets/108303914/4675dbe3-cd51-4afd-9e3c-6d6f320ab551">
 
 <br>
 
 **Attrition** - No
 
-![HR_Analytics_Attrition_No](https://github.com/prajivinn/Employee_Attrition_PowerBi/assets/108303914/04451d97-5926-4909-b363-8a1de006c5d1)
+
+<img width="1920" alt="no-blank" src="https://github.com/prajivinn/prajivinn.github.io/assets/108303914/3569ddcb-2feb-4849-8d36-1e462bfd65c7">
+
 
 ___
 <br>
