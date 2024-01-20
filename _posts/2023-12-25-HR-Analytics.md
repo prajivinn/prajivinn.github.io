@@ -57,17 +57,21 @@ ___
 <br>
 # Dashboard <a name="data-dashboard"></a>
 
+<br>
+
 **Attrition** - Yes
 
-<img width="1920" alt="yes-blank" src="https://github.com/prajivinn/prajivinn.github.io/assets/108303914/4675dbe3-cd51-4afd-9e3c-6d6f320ab551">
+<br>
+
+<img width="1554" alt="yes-blank" src="https://github.com/prajivinn/prajivinn.github.io/assets/108303914/81407959-b152-4628-a8b2-7858bf7813e7">
 
 <br>
 
 **Attrition** - No
 
+<br>
 
-<img width="1920" alt="no-blank" src="https://github.com/prajivinn/prajivinn.github.io/assets/108303914/3569ddcb-2feb-4849-8d36-1e462bfd65c7">
-
+<img width="1553" alt="no-blank" src="https://github.com/prajivinn/prajivinn.github.io/assets/108303914/58bec6e5-78b2-45ff-9200-0a0bee00cd58">
 
 ___
 <br>
