@@ -268,9 +268,8 @@ A sample of this data (the first 5 rows) can be seen below:
 | 36.0 | Kanpur | Kanpur | 1 | 2015-05-01 |	2015-07-06 | 2015-07-06 |
 | 19.0 | Bangalore | Bangalore | 2 | 2006-06-01 | 2007-12-01 | 2010-08-01 |
 
-
 <br>
-Data Dictionary:
+**Data Dictionary**:
 
 * Permalink - Refers to the link to the organisation.
 * name - Company Name.
@@ -292,7 +291,11 @@ ___
 <br>
 # Applying Data Cleaning & EDA <a name="data-EDA"></a>
 
+<br>
+
 We dive into the dataset, conducting a thorough examination to ensure its quality and coherence, while also gaining a deeper understanding of the data.
+
+<br>
 
 #### Checking Shape and Duplicate rows 
 
@@ -478,6 +481,7 @@ Above code gives us the below plot - which visualises our results!
 The dataset is **imbalanced** aka there are **1085** companies operating and **49** companies closed.
 
 <br>
+
 #### Inspecting 'Funding' column
 
 ```python
@@ -515,7 +519,9 @@ Overall average funding raised is **23 million dollars**. Minimum funding is jus
 
 Let's find out the startups with the **highest** and **least** fundings.
 
-<br> Finding maximum funded company
+<br> 
+
+#### Finding maximum funded company
 
 ```python
 
@@ -536,6 +542,7 @@ Output:
 The highest funding amount is attributed to Flipkart, a well known e-commerce platform in the industry, aligning with its substantial financial requirements and prominence.
 
 <br>
+
 #### Finding least funded company
 
 ```python
@@ -557,6 +564,7 @@ Output:
 Rural Server despite being one of the least funded startups, intriguingly continues to operate successfully.
 
 <br>
+
 #### Visualising distribution of number of funding rounds
 
 ```python
@@ -596,6 +604,7 @@ Remarkably, the majority of startups in our dataset, precisely 795 of them, have
 While running the hypothesis test we can create **3 categories for no. of funding rounds ~ 1, 2, 3+**.
 
 <br>
+
 #### Checking company with 11 rounds of funding
 
 ```python
@@ -613,6 +622,7 @@ Output:
 | /organization/snapdeal | Snapdeal | http://www.snapdeal.com | E-Commerce | 1897699998 | operating | IND | 7 | New Delhi |
 
 <br>
+
 #### Checking company with 12 rounds of funding
 
 ```python
@@ -655,6 +665,7 @@ In practical terms, Levene's Test helps you determine whether it's appropriate t
 Overall, Levene's Test is a valuable tool in the field of statistics for assessing the homogeneity of variances and ensuring the validity of subsequent statistical analyses.
 
 <br>
+
 #### Using Levene's Test
 
 ```python
@@ -693,19 +704,20 @@ else:
 We have determined that the **variances are equal**, thus meeting the assumption for the independent sample t-test. We can now proceed with the independent sample t-test confidently.
 
 <br>
+
 #### Undertaking Independent Two Sample T-Test - Mean Funds Raised
 
 ```python
 
-# No. of startups which are operating
+# Number of startups which are operating
 startup_df[startup_df['status']=='operating']['funding_total_usd'].count()
 >> 1085
 
+# Number of startups which are closed
 startup_df[startup_df['status']=='closed']['funding_total_usd'].count()
 >> 49
 
 # Create a new data frame of only those companies which are still operating and their respective funds
-
 df1 = startup_df.loc[startup_df['status'] == 'operating', ['funding_total_usd']].reset_index(drop=True)
 df1 = df1.rename(columns={'funding_total_usd':'Funds_operating'}).reset_index(drop=True)
 df1.head()
@@ -835,6 +847,8 @@ ___
 <br>
 # Applying Chi-Square Test For Independence  <a name="chi-square-application"></a>
 
+<br>
+
 The Chi-Square Test of Independence is typically used when you have categorical data and you want to investigate whether there is a statistically significant association or relationship between two categorical variables.
 
 In our case, you are interested in the number of funding rounds (which is likely a discrete, count variable) and the status of startups (which is categorical - either "currently operating" or "closed").
@@ -842,6 +856,8 @@ In our case, you are interested in the number of funding rounds (which is likely
 Here's why the Chi-Square Test of Independence is suitable for our hypothesis.
 
 We know that observations are independent, Cells in the contingency table are mutually exclusive, The only thing we need to check is if ~ Expected value of cells should be **5** or **greater in at least 80% of cells**.
+
+<br>
 
 #### Number of Funding Rounds
 
@@ -969,6 +985,7 @@ number of funding rounds between currently operating startups and startups that 
 ___
 
 <br>
+
 # Conclusion  <a name="conclusion"></a>
 
 Based on the statistical analyses conducted, it can be concluded that:
@@ -980,6 +997,7 @@ Based on the statistical analyses conducted, it can be concluded that:
 ___
 
 <br>
+
 # Growth & Next Steps <a name="growth"></a>
 
 Due to **probabilistic nature of the hypothesis testing**, Our results here also do not say that there *definitely isn't a difference in the mean funds/number of funding rounds between the two status groups aka 'operating' & 'closed'* - we are only advising that we should not make any rigid conclusions *at this point*.  
