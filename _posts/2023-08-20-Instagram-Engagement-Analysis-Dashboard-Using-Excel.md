@@ -59,7 +59,7 @@ We re-arranged and adjusted the font size and color of all the text boxes, pivot
 
 ### Results <a name="overview-results"></a>
 <br>
-<iframe src="https://onedrive.live.com/embed?resid=2B20015F12AE5A8E%21153&authkey=!AOzyr0K7b07UXoA&em=2" width="1090" height="900" frameborder="0" scrolling="no"></iframe>
+<iframe width="1090" height="900" frameborder="0" scrolling="no" src="https://1drv.ms/x/c/2b20015f12ae5a8e/UQSOWq4SXwEgIIArmQAAAAAAAOzyr0K7b07UXoA?em=2&wdHideGridlines=True&wdHideHeaders=True&wdInConfigurator=True&wdInConfigurator=True"></iframe>
 
 Based on the observations from the dashboard, below are the recommendations suggested to the duo.
 
