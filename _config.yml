@@ -9,7 +9,7 @@ plugins:
 #-------------------------------
 # General Site Settings
 title: Prajivinn T C
-description: "Hi I'm prajivinn. My portfolio focuses on interesting projects I've recently undertaken, with a strong emphasis on business impact."
+description: "Hi I'm prajivinn. My portfolio focuses on interesting projects that I've undertaken, with a strong emphasis on business impact"
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
 
@@ -51,4 +51,5 @@ defaults:
 #   - vendor/cache/
 #   - vendor/gems/
 #   - vendor/ruby/
+
 
