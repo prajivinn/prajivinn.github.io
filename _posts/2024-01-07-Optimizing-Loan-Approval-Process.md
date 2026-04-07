@@ -14,7 +14,7 @@ In this project we aim to create an end-to-end solution using Excel, SQL, Power 
     - [Actions](#overview-actions)
     - [Results](#overview-results)
     - [Growth/Next Steps](#overview-growth)
-- [01. Data Overview & Preparation - Excel](#data-overview)
+- [01. Data Overview & Preparation](#data-overview)
 - [02. Data Cleaning & Transformation - SQL](#data-DCT)
 - [03. Exploratory Data Analysis - PowerBI](#data-DC)
 - [04. Predictive Modelling - Python](#data-PM)
@@ -49,12 +49,13 @@ Even so, we make sure to not rely on classification accuracy alone when assessin
 
 As we are predicting a binary output, we tested four classification modelling approaches, namely:
 
-Logistic Regression
-Decision Tree
-Random Forest
-K Nearest Neighbours (KNN)
+* Logistic Regression
+* Decision Tree
+* Random Forest
+* K Nearest Neighbours (KNN)
 
 For each model, we will import the data in the same way but will need to pre-process the data based up the requirements of each particular algorithm. We will train & test each model, look to refine each to provide optimal performance, and then measure this predictive performance based on several metrics to give a well-rounded overview of which is best.
+
 <br>
 <br>
 
@@ -74,40 +75,41 @@ a) the most consistently performant on the test set across classification accura
 
 b) the feature importance and permutation importance allows the client an understanding of the key drivers behind loan_status.
 
+<br>
 
 Metric 1: Classification Accuracy
 
-Random Forest = 0.985
-Decision Tree = 0.968
-Logistic Regression = 0.917
-KNN = 0.876
+*Random Forest = 0.985
+*Decision Tree = 0.968
+*Logistic Regression = 0.917
+*KNN = 0.876
 
 <br>
 
 Metric 2: Precision
 
-Random Forest = 0.985
-Decision Tree = 0.983
-Logistic Regression = 0.921
-KNN = 0.903
+*Random Forest = 0.985
+*Decision Tree = 0.983
+*Logistic Regression = 0.921
+*KNN = 0.903
 
 <br>
 
 Metric 3: Recall
 
-Random Forest = 0.991
-Decision Tree = 0.966
-Logistic Regression = 0.947
-KNN = 0.896
+*Random Forest = 0.991
+*Decision Tree = 0.966
+*Logistic Regression = 0.947
+*KNN = 0.896
 
 <br>
 
 Metric 4: F1 Score
 
-Random Forest = 0.988
-Decision Tree = 0.974
-Logistic Regression = 0.934
-KNN = 0.900
+*Random Forest = 0.988
+*Decision Tree = 0.974
+*Logistic Regression = 0.934
+*KNN = 0.900
 
 <br>
 <br>
