@@ -79,37 +79,37 @@ b) the feature importance and permutation importance allows the client an unders
 
 Metric 1: Classification Accuracy
 
-*Random Forest = 0.985
-*Decision Tree = 0.968
-*Logistic Regression = 0.917
-*KNN = 0.876
+* Random Forest = 0.985
+* Decision Tree = 0.968
+* Logistic Regression = 0.917
+* KNN = 0.876
 
 <br>
 
 Metric 2: Precision
 
-*Random Forest = 0.985
-*Decision Tree = 0.983
-*Logistic Regression = 0.921
-*KNN = 0.903
+* Random Forest = 0.985
+* Decision Tree = 0.983
+* Logistic Regression = 0.921
+* KNN = 0.903
 
 <br>
 
 Metric 3: Recall
 
-*Random Forest = 0.991
-*Decision Tree = 0.966
-*Logistic Regression = 0.947
-*KNN = 0.896
+* Random Forest = 0.991
+* Decision Tree = 0.966
+* Logistic Regression = 0.947
+* KNN = 0.896
 
 <br>
 
 Metric 4: F1 Score
 
-*Random Forest = 0.988
-*Decision Tree = 0.974
-*Logistic Regression = 0.934
-*KNN = 0.900
+* Random Forest = 0.988
+* Decision Tree = 0.974
+* Logistic Regression = 0.934
+* KNN = 0.900
 
 <br>
 <br>
