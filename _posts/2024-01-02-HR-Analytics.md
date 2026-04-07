@@ -10,22 +10,221 @@ In this project we perform exploratory data analaysis to identify factors influe
 # Table of contents
 
 - [00. Project Overview](#overview-main)
-- [01. Data Overview](#data-overview)
-- [02. Dashboard](#data-dashboard)
-- [03. Extracting Observations](#data-obs)
-- [04. Recommendations Based On Analysis](#data-insights)
+    - [Context](#overview-context)
+    - [Results](#overview-results)
+    - [Expected Impact](#overview-ei)
+- [01. Concept Overview](#concept-overview)
+- [02. Data Overview](#data-overview)
+- [03. Dashboard](#data-dashboard)
+- [04. Extracting Observations](#data-obs)
+- [05. Recommendations Based On Analysis](#data-insights)
 
 ___
 
 # Project Overview  <a name="overview-main"></a>
 
-Problem Statement 1: "Identify Factors Influencing Employee Attrition"
+Adviti Pvt.Ltd is experiencing very high employee attrition (~34%), which increases hiring costs, disrupts teams and impacts productivity
 
-Objective: Determine the factors that contribute to employee attrition within the company and provide insights to reduce attrition rates.
+### Context <a name="overview-context"></a>
 
-Problem Statement 2: "Optimize Employee Training Programs"
+Problem Statement 1: "**Identify Factors Influencing Employee Attrition**"
 
-Objective: Analyze the effectiveness of training programs and recommend improvements to enhance employee skills and performance.
+**Objective**: Determine the factors that contribute to employee attrition within the company and provide insights to reduce attrition rates.
+
+Problem Statement 2: "**Optimize Employee Training Programs**"
+
+**Objective**: Analyze the effectiveness of training programs and recommend improvements to enhance employee skills and performance.
+
+
+These objectives guide the analysis structure and ensure that insights are aligned with practical business decisions.
+<br>
+<br>
+
+### Results <a name="overview-results"></a>
+
+As per the observations of the dashboard, below are the factors leading to the attrition of the company:
+
+**Promotion** - Employees who receive promotions are far more likely to stay
+**Working Hours** - Dissatisfaction is highest around work-life balance
+**Training Hours** - Employees with sufficient training show significantly lower attrition
+
+In order to reduce the attrition rates, I would recommend:
+
+* Identify the employees who are performing well in their roles and reward them with promotions & awards because among the 54 employees who left, 45 were not promoted and in 43 of them had spent more than 3 years in same position. Also, only 9 people received promotions. Additionally, out of the 159 employees who stayed, only 33 were promoted.
+
+* Reduce the working hours to 8 hours per day because out of the 54 employees who left the company, 33 of them (61%) were found to be working for more than average working hours aka 41 hours. It provides a better work life balance for the employees.
+
+As per the analysis of training programs on each department, I would recommend:
+
+* Implement more training hours for the people in IT and Finance departments because the 54 employees who left the company, majority of them are from Finance and second highest is from IT department. Of 28 people from finance, 15 (54%) people left the company. The average training hours for these 15 people is found to be 20, but this average is used to be 23 for the 105 people who have not left the company from finance department. Of 50 people from IT department, 18 (36%) people left the company. The average training hours for these 18 people is found to be is 17, but the average is used to be 20 for the 105 people who have not left the company. This allows employees to build the required skills and helps them feel more confident in their abilities and helps them in performing well and are less likely to leave the company.
+<br>
+<br>
+
+### Expected Impact <a name="overview-ei"></a>
+
+* Higher engagement and productivity
+* Lower rehiring and onboarding costs
+* Stronger long-term workforce stability
+  
+___
+
+# Concept Overview  <a name="concept-overview"></a>
+
+
+**Early-Tenure Attrition KPIs**
+
+
+KPI 1: Early-Tenure Attrition Rate (0–2 Years)
+
+Definition: Percentage of employees with ≤2 years of service who exit the organization.
+
+Formula: Leavers with Years_of_Service ≤ 2 ÷ Total employees with Years_of_Service ≤ 2
+
+Why track this: Early tenure is the single largest attrition risk period. A reduction here has the highest impact on overall attrition.
+
+Target direction: Decrease over time
+
+
+
+KPI 2: 12-Month Retention Rate
+
+Definition: Percentage of employees who remain employed 12 months after joining.
+
+Why track this: Measures onboarding effectiveness and early employee experience.
+
+Target direction: Increase over time
+
+
+**Engagement-Related KPIs**
+
+
+KPI 3: Average Employee Engagement Score
+
+Definition: Average engagement score across all employees.
+
+Why track this: Engagement is the strongest leading indicator of attrition risk.
+
+Target direction: Increase and remain stable
+
+
+KPI 4: Percentage of Low-Engagement Employees
+
+Definition: Employees with engagement score in the lowest category ÷ total employees.
+
+Why track this: A growing low-engagement population signals future attrition risk.
+
+Target direction: Decrease over time
+
+
+**Job Satisfaction KPIs**
+
+
+KPI 5: Overall Job Satisfaction Index
+
+Definition: Average job satisfaction rate across employees.
+
+Why track this: Provides a high-level view of employee experience quality.
+
+Target direction: Increase over time
+
+
+KPI 6: Management Satisfaction Rate
+
+Definition: Percentage of employees satisfied with management support.
+
+Why track this: Management dissatisfaction shows one of the strongest links to attrition.
+
+Target direction: Increase consistently
+
+
+KPI 7: Work-Life Balance Satisfaction Rate
+
+Definition: Percentage of employees satisfied with work-life balance.
+
+Why track this: Directly linked to workload stress and burnout.
+
+Target direction: Increase or remain stable
+
+
+**Training Effectiveness KPIs**
+
+KPI 8: Average Training Hours per Employee
+
+Definition: Total training hours ÷ total employees.
+
+Why track this: Training exposure acts as a retention and engagement lever.
+
+Target direction: Meet or exceed minimum threshold (e.g., 20 hours/year)
+
+
+KPI 9: Training Coverage Rate
+
+Definition: Percentage of employees receiving ≥20 training hours annually.
+
+Why track this: Ensures training is not limited to a small subset of employees.
+
+Target direction: Increase toward full coverage
+
+
+**Career Growth & Promotion KPIs**
+
+KPI 10: Promotion Rate
+
+Definition: Employees promoted in a year ÷ total employees.
+
+Why track this: Promotion significantly improves retention and engagement.
+
+Target direction: Increase gradually and consistently
+
+
+KPI 11: Promotion Rate for Early-Tenure Employees
+
+Definition: Employees with ≤3 years of service who were promoted ÷ total early-tenure employees.
+
+Why track this: Directly addresses early attrition risk.
+
+Target direction: Increase cautiously (quality over quantity)
+
+
+6. Work Condition & Operational KPIs
+
+KPI 12: Average Commute Distance
+
+Definition: Average distance from work across employees.
+
+Why track this: Long commute distances are strongly associated with attrition.
+
+Target direction: Reduce via remote/hybrid options or location-based hiring
+
+
+KPI 13: Percentage of Long-Commute Employees
+
+Definition: Employees with commute distance >20 km ÷ total employees.
+
+Why track this: Identifies employees at higher operational attrition risk.
+
+Target direction: Decrease or manage via flexibility policies
+
+
+**Absenteeism & Performance Context KPIs**
+
+
+KPI 14: Average Absenteeism Days per Employee
+
+Definition: Total absenteeism days ÷ total employees.
+
+Why track this: Provides context on workload stress and employee well-being.
+
+Target direction: Stable or slightly decreasing (not zero)
+
+
+KPI 15: Low Performance Employee Ratio
+
+Definition: Employees with lowest performance ratings ÷ total employees.
+
+Why track this: Helps identify skill gaps and training needs early.
+
+Target direction: Decrease through development programs
 
 ___
 
@@ -56,6 +255,11 @@ A sample of first **5 rows** is shown below
 * Training_Hours: The number of training hours the employee has completed.
 * Satisfaction_Score: Employee's satisfaction score (e.g., on a scale of 1 to 5).
 * Last_Promotion_Date: Date of the employee's last promotion.
+
+
+Each row in the dataset represents a unique employee record. Key attributes in the dataset include age, department, position, salary, years of experience, performance rating, training hours, engagment scores, job satisfaction indicators and attrition status
+
+The dataset provides a comprehensive view of the workforce, enabling analysis across multiple dimensions relevant to HR decision-making.
 
 ___
 <br>
@@ -178,9 +382,9 @@ ___
 
 As per the observations of the dashboard, below are the factors leading to the attrition of the company:
 
-*	Promotion
-*	Working Hours
-*	Training Hours
+*	Promotion - Employees who receive promotions are far more likely to stay
+*	Working Hours - Dissatisfaction is highest around work-life balance
+*	Training Hours - Employees with sufficient training show significantly lower attrition
 
 In order to **reduce the attrition rates**, I would recommend:
 
