@@ -118,7 +118,11 @@ Metric 4: F1 Score
 
 While predictive accuracy was relatively high - other modelling approaches could be tested, especially those somewhat similar to Random Forest, for example XGBoost, LightGBM to see if even more accuracy could be gained.
 
-While the model demonstrates strong performance, further improvements can be made by incorporating additional relevant features such as alternative credit signals (e.g., transaction behavior, repayment history, or digital footprint data). Additionally, advanced feature engineering techniques and hyperparameter tuning can be applied to further enhance model performance. From a business perspective, optimizing the classification threshold to reduce false positives (i.e., approving risky applicants) would be critical to minimize financial losses.
+While the model demonstrates strong performance, further improvements can be made by incorporating additional relevant features such as alternative credit signals (e.g., transaction behavior, repayment history, or digital footprint data). Additionally, advanced feature engineering techniques and hyperparameter tuning can be applied to further enhance model performance. 
+
+From a business perspective, optimizing the classification threshold to reduce false positives (i.e., approving risky applicants) would be critical to minimize **financial losses** because Saving from bad loans ( False positives ) > losing some good customers ( False negatives )
+
+While the model is already well balanced in terms of false positives and false negatives, from a business perspective, further optimization of the decision threshold can be explored depending on the company’s risk appetite. In lending scenarios, reducing false positives (approving risky applicants) may be prioritized even at the cost of slightly increasing false negatives.
 <br>
 <br>
 
