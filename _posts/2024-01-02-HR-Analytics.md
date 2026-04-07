@@ -44,9 +44,9 @@ These objectives guide the analysis structure and ensure that insights are align
 
 As per the observations of the dashboard, below are the factors leading to the attrition of the company:
 
-**Promotion** - Employees who receive promotions are far more likely to stay
-**Working Hours** - Dissatisfaction is highest around work-life balance
-**Training Hours** - Employees with sufficient training show significantly lower attrition
+* **Promotion** - Employees who receive promotions are far more likely to stay
+* **Working Hours** - Dissatisfaction is highest around work-life balance
+* **Training Hours** - Employees with sufficient training show significantly lower attrition
 
 In order to reduce the attrition rates, I would recommend:
 
@@ -73,8 +73,9 @@ ___
 
 **Early-Tenure Attrition KPIs**
 
+<br>
 
-KPI 1: Early-Tenure Attrition Rate (0–2 Years)
+**KPI 1**: **Early-Tenure Attrition Rate (0–2 Years)**
 
 Definition: Percentage of employees with ≤2 years of service who exit the organization.
 
@@ -84,9 +85,9 @@ Why track this: Early tenure is the single largest attrition risk period. A re
 
 Target direction: Decrease over time
 
+<br>
 
-
-KPI 2: 12-Month Retention Rate
+**KPI 2: 12-Month Retention Rate**
 
 Definition: Percentage of employees who remain employed 12 months after joining.
 
@@ -94,11 +95,13 @@ Why track this: Measures onboarding effectiveness and early employee experienc
 
 Target direction: Increase over time
 
+<br>
 
 **Engagement-Related KPIs**
 
+<br>
 
-KPI 3: Average Employee Engagement Score
+**KPI 3**: **Average Employee Engagement Score**
 
 Definition: Average engagement score across all employees.
 
