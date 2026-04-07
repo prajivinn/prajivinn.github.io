@@ -5,7 +5,7 @@ image: "/posts/OLAP.jpeg"
 tags: [SQL, PowerBI, Python, Machine Learning]
 ---
 
-In this project we aim to create an end-to-end solution using Excel, SQL, Power BI, and Python, providing valuable insights to help the FinTech company in India make informed decisions and optimize their loan approval process.
+In this project we aim to create an end-to-end solution using SQL, Power BI, and Python, providing valuable insights to help the FinTech company in India make informed decisions and optimize their loan approval process.
 
 # Table of contents
 
@@ -43,7 +43,7 @@ We will build an ML model that would help the company to assess the creditworthi
 
 ### Actions <a name="overview-actions"></a>
 
-We peformed data cleaning using SQL and exploratory data analysis using PowerBI and found out that cibil_score is not the only contributor to the loan approval. Moreover, Approximately 62.2% of the loans in the dataset are approved (2656 out of 4,269), indicating a moderate class imbalance.
+I've peformed data cleaning using SQL and exploratory data analysis using PowerBI and found out that cibil_score is not the only contributor to the loan approval. Moreover, Approximately 62.2% of the loans in the dataset are approved (2656 out of 4,269), indicating a moderate class imbalance.
 
 Even so, we make sure to not rely on classification accuracy alone when assessing results - also analysing Precision, Recall, and F1-Score.
 
@@ -111,7 +111,6 @@ Metric 4: F1 Score
 * Logistic Regression = 0.934
 * KNN = 0.900
 
-<br>
 <br>
 
 ### Growth/Next Steps <a name="overview-growth"></a>
