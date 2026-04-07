@@ -2,7 +2,7 @@
 layout: post
 title: Optimizing Loan Approval Process For Fintech Company In India
 image: "/posts/OLAP.jpeg"
-tags: [Excel, SQL, PowerBI, Python, Machine Learning]
+tags: [SQL, PowerBI, Python, Machine Learning]
 ---
 
 In this project we aim to create an end-to-end solution using Excel, SQL, Power BI, and Python, providing valuable insights to help the FinTech company in India make informed decisions and optimize their loan approval process.
@@ -38,10 +38,91 @@ ___
 A fintech company operating in India wants to optimize its loan approval process. They receive a large volume of loan applications daily and want to improve their approval process to reduce the risk of defaults while ensuring fair and timely approval decisions.
 
 We will build an ML model that would help the company to assess the creditworthiness of future applicants which would help them process loans faster.
-___
+<br>
+<br>
+
+### Actions <a name="overview-actions"></a>
+
+We peformed data cleaning using SQL and exploratory data analysis using PowerBI and found out that cibil_score is not the only contributor to the loan approval. Moreover, Approximately 62.2% of the loans in the dataset are approved (2656 out of 4,269), indicating a moderate class imbalance.
+
+Even so, we make sure to not rely on classification accuracy alone when assessing results - also analysing Precision, Recall, and F1-Score.
+
+As we are predicting a binary output, we tested four classification modelling approaches, namely:
+
+Logistic Regression
+Decision Tree
+Random Forest
+K Nearest Neighbours (KNN)
+
+For each model, we will import the data in the same way but will need to pre-process the data based up the requirements of each particular algorithm. We will train & test each model, look to refine each to provide optimal performance, and then measure this predictive performance based on several metrics to give a well-rounded overview of which is best.
+<br>
+<br>
+
+### Results <a name="overview-results"></a>
+
+Based on the exploratory data analysis performed using SQL, PowerBI and Python it is found that the major factors affecting the loan approval or rejection are
+
+* Cibil_score
+* annual_income
+* loan_term
+
+The goal was to build a model that would accurately predict the loan_status which will be helpful in determining the creditworthiness of future applicants.
+
+The chosen model is the **Random Forest** as it was
+
+a) the most consistently performant on the test set across classification accuracy, precision, recall, and f1-score.
+
+b) the feature importance and permutation importance allows the client an understanding of the key drivers behind loan_status.
+
+
+Metric 1: Classification Accuracy
+
+Random Forest = 0.985
+Decision Tree = 0.968
+Logistic Regression = 0.917
+KNN = 0.876
 
 <br>
-# Data Overview & Preparation - Excel  <a name="data-overview"></a>
+
+Metric 2: Precision
+
+Random Forest = 0.985
+Decision Tree = 0.983
+Logistic Regression = 0.921
+KNN = 0.903
+
+<br>
+
+Metric 3: Recall
+
+Random Forest = 0.991
+Decision Tree = 0.966
+Logistic Regression = 0.947
+KNN = 0.896
+
+<br>
+
+Metric 4: F1 Score
+
+Random Forest = 0.988
+Decision Tree = 0.974
+Logistic Regression = 0.934
+KNN = 0.900
+
+<br>
+<br>
+
+### Growth/Next Steps <a name="overview-growth"></a>
+
+While predictive accuracy was relatively high - other modelling approaches could be tested, especially those somewhat similar to Random Forest, for example XGBoost, LightGBM to see if even more accuracy could be gained.
+
+While the model demonstrates strong performance, further improvements can be made by incorporating additional relevant features such as alternative credit signals (e.g., transaction behavior, repayment history, or digital footprint data). Additionally, advanced feature engineering techniques and hyperparameter tuning can be applied to further enhance model performance. From a business perspective, optimizing the classification threshold to reduce false positives (i.e., approving risky applicants) would be critical to minimize financial losses.
+<br>
+<br>
+
+___
+
+# Data Overview & Preparation  <a name="data-overview"></a>
 
 This data includes information such as applicant details, financial history, loan amounts, interest rates, and whether the loan was approved or not.
 
@@ -537,7 +618,7 @@ ___
 
 #### Extracting Observations
 
-* Approximately 62.2% of the loans in the dataset are approved( 2656 out of 4,269 ), indicating a slight class imbalance that doesn't require rebalancing.
+* Approximately 62.2% of the loans in the dataset are approved (2656 out of 4,269), indicating a moderate class imbalance. While the imbalance is not severe enough to mandate resampling techniques, it is important to monitor its impact on model performance and ensure that evaluation metrics such as precision and recall are carefully considered.
 * Cibil score aka credit scores, particularly in the range of 540-550, serve as a distinct threshold for separating loan statuses.
 * The loan_status is highly correlated with cibil scores, but some applicants with high cibil scores ( above 740 ) were still rejected, suggesting additional factors influencing loan approval.
 * No clear trends were observed between asset values and loan status, indicating that asset values alone might not be **strong indicators of loan approval**.
@@ -2498,4 +2579,4 @@ ___
 
 While predictive accuracy was relatively high - other modelling approaches could be tested, especially those somewhat similar to Random Forest, for example XGBoost, LightGBM to see if even more accuracy could be gained.
 
-From a data point of view, further variables could be collected, and further feature engineering and fine tuning model parameters could be undertaken to enhance predictive accuracy further.
+While the model demonstrates strong performance, further improvements can be made by incorporating additional relevant features such as alternative credit signals (e.g., transaction behavior, repayment history, or digital footprint data). Additionally, advanced feature engineering techniques and hyperparameter tuning can be applied to further enhance model performance. From a business perspective, optimizing the classification threshold to reduce false positives (i.e., approving risky applicants) would be critical to minimize financial losses.
