@@ -70,6 +70,7 @@ ___
 
 # Concept Overview  <a name="concept-overview"></a>
 
+<br>
 
 **Early-Tenure Attrition KPIs**
 
@@ -109,8 +110,9 @@ Why track this: Engagement is the strongest leading indicator of attrition ris
 
 Target direction: Increase and remain stable
 
+<br>
 
-KPI 4: Percentage of Low-Engagement Employees
+**KPI 4**: **Percentage of Low-Engagement Employees**
 
 Definition: Employees with engagement score in the lowest category ÷ total employees.
 
@@ -118,11 +120,13 @@ Why track this: A growing low-engagement population signals future attrition r
 
 Target direction: Decrease over time
 
+<br>
 
 **Job Satisfaction KPIs**
 
+<br>
 
-KPI 5: Overall Job Satisfaction Index
+**KPI 5**: **Overall Job Satisfaction Index**
 
 Definition: Average job satisfaction rate across employees.
 
@@ -130,8 +134,9 @@ Why track this: Provides a high-level view of employee experience quality.
 
 Target direction: Increase over time
 
+<br>
 
-KPI 6: Management Satisfaction Rate
+**KPI 6**: **Management Satisfaction Rate**
 
 Definition: Percentage of employees satisfied with management support.
 
@@ -139,8 +144,9 @@ Why track this: Management dissatisfaction shows one of the strongest links to
 
 Target direction: Increase consistently
 
+<br>
 
-KPI 7: Work-Life Balance Satisfaction Rate
+**KPI 7**: **Work-Life Balance Satisfaction Rate**
 
 Definition: Percentage of employees satisfied with work-life balance.
 
@@ -148,10 +154,13 @@ Why track this: Directly linked to workload stress and burnout.
 
 Target direction: Increase or remain stable
 
+<br>
 
 **Training Effectiveness KPIs**
 
-KPI 8: Average Training Hours per Employee
+<br>
+
+**KPI 8**: **Average Training Hours per Employee**
 
 Definition: Total training hours ÷ total employees.
 
@@ -159,8 +168,9 @@ Why track this: Training exposure acts as a retention and engagement lever.
 
 Target direction: Meet or exceed minimum threshold (e.g., 20 hours/year)
 
+<br>
 
-KPI 9: Training Coverage Rate
+**KPI 9**: **Training Coverage Rate**
 
 Definition: Percentage of employees receiving ≥20 training hours annually.
 
@@ -168,10 +178,13 @@ Why track this: Ensures training is not limited to a small subset of employees
 
 Target direction: Increase toward full coverage
 
+<br>
 
 **Career Growth & Promotion KPIs**
 
-KPI 10: Promotion Rate
+<br>
+
+**KPI 10**: **Promotion Rate**
 
 Definition: Employees promoted in a year ÷ total employees.
 
@@ -179,8 +192,9 @@ Why track this: Promotion significantly improves retention and engagement.
 
 Target direction: Increase gradually and consistently
 
+<br>
 
-KPI 11: Promotion Rate for Early-Tenure Employees
+**KPI 11**: **Promotion Rate for Early-Tenure Employees**
 
 Definition: Employees with ≤3 years of service who were promoted ÷ total early-tenure employees.
 
@@ -188,10 +202,13 @@ Why track this: Directly addresses early attrition risk.
 
 Target direction: Increase cautiously (quality over quantity)
 
+<br>
 
-6. Work Condition & Operational KPIs
+**Work Condition & Operational KPIs**
 
-KPI 12: Average Commute Distance
+<br>
+
+**KPI 12**: **Average Commute Distance**
 
 Definition: Average distance from work across employees.
 
@@ -199,8 +216,9 @@ Why track this: Long commute distances are strongly associated with attrition.
 
 Target direction: Reduce via remote/hybrid options or location-based hiring
 
+<br>
 
-KPI 13: Percentage of Long-Commute Employees
+**KPI 13**: **Percentage of Long-Commute Employees**
 
 Definition: Employees with commute distance >20 km ÷ total employees.
 
@@ -208,11 +226,13 @@ Why track this: Identifies employees at higher operational attrition risk.
 
 Target direction: Decrease or manage via flexibility policies
 
+<br>
 
 **Absenteeism & Performance Context KPIs**
 
+<br>
 
-KPI 14: Average Absenteeism Days per Employee
+**KPI 14**: **Average Absenteeism Days per Employee**
 
 Definition: Total absenteeism days ÷ total employees.
 
@@ -220,8 +240,9 @@ Why track this: Provides context on workload stress and employee well-being.
 
 Target direction: Stable or slightly decreasing (not zero)
 
+<br>
 
-KPI 15: Low Performance Employee Ratio
+**KPI 15**: **Low Performance Employee Ratio**
 
 Definition: Employees with lowest performance ratings ÷ total employees.
 
