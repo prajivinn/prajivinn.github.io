@@ -72,6 +72,13 @@ It would be interesting to run this clustering/segmentation at a lower level of 
 Here we've just focused on variables that are linked directly to sales - it could be interesting to also include customer metrics such as distance to store, gender etc to give a even more well-rounded customer segmentation.
 
 It would be useful to test other clustering approaches such as hierarchical clustering or DBSCAN to compare the results.
+
+Further validation of the clusters is recommended through business evaluation methods such as cluster stability analysis and by testing their usefulness in downstream tasks (e.g., marketing campaigns).
+
+From a business perspective in the retail domain, these segments can be leveraged to design targeted marketing strategies, personalized product recommendations, and tailored communication for different customer groups (e.g., vegan, vegetarian, and general consumers). A/B testing can be conducted to measure the effectiveness of segment-based campaigns and ensure improved customer engagement and ROI.
+
+Continuous monitoring and periodic re-segmentation are important to capture evolving customer preferences and ensure that the segments remain relevant over time.
+
 <br>
 <br>
 
@@ -387,3 +394,9 @@ It would be interesting to run this clustering/segmentation at a lower level of 
 Here we've just focused on variables that are linked directly to sales - it could be interesting to also include customer metrics such as distance to store, gender etc to give a even more well-rounded customer segmentation.
 
 It would be useful to test other clustering approaches such as hierarchical clustering or DBSCAN to compare the results.
+
+Further validation of the clusters is recommended through business evaluation methods such as cluster stability analysis and by testing their usefulness in downstream tasks (e.g., marketing campaigns).
+
+From a business perspective in the retail domain, these segments can be leveraged to design targeted marketing strategies, personalized product recommendations, and tailored communication for different customer groups (e.g., vegan, vegetarian, and general consumers). A/B testing can be conducted to measure the effectiveness of segment-based campaigns and ensure improved customer engagement and ROI.
+
+Continuous monitoring and periodic re-segmentation are important to capture evolving customer preferences and ensure that the segments remain relevant over time.
