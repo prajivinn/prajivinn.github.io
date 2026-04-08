@@ -13,7 +13,7 @@ In this project we aim to create an end-to-end solution using SQL, Power BI, and
     - [Context](#overview-context)
     - [Actions](#overview-actions)
     - [Results](#overview-results)
-    - [Growth/Next Steps](#overview-growth)
+    - [Growth & Next Steps](#overview-growth)
 - [01. Data Overview & Preparation](#data-overview)
 - [02. Data Cleaning & Transformation - SQL](#data-DCT)
 - [03. Exploratory Data Analysis - PowerBI](#data-DC)
@@ -37,7 +37,7 @@ ___
 
 A fintech company operating in India wants to optimize its loan approval process. They receive a large volume of loan applications daily and want to improve their approval process to reduce the risk of defaults while ensuring fair and timely approval decisions.
 
-We will build an ML model that would help the company to assess the creditworthiness of future applicants which would help them process loans faster.
+I will build an ML model that would help the company to assess the creditworthiness of future applicants which would help them process loans faster.
 <br>
 <br>
 
@@ -45,16 +45,16 @@ We will build an ML model that would help the company to assess the creditworthi
 
 I've peformed data cleaning using SQL and exploratory data analysis using PowerBI and found out that cibil_score is not the only contributor to the loan approval. Moreover, Approximately 62.2% of the loans in the dataset are approved (2656 out of 4,269), indicating a moderate class imbalance.
 
-Even so, we make sure to not rely on classification accuracy alone when assessing results - also analysing Precision, Recall, and F1-Score.
+Even so, I make sure to not rely on classification accuracy alone when assessing results - also analysing Precision, Recall, and F1-Score.
 
-As we are predicting a binary output, we tested four classification modelling approaches, namely:
+As I am predicting a binary output, I tested four classification modelling approaches, namely:
 
 * Logistic Regression
 * Decision Tree
 * Random Forest
 * K Nearest Neighbours (KNN)
 
-For each model, we will import the data in the same way but will need to pre-process the data based up the requirements of each particular algorithm. We will train & test each model, look to refine each to provide optimal performance, and then measure this predictive performance based on several metrics to give a well-rounded overview of which is best.
+For each model, I will import the data in the same way but will need to pre-process the data based up the requirements of each particular algorithm. I will train & test each model, look to refine each to provide optimal performance, and then measure this predictive performance based on several metrics to give a well-rounded overview of which is best.
 
 <br>
 <br>
@@ -113,7 +113,7 @@ Metric 4: F1 Score
 
 <br>
 
-### Growth/Next Steps <a name="overview-growth"></a>
+### Growth & Next Steps <a name="overview-growth"></a>
 
 While predictive accuracy was relatively high - other modelling approaches could be tested, especially those somewhat similar to Random Forest, for example XGBoost, LightGBM to see if even more accuracy could be gained.
 
@@ -2584,4 +2584,9 @@ ___
 
 While predictive accuracy was relatively high - other modelling approaches could be tested, especially those somewhat similar to Random Forest, for example XGBoost, LightGBM to see if even more accuracy could be gained.
 
-While the model demonstrates strong performance, further improvements can be made by incorporating additional relevant features such as alternative credit signals (e.g., transaction behavior, repayment history, or digital footprint data). Additionally, advanced feature engineering techniques and hyperparameter tuning can be applied to further enhance model performance. From a business perspective, optimizing the classification threshold to reduce false positives (i.e., approving risky applicants) would be critical to minimize financial losses.
+While the model demonstrates strong performance, further improvements can be made by incorporating additional relevant features such as alternative credit signals (e.g., transaction behavior, repayment history, or digital footprint data). Additionally, advanced feature engineering techniques and hyperparameter tuning can be applied to further enhance model performance. 
+
+From a business perspective, optimizing the classification threshold to reduce false positives (i.e., approving risky applicants) would be critical to minimize **financial losses** because Saving from bad loans ( False positives ) > losing some good customers ( False negatives )
+
+While the model is already well balanced in terms of false positives and false negatives, from a business perspective, further optimization of the decision threshold can be explored depending on the company’s risk appetite. In lending scenarios, reducing false positives (approving risky applicants) may be prioritized even at the cost of slightly increasing false negatives.
+<br>
