@@ -119,9 +119,13 @@ While predictive accuracy was relatively high - other modelling approaches could
 
 While the model demonstrates strong performance, further improvements can be made by incorporating additional relevant features such as alternative credit signals (e.g., transaction behavior, repayment history, or digital footprint data). Additionally, advanced feature engineering techniques and hyperparameter tuning can be applied to further enhance model performance. 
 
+Additionally, Validation using time-based splits or evaluation on recent loan application data prior to deployment is recommended to ensure the model generalizes well to future applicants and evolving credit risk dynamics.
+
 From a business perspective, optimizing the classification threshold to reduce false positives (i.e., approving risky applicants) would be critical to minimize **financial losses** because Saving from bad loans ( False positives ) > losing some good customers ( False negatives )
 
 While the model is already well balanced in terms of false positives and false negatives, from a business perspective, further optimization of the decision threshold can be explored depending on the company’s risk appetite. In lending scenarios, reducing false positives (approving risky applicants) may be prioritized even at the cost of slightly increasing false negatives.
+
+Continuous monitoring and periodic retraining of the model will be important to capture changing borrower behavior, economic conditions, and credit risk patterns over time, ensuring the model maintains its predictive performance and reliability
 <br>
 <br>
 
