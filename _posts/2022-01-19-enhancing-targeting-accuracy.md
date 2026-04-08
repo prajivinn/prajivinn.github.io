@@ -103,7 +103,7 @@ While predictive accuracy was relatively high - other modelling approaches could
 
 From a data point of view, adding customer-level and behavioral features such as recency of purchases, frequency trends, promotional responsiveness, and past campaign engagement can provide deeper insights into customer propensity to sign up for the delivery club.
 
-Further performance gains may be achieved through advanced feature engineering and hyperparameter tuning. Additionally, validation using time-based splits or new incoming campaign data is recommended to ensure the model generalizes well to future marketing campaigns.
+Further performance gains may be achieved through advanced feature engineering and hyperparameter tuning. Additionally, Validation using time-based splits or evaluation on new incoming data prior to model deployment is also recommended to ensure the model generalizes well to future marketing campaigns.
 
 From a business perspective in the retail marketing domain, the predicted probabilities can be used to target only high-propensity customers, optimizing marketing spend and improving return on investment (ROI). Threshold optimization can also be applied to balance the trade-off between campaign reach and conversion rates based on budget constraints and business goals.
 
