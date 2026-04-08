@@ -27,7 +27,7 @@ In this project we aim to create an end-to-end solution using SQL, Power BI, and
     - [K Nearest Neighbours](#PM-KNN)
     - [Modelling Summary](#PM-MS)
 - [05. Conclusion](#data-conclusion)
-- [06. Growth & Next Steps](data-growth)
+- [06. Growth & Next Steps](#data-growth)
 
 ___
 
