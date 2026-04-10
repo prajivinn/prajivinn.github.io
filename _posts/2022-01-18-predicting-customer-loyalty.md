@@ -78,7 +78,7 @@ While Random Forest model demonstrates strong predictive performance, further va
 
 Further feature engineering and hyperparameter tuning of the Random Forest, notably regularisation parameters such as tree depth, as well as potentially training on a higher number of Decision Trees in the Random Forest may help further refine model performance. 
 
-Validation using time-based splits or evaluation on new incoming data prior to model deployment is also recommended to ensure the model generalizes well to evolving customer behavior.
+Although the model demonstrates strong performance based on R² and cross-validation, these evaluations assume that future data follows a similar distribution to historical data. As customer behavior can evolve over time in a retail setting, it is recommended to validate the model using time-based splits or new incoming data prior to deployment to ensure it generalizes well to evolving customer behavior and remains reliable in practice.
 
 From a business perspective in the retail domain, the predicted loyalty scores can be leveraged for customer segmentation, targeted marketing campaigns, and personalized promotions.
 
@@ -1228,7 +1228,7 @@ While Random Forest model demonstrates strong predictive performance, further va
 
 Further feature engineering and hyperparameter tuning of the Random Forest, notably regularisation parameters such as tree depth, as well as potentially training on a higher number of Decision Trees in the Random Forest may help further refine model performance. 
 
-Validation using time-based splits or evaluation on new incoming data prior to model deployment is also recommended to ensure the model generalizes well to evolving customer behavior.
+Although the model demonstrates strong performance based on R² and cross-validation, these evaluations assume that future data follows a similar distribution to historical data. As customer behavior can evolve over time in a retail setting, it is recommended to validate the model using time-based splits or new incoming data prior to deployment to ensure it generalizes well to evolving customer behavior and remains reliable in practice.
 
 From a business perspective in the retail domain, the predicted loyalty scores can be leveraged for customer segmentation, targeted marketing campaigns, and personalized promotions.
 
