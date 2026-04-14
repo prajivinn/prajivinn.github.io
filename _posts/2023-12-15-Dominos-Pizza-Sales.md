@@ -11,7 +11,8 @@ In this project we use SQL manage pizza orders, including selecting pizza types,
 
 - [00. Project Overview](#overview-main)
 - [01. Data Overview & Preparation](#data-overview)
-- [02. Exploratory Data Analysis](#data-EDA)
+- [02. Data Cleaning](#data-cleaning)
+- [03. Exploratory Data Analysis](#data-EDA)
 
 ___
 
@@ -30,7 +31,8 @@ ___
 
 ```sql
 
-select * from pizzas;
+select * from pizzas
+Limit 5;
 
 ```
 <br>
@@ -40,11 +42,11 @@ Output: A sample of first 5 rows are displayed
 
 | **pizza_id** | **pizza_type_id** | **Size** | **Price** |
 |---|---|---|
-| achari_do_pyaza_vz_L | achari_do_pyaza_vz |	L |	579 |
-| achari_do_pyaza_vz_M | achari_do_pyaza_vz |	M |	349 |
+| achari_do_pyaza_vz_L | achari_do_pyaza_vz | L |	579 |
+| achari_do_pyaza_vz_M | achari_do_pyaza_vz | m |	349 |
 | achari_do_pyaza_vz_R | achari_do_pyaza_vz | R | 189 |
-| brownie_fantasy_cke_R |	brownie_fantasy_cke |	R | 125 |
-| butterscotch_mousse_cake_cke_R | butterscotch_mousse_cake_cke |	R |	103 |
+| brownie_fantasy_cke_R |	brownie_fantasy_cke | Regular | 125 |
+| butterscotch_mousse_cake_cke_R | butterscotch_mousse_cake_cke | R | 103 |
 
 <br>
 
@@ -103,9 +105,9 @@ Output: A sample of first 5 rows are displayed
 |---|---|---|
 | 1 |	2022-01-01 | 11:38:36 |
 | 2 |	2022-01-01 | 11:57:40 |
-| 3 |	2022-01-01 | 12:12:28 |
+| 3 |	2022-01-01 | NULL |
 | 4 |	2022-01-01 | 12:16:31 |
-| 5 |	2022-01-01 | 12:21:30 |
+| 5 |	invalid | 12:21:30 |
 
 <br>
 
@@ -131,11 +133,11 @@ Output: A sample of first 5 rows are displayed
 
 | **order_details_id** | **order_id** | **pizza_id** | **quantity** |
 |---|---|---|
-| 1 |	1 |	achari_do_pyaza_vz_L | 1 |
-| 2 | 2 |	cheese_n_corn_vz_L | 1 |
-| 3 |	2 |	deluxe_veggie_vz_L | 1 |
-| 4 |	2 |	double_cheese_margherita_vz_L |	1 |
-| 5 |	2 |	farm_house_vz_L |	1 |
+| 1 | 1 | achari_do_pyaza_vz_L | 1 |
+| 2 | 2 | cheese_n_corn_vz_L | -3 |
+| 3 | 2 | deluxe_veggie_vz_L | 1 |
+| 4 | 2 | double_cheese_margherita_vz_L | 1 |
+| 5 | 2 | farm_house_vz_L |	-2 |
 
 <br>
 
@@ -145,6 +147,95 @@ Output: A sample of first 5 rows are displayed
 * order_id – refers to the ID of the order.
 * Pizza_id – name of the pizza(including size)
 * Quantity – refers to the quantity of items.
+
+___
+
+<br>
+# Data Cleaning <a name="data-cleaning"></a>
+
+##### Pizzas Table
+
+```sql
+
+UPDATE pizzas
+SET size = CASE 
+    WHEN LOWER(size) IN ('Regular', 'sm', 's') THEN 'R'
+    WHEN LOWER(size) IN ('medium', 'm') THEN 'M'
+    WHEN LOWER(size) IN ('large', 'l') THEN 'L'
+END;
+
+select * from pizzas
+LIMIT 5;
+
+```
+<br>
+output:
+<br>
+<br>
+| **pizza_id** | **pizza_type_id** | **Size** | **Price** |
+|---|---|---|
+| achari_do_pyaza_vz_L | achari_do_pyaza_vz | L | 579 |
+| achari_do_pyaza_vz_M | achari_do_pyaza_vz | M | 349 |
+| achari_do_pyaza_vz_R | achari_do_pyaza_vz | R | 189 |
+| brownie_fantasy_cke_R |	brownie_fantasy_cke | R | 125 |
+| butterscotch_mousse_cake_cke_R | butterscotch_mousse_cake_cke | R | 103 |
+
+<br>
+##### Orders Table
+
+```sql
+
+-- Convert date format
+UPDATE orders
+SET date = STR_TO_DATE(date, '%y-%m-%d')
+WHERE date LIKE '__-__-__';
+
+-- Remove invalid date rows
+DELETE FROM orders
+WHERE date IS NULL;
+
+select * from Orders_Table
+LIMIT 5;
+
+```
+<br>
+output:
+<br>
+<br>
+
+| **order_id** | **date** | **time** |
+|---|---|---|
+| 1 |	2022-01-01 | 11:38:36 |
+| 2 |	2022-01-01 | 11:57:40 |
+| 3 |	2022-01-01 | 12:12:28 |
+| 4 |	2022-01-01 | 12:16:31 |
+| 5 |	2022-01-01 | 12:21:30 |
+
+<br>
+##### Orders Details Table
+
+```sql
+
+-- Remove negative quantity
+DELETE FROM order_details
+WHERE quantity <= 0;
+
+select * from Orders_Details_Table
+LIMIT 5;
+
+```
+<br>
+output:
+<br>
+<br>
+
+| **order_details_id** | **order_id** | **pizza_id** | **quantity** |
+|---|---|---|
+| 1 | 1 | achari_do_pyaza_vz_L | 1 |
+| 2 | 2 | cheese_n_corn_vz_L | 1 |
+| 3 | 2 | deluxe_veggie_vz_L | 1 |
+| 4 | 2 | double_cheese_margherita_vz_L | 1 |
+| 5 | 2 | farm_house_vz_L |	1 |
 
 ___
 
