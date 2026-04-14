@@ -11,7 +11,8 @@ In this project we Perform SQL queries to analyze sales data and answer various 
 
 - [00. Project Overview](#overview-main)
 - [01. Data Overview & Preparation](#data-overview)
-- [02. Exploratory Data Analysis](#data-EDA)
+- [02. Data Cleaning](#data-cleaning)
+- [03. Exploratory Data Analysis](#data-EDA)
 
 ___
 
@@ -44,11 +45,11 @@ Output:
 
 | CustomerID | FirstName | LastName | Email | Country |
 |---|---|---|---|---|
-| 101 |	John | Doe | john.doe@example.com | USA |
+| 101 |	john | doe | john.doe@example.com | usa |
 | 102 |	Jane | Smith | jane.smith@example.com |	Canada |
-| 103 |	Michael | Johnson | michael.johnson@example.com | USA |
+| 103 |	Michael | Johnson | michael.johnson@example.com | usa |
 | 104 |	Emily |	Williams | emily.williams@example.com |	UK |
-| 105 |	Daniel | Brown | daniel.brown@example.com | Australia |
+| 105 |	Daniel | Brown | daniel.brown#example.com | Australia |
 
 <br>
 
@@ -149,7 +150,7 @@ Output: A sample of first 5 rows is displayed below:
 | 1 | 101 | 2023-01-15 | 1800.00 | 2 |
 | 2 | 102 | 2023-02-10 | 950.00 | 3 |
 | 3 | 101 | 2023-03-20 | 450.00 | 1 |
-| 4 | 103 | 2023-04-05 | 1200.00 | 4 |
+| 4 | 103 | 2023-04-05 | NULL | 4 |
 | 5 | 102 | 2023-05-18 | 900.00 | 2 |
 
 <br>
@@ -196,6 +197,74 @@ Output: A sample of first 5 rows is displayed below:
 * Quantity – Total quantity ordered by the customer.
 * Subtotal – represents subtotal for each product.
 * EmployeeID – ID of the employee who handled the order of the customer.
+
+___
+
+<br>
+# Data Cleaning <a name="data-cleaning"></a>
+
+##### Customers Table
+
+```sql
+
+UPDATE customers
+SET 
+    FirstName = INITCAP(FirstName),
+    LastName = INITCAP(LastName);
+
+-- Fix country casing
+UPDATE customers
+SET Country = UPPER(Country);
+
+UPDATE customers
+SET Email = REPLACE(Email, '#example.com', '@example.com')
+WHERE Email LIKE '%#example.com';
+
+
+select * from pizzas
+LIMIT 5;
+
+```
+<br>
+output:
+<br>
+<br>
+
+| CustomerID | FirstName | LastName | Email | Country |
+|---|---|---|---|---|
+| 101 |	John | Doe | john.doe@example.com | USA |
+| 102 |	Jane | Smith | jane.smith@example.com |	Canada |
+| 103 |	michael | johnson | michael.johnson@example.com | USA |
+| 104 |	Emily |	Williams | emily.williams@example.com |	UK |
+| 105 |	Daniel | Brown | daniel.brown@example.com | Australia |
+
+<br>
+##### Employees Table
+
+```sql
+
+-- Trim spaces
+UPDATE employees
+SET 
+    FirstName = TRIM(FirstName),
+    LastName = TRIM(LastName);
+
+select * from Employees_Table
+LIMIT 5;
+
+```
+<br>
+output:
+<br>
+<br>
+
+| **EmployeeID** | **FirstName** | **LastName** | **Position** | **Department** | **JoinDate** |
+|---|---|---|---|---|---|
+| 1 | David | Johnson | Manager | Sales | 2020-01-15 |
+| 2 | Emily | Williams | Analyst | Marketing | 2021-03-10 |
+| 3 | Daniel | Smith | Developer | IT |	2019-06-20 |
+| 4 | Sarah | Jones | Analyst |	Marketing | 2022-02-01 |
+| 5 | James | Miller | Developer | IT | 2020-08-12 |
 
 ___
 
