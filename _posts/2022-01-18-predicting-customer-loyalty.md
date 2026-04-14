@@ -41,6 +41,8 @@ To achieve this, we looked to build out a predictive model that will find relati
 
 We firstly needed to compile the necessary data from tables in the database, gathering key customer metrics that may help predict *loyalty score*, appending on the dependent variable, and separating out those who did and did not have this dependent variable present.
 
+After removing missing values from the target variable, the distribution was analyzed using histogram binning. The bin counts were nearly uniform (imbalance ratio ≈ 1.12), indicating a balanced distribution. This ensures that model evaluation metrics are reliable and not biased toward specific value ranges.
+
 As we are predicting a numeric output, we tested three regression modelling approaches, namely:
 
 * Linear Regression
@@ -232,6 +234,24 @@ output:
 | average_basket_value | 400 non-null | float64 |
 
 <br>
+##### Checking Imbalance Ratio
+
+
+```python
+
+counts, bins = np.histogram(data_for_model['customer_loyalty_score'], bins=5)
+
+imbalance_ratio = counts.max() / counts.min()
+print(counts)
+print("Imbalance ratio:", imbalance_ratio)
+
+```
+<br>
+output:
+<br>
+[78 82 76 79 85]
+**Imbalance ratio**: 1.118421052631579
+
 
 ```python
 
