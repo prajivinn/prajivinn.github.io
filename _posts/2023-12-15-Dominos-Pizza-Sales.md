@@ -172,6 +172,7 @@ LIMIT 5;
 output:
 <br>
 <br>
+
 | **pizza_id** | **pizza_type_id** | **Size** | **Price** |
 |---|---|---|
 | achari_do_pyaza_vz_L | achari_do_pyaza_vz | L | 579 |
