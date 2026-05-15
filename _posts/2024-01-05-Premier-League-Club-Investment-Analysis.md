@@ -33,11 +33,11 @@ An investment company aims to invest in one of the top-performing club in the En
 <br>
 ### Actions <a name="overview-actions"></a>
 
-We collected the data of all the clubs from premierleague.com 
+I collected the data of all the clubs from premierleague.com 
 
-We undertook data cleaning on the dataset to replace null values as well as dealing with incorrect data on the columns.
+I undertook data cleaning on the dataset to replace null values as well as dealing with incorrect data on the columns.
 
-We performed EDA on the data starting from identification of outliers using .describe method in each column with respect to the measures of dispersion i.e using Mean and Median. As per the project requirements, the more **established clubs** meaning clubs with high experience have already been owned by the competitors. Using Histogram, we identifed and removed those most established clubs( established clubs = higher experience/ high number of matches played) becasue it will skew our results in finding the potential club.
+I performed EDA on the data starting from identification of outliers using .describe method in each column with respect to the measures of dispersion i.e using Mean and Median. As per the project requirements, the more **established clubs** meaning clubs with high experience have already been owned by the competitors. Using Histogram, I identifed and removed those most established clubs( established clubs = higher experience/ high number of matches played) becasue it will skew our results in finding the potential club.
 
 Since it is a cumulative data, It is essential to understand that the values in all the columns represent the cumulative scores over all the "matches played" . So we normalized the data by dividing the no. of wins, loss, drawn, clean sheet, goals by the number of matches played column.
 
@@ -57,9 +57,9 @@ Finally with the help of Bar Chart, we plotted the clubs with their respective "
 
 ### Results <a name="overview-results"></a>
 
-The club which has highest score is **Leicester City**. Given this information, we recommend that stakeholders consider investing in Leicester City instead. We believe that Leicester City’s recent form and performance make them a better choice for investment.
+The club which has highest score is **Leicester City**. Given this information, I recommend that stakeholders consider investing in Leicester City instead. I believe that Leicester City’s recent form and performance make them a better choice for investment.
 
-**To support our claim, we conducted further secondary research to provide additional evidence of Leicester City’s current form and potential for success**
+**To support our claim, I conducted further secondary research to provide additional evidence of Leicester City’s current form and potential for success**
 <br>
 <br>
 ### Growth/Next Steps <a name="overview-growth"></a>
